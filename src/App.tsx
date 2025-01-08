@@ -8,7 +8,7 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<h1 style={{ textAlign: 'center', marginTop: '20px' }}>Welcome to MLM</h1>} />
+        <Route path="/" element={<h1 style={{ textAlign: 'center', marginTop: '20px' , color:"#313e4b" }}>Welcome to MLM</h1>} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
