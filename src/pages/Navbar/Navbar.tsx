@@ -2,7 +2,8 @@ import './navbar.scss';
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
-import Sidebar from '../Sidebar/Sidebar';
+import { AppSidebar } from '../Sidebar/Sidebar';
+import { SidebarTrigger } from '../../components/ui/sidebar';
 
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -21,9 +22,10 @@ const Navbar = () => {
           <Typography variant="h4" className="navbar-title" style={{ marginLeft: '12px' }}>
             BICCSL
           </Typography>
+        <SidebarTrigger className="-ml-1" />
         </Toolbar>
       </AppBar>
-      <Sidebar isOpen={sidebarOpen} />
+      <AppSidebar />  
     </>
   );
 }

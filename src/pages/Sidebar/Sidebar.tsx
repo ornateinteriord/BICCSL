@@ -1,93 +1,170 @@
-import './sidebar.scss';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { SideBarMenuItem } from './SidebarUtils'
-import { Avatar, Typography } from '@mui/material';
-import { SideBarMenuItemType } from '../../store/store';
-
-interface SidebarProps {
-  isOpen: boolean;
+import * as React from "react"
+import {
+  AudioWaveform,
+  BookOpen,
+  Bot,
+  Command,
+  Frame,
+  GalleryVerticalEnd,
+  Map,
+  PieChart,
+  Settings2,
+  SquareTerminal,
+} from "lucide-react"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+  SidebarProvider
+} from "../../components/ui/sidebar"
+import { NavMain } from "./NavMain"
+// This is sample data.
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  teams: [
+    {
+      name: "Acme Inc",
+      logo: GalleryVerticalEnd,
+      plan: "Enterprise",
+    },
+    {
+      name: "Acme Corp.",
+      logo: AudioWaveform,
+      plan: "Startup",
+    },
+    {
+      name: "Evil Corp.",
+      logo: Command,
+      plan: "Free",
+    },
+  ],
+  navMain: [
+    {
+      title: "Playground",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "History",
+          url: "#",
+        },
+        {
+          title: "Starred",
+          url: "#",
+        },
+        {
+          title: "Settings",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Models",
+      url: "#",
+      icon: Bot,
+      items: [
+        {
+          title: "Genesis",
+          url: "#",
+        },
+        {
+          title: "Explorer",
+          url: "#",
+        },
+        {
+          title: "Quantum",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Documentation",
+      url: "#",
+      icon: BookOpen,
+      items: [
+        {
+          title: "Introduction",
+          url: "#",
+        },
+        {
+          title: "Get Started",
+          url: "#",
+        },
+        {
+          title: "Tutorials",
+          url: "#",
+        },
+        {
+          title: "Changelog",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "General",
+          url: "#",
+        },
+        {
+          title: "Team",
+          url: "#",
+        },
+        {
+          title: "Billing",
+          url: "#",
+        },
+        {
+          title: "Limits",
+          url: "#",
+        },
+      ],
+    },
+  ],
+  projects: [
+    {
+      name: "Design Engineering",
+      url: "#",
+      icon: Frame,
+    },
+    {
+      name: "Sales & Marketing",
+      url: "#",
+      icon: PieChart,
+    },
+    {
+      name: "Travel",
+      url: "#",
+      icon: Map,
+    },
+  ],
 }
-
-const Sidebar = ({ isOpen }: SidebarProps) => {
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [selectedItem, setSelectedItem] = useState<string>(SideBarMenuItem[0].name);
-  const navigate = useNavigate();
-
-  const handleToggle = (itemName: string) => {
-    setExpandedItems(prev => {
-      if (prev.includes(itemName)) {
-        return prev.filter(item => item !== itemName);
-      } else {
-        return [...prev, itemName];
-      }
-    });
-  };
-
-  const handleSelect = (itemName: string) => {
-    setSelectedItem(itemName);
-  };
-
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-      <div className="sidebar-header">
-        <Avatar
-          alt="User Avatar"
-          src={`https://api.multiavatar.com/${"Deepanshu"}.svg`}
-          sx={{ width: 50, height: 50 }}
-        />
-        <div className="welcome-text" style={{padding: '10px', color: '#fff'}}>
-          <Typography>Welcome,</Typography>
-          <Typography style={{fontWeight: 'bold'}}>Dipanshu</Typography>
-        </div>
-      </div>
-      <div style={{ height: 'calc(100vh - 100px)', overflowY: 'auto', paddingBottom: '80px' }}>
-        {SideBarMenuItem.map((item: SideBarMenuItemType) => (
-          <div key={item.name}>
-            <div 
-              onClick={() => {
-                if (item.isExpandable) {
-                  handleToggle(item.name);
-                }
-                navigate(item.path!);
-                handleSelect(item.name);
-              }} 
-              className={`menu-item ${selectedItem === item.name ? 'selected' : ''}`}
-            >
-              {item.icon} {item.name}
-              {item.isExpandable && (
-                <span style={{ marginLeft: 'auto' }} onClick={(e) => {
-                  e.stopPropagation();
-                  handleToggle(item.name);
-                }}>
-                  {expandedItems.includes(item.name) ? <RemoveIcon /> : <AddIcon />}
-                </span>
-              )}
-            </div>
-            {item.isExpandable && (
-              <motion.div 
-                className="sub-items"
-                initial={{ height: 0, opacity: 0 }} 
-                animate={{ height: expandedItems.includes(item.name) ? 'auto' : 0, opacity: expandedItems.includes(item.name) ? 1 : 0 }} 
-                exit={{ height: expandedItems.includes(item.name) ? 'auto' : 0, opacity: 0 }} 
-                transition={{ duration: 0.3 }}
-              >
-                {expandedItems.includes(item.name) && item.subItems?.map(subItem => (
-                  <Link key={subItem.name} to={subItem.path} className="sub-item">
-                    <span className="sub-item-icon">{subItem.icon}</span>
-                    <span className="sub-item-name">{subItem.name}</span>
-                  </Link>
-                ))}
-              </motion.div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    <SidebarProvider>
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        {/* <TeamSwitcher teams={data.teams} /> */}
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain items={data.navMain} />
+        {/* <NavProjects projects={data.projects} /> */}
+      </SidebarContent>
+      <SidebarFooter>
+        {/* <NavUser user={data.user} /> */}
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+    </SidebarProvider>
+  )
 }
-
-export default Sidebar;
