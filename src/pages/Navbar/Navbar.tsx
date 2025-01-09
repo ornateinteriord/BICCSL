@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 
 const Navbar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const handleMenuClick = () => {
     setSidebarOpen(!sidebarOpen);
@@ -15,15 +15,15 @@ const Navbar = () => {
     <>
       <AppBar position="static" className="navbar" style={{ backgroundColor: '#313e4b' }}>
         <Toolbar className="navbar-toolbar">
-          <Typography variant="h4" style={{ flexGrow: 1 }} className="navbar-title">
-            BICCSL
-          </Typography>
-          <IconButton edge="end" color="inherit" aria-label="menu" onClick={handleMenuClick} className="navbar-menu-button" style={{ color: 'white' }}>
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleMenuClick} className="navbar-menu-button" style={{ color: 'white' }}>
             <MenuIcon />
           </IconButton>
+          <Typography variant="h4" className="navbar-title" style={{ marginLeft: '12px' }}>
+            BICCSL
+          </Typography>
         </Toolbar>
       </AppBar>
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar isOpen={sidebarOpen} />
     </>
   );
 }
