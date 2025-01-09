@@ -2,17 +2,12 @@ import './sidebar.scss';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import { SideBarMenuItem } from './SidebarUtils'
 import { Avatar, Typography } from '@mui/material';
 import { SideBarMenuItemType } from '../../store/store';
+import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 
-interface SidebarProps {
-  isOpen: boolean;
-}
-
-const Sidebar = ({ isOpen }: SidebarProps) => {
+const Sidebar = () => {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [selectedItem, setSelectedItem] = useState<string>(SideBarMenuItem[0].name);
   const navigate = useNavigate();
@@ -32,7 +27,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
   };
 
   return (
-    <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+    <div className="sidebar open" style={{ width: '250px' }}>
       <div className="sidebar-header">
         <Avatar
           alt="User Avatar"
@@ -63,7 +58,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                   e.stopPropagation();
                   handleToggle(item.name);
                 }}>
-                  {expandedItems.includes(item.name) ? <RemoveIcon /> : <AddIcon />}
+                  {expandedItems.includes(item.name) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 </span>
               )}
             </div>
