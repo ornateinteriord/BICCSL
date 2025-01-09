@@ -1,6 +1,6 @@
 import './sidebar.scss';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -15,6 +15,7 @@ interface SidebarProps {
 const Sidebar = ({ isOpen }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [selectedItem, setSelectedItem] = useState<string>(SideBarMenuItem[0].name);
+  const navigate = useNavigate();
 
   const handleToggle = (itemName: string) => {
     setExpandedItems(prev => {
@@ -51,6 +52,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                 if (item.isExpandable) {
                   handleToggle(item.name);
                 }
+                navigate(item.path!);
                 handleSelect(item.name);
               }} 
               className={`menu-item ${selectedItem === item.name ? 'selected' : ''}`}
