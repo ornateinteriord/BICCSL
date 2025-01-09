@@ -1,3 +1,4 @@
+import { SideBarMenuItemType } from '../../store/store';
 import {
   DashboardIcon,
   AccountCircleIcon,
@@ -20,15 +21,6 @@ import {
   TrendingUpIcon,
   PaymentsIcon
 } from '../Icons';
-
-export interface SideBarMenuItemType {
-    name: string;
-    icon: JSX.Element;
-    path?: string;
-    isExpandable?: boolean;
-    subItems?: Array<{ name: string; path: string; icon: JSX.Element }>;
-  }
-
 
 export const SideBarMenuItem: SideBarMenuItemType[] = [
     { name: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard', isExpandable: false },

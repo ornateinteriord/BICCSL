@@ -14,6 +14,14 @@
 .sidebar.closed {
   transform: translateX(-100%);
 }
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 .sidebar-header {
   display: flex;

@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { SideBarMenuItem, SideBarMenuItemType } from './SidebarUtils'
+import { SideBarMenuItem } from './SidebarUtils'
 import { Avatar, Typography } from '@mui/material';
+import { SideBarMenuItemType } from '../../store/store';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -13,15 +14,13 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string>(SideBarMenuItem[0].name);
 
   const handleToggle = (itemName: string) => {
     setExpandedItems(prev => {
       if (prev.includes(itemName)) {
-        // Remove item if already expanded
         return prev.filter(item => item !== itemName);
       } else {
-        // Add item to expanded list
         return [...prev, itemName];
       }
     });
@@ -44,45 +43,47 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           <Typography style={{fontWeight: 'bold'}}>Dipanshu</Typography>
         </div>
       </div>
-      {SideBarMenuItem.map((item: SideBarMenuItemType) => (
-        <div key={item.name}>
-          <div 
-            onClick={() => {
-              if (item.isExpandable) {
-                handleToggle(item.name);
-              }
-              handleSelect(item.name);
-            }} 
-            className={`menu-item ${selectedItem === item.name ? 'selected' : ''}`}
-          >
-            {item.icon} {item.name}
+      <div style={{ height: 'calc(100vh - 100px)', overflowY: 'auto', paddingBottom: '80px' }}>
+        {SideBarMenuItem.map((item: SideBarMenuItemType) => (
+          <div key={item.name}>
+            <div 
+              onClick={() => {
+                if (item.isExpandable) {
+                  handleToggle(item.name);
+                }
+                handleSelect(item.name);
+              }} 
+              className={`menu-item ${selectedItem === item.name ? 'selected' : ''}`}
+            >
+              {item.icon} {item.name}
+              {item.isExpandable && (
+                <span style={{ marginLeft: 'auto' }} onClick={(e) => {
+                  e.stopPropagation();
+                  handleToggle(item.name);
+                }}>
+                  {expandedItems.includes(item.name) ? <RemoveIcon /> : <AddIcon />}
+                </span>
+              )}
+            </div>
             {item.isExpandable && (
-              <span style={{ marginLeft: 'auto' }} onClick={(e) => {
-                e.stopPropagation();
-                handleToggle(item.name);
-              }}>
-                {expandedItems.includes(item.name) ? <RemoveIcon /> : <AddIcon />}
-              </span>
+              <motion.div 
+                className="sub-items"
+                initial={{ height: 0, opacity: 0 }} 
+                animate={{ height: expandedItems.includes(item.name) ? 'auto' : 0, opacity: expandedItems.includes(item.name) ? 1 : 0 }} 
+                exit={{ height: expandedItems.includes(item.name) ? 'auto' : 0, opacity: 0 }} 
+                transition={{ duration: 0.3 }}
+              >
+                {expandedItems.includes(item.name) && item.subItems?.map(subItem => (
+                  <Link key={subItem.name} to={subItem.path} className="sub-item">
+                    <span className="sub-item-icon">{subItem.icon}</span>
+                    <span className="sub-item-name">{subItem.name}</span>
+                  </Link>
+                ))}
+              </motion.div>
             )}
           </div>
-          {item.isExpandable && (
-            <motion.div 
-              className="sub-items"
-              initial={{ height: 0, opacity: 0 }} 
-              animate={{ height: expandedItems.includes(item.name) ? 'auto' : 0, opacity: expandedItems.includes(item.name) ? 1 : 0 }} 
-              exit={{ height: expandedItems.includes(item.name) ? 'auto' : 0, opacity: 0 }} 
-              transition={{ duration: 0.3 }}
-            >
-              {expandedItems.includes(item.name) && item.subItems?.map(subItem => (
-                <Link key={subItem.name} to={subItem.path} className="sub-item">
-                  <span className="sub-item-icon">{subItem.icon}</span>
-                  <span className="sub-item-name">{subItem.name}</span>
-                </Link>
-              ))}
-            </motion.div>
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
