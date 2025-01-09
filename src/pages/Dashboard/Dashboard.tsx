@@ -7,8 +7,7 @@ const Dashboard = () => {
       <Box
         sx={{
           background: 'linear-gradient(150deg, #283159 30%, #9d75add1 90%);',
-          py: 6,
-          mb: 4,
+          py: 2, 
           boxShadow: '0 3px 5px 2px #23303dc9',
         }}
       >

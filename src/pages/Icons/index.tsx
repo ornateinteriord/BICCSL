@@ -18,18 +18,22 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 export {
   DashboardIcon,
   AccountCircleIcon,
   CheckCircleIcon,
   GroupIcon,
+  ExpandLessIcon,
   MonetizationOnIcon,
   ShowChartIcon,
   CreditCardIcon,
   MailOutlineIcon,
   ExitToAppIcon,
   PersonIcon,
+  ExpandMoreIcon,
   VerifiedUserIcon,
   LockIcon,
   InventoryIcon,
