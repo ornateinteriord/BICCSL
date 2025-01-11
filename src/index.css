@@ -8,6 +8,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+  background-color: #eaeaea;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

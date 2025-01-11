@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { SideBarMenuItem } from './SidebarUtils'
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, Toolbar, Typography } from '@mui/material';
 import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 
@@ -27,7 +27,8 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar open" style={{ width: '250px' }}>
+    <div className="sidebar open" style={{ width: '250px', zIndex:10, position: 'fixed', top: 0, left: 0, bottom: 0, right: 0,}}>
+      <Toolbar className="navbar-toolbar" />
       <div className="sidebar-header">
         <Avatar
           alt="User Avatar"
