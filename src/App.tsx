@@ -1,21 +1,38 @@
+import { Suspense, lazy, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import './index.css';
+import {  Dialog, DialogContent, CircularProgress } from '@mui/material';
 
-import Dashboard from './pages/Dashboard/Dashboard';
-import Navbar from './pages/Navbar/Navbar';
-import NotFound from './pages/not-found/NotFound';
-import Sidebar from './pages/Sidebar/Sidebar';
-import Home from './pages/Home/Home';
+const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
+const Navbar = lazy(() => import('./pages/Navbar/Navbar'));
+const NotFound = lazy(() => import('./pages/not-found/NotFound'));
+const Sidebar = lazy(() => import('./pages/Sidebar/Sidebar'));
+const Home = lazy(() => import('./pages/Home/Home'));
+
+const LoadingComponent = () => {
+  return (
+    <Dialog open={true}>
+      <DialogContent>
+        <CircularProgress />
+      </DialogContent>
+    </Dialog>
+  )
+};
 
 function App() {
+  const [isOpen, setIsOpen] = useState(true);
+  const toggelSideBar = () => {
+    setIsOpen(!isOpen);
+  }
 
   return (
     <Router>
-      <Navbar/>
+      <Suspense fallback={<LoadingComponent />}>
+      <Navbar toggelSideBar={toggelSideBar} />
       <div style={{ display: 'flex' }}>
-        <Sidebar  />
-        <div style={{ flex: 1, marginLeft:  '250px' }}>
+        <Sidebar isOpen={isOpen} />
+        <div style={{ flex: 1, marginLeft:  isOpen ? '250px' : '0' }}>
           <Routes>
             <Route index element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
@@ -23,6 +40,7 @@ function App() {
           </Routes>
         </div>
       </div>
+      </Suspense>
     </Router>
   );
 }

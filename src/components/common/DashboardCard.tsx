@@ -18,14 +18,17 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ amount, title }) => {
         display: 'flex',
         alignItems: 'center',
         boxShadow: 3,
+        width: '24rem',
+        flexGrow: 1, // Allow the card to grow when sidebar is closed
+        flexShrink: 1, // Allow the card to shrink when sidebar is opened
       }}
     >
       <Box
         sx={{
-          width: 200,
+          width: 150,
           height: 150,
           display: 'flex',
-          justifyContent: 'flex-start',
+          justifyContent: 'center',
           alignItems: 'center',
           gap: 2,
           marginRight: '10px',

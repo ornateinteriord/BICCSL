@@ -7,7 +7,7 @@ import { Avatar, Toolbar, Typography } from '@mui/material';
 import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 
-const Sidebar = () => {
+const Sidebar = ({isOpen}: {isOpen: boolean}) => {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [selectedItem, setSelectedItem] = useState<string>(SideBarMenuItem[0].name);
   const navigate = useNavigate();
@@ -27,19 +27,21 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar open" style={{ width: '250px', zIndex:10, position: 'fixed', top: 0, left: 0, bottom: 0, right: 0,}}>
+    <div className={`sidebar ${isOpen ? 'open' : 'closed'}`} style={{ width: isOpen ? '250px' : '0'}}>
       <Toolbar className="navbar-toolbar" />
-      <div className="sidebar-header">
-        <Avatar
-          alt="User Avatar"
-          src={`https://api.multiavatar.com/${"Deepanshu"}.svg`}
-          sx={{ width: 50, height: 50 }}
-        />
-        <div className="welcome-text" style={{padding: '10px', color: '#fff'}}>
-          <Typography>Welcome,</Typography>
-          <Typography style={{fontWeight: 'bold'}}>Dipanshu</Typography>
+      {isOpen && (
+        <div className="sidebar-header">
+          <Avatar
+            alt="User Avatar"
+            src={`https://api.multiavatar.com/${"Deepanshu"}.svg`}
+            sx={{ width: 50, height: 50 }}
+          />
+          <div className="welcome-text" style={{padding: '10px', color: '#fff'}}>
+            <Typography>Welcome,</Typography>
+            <Typography style={{fontWeight: 'bold'}}>Dipanshu</Typography>
+          </div>
         </div>
-      </div>
+      )}
       <div style={{ height: 'calc(100vh - 100px)', overflowY: 'auto', paddingBottom: '80px' }}>
         {SideBarMenuItem.map((item: SideBarMenuItemType) => (
           <div key={item.name}>

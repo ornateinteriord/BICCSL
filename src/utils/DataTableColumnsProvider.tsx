@@ -1,7 +1,6 @@
 
 export const getDashboardTableColumns = () => [
   {
-    name: 'Title',
     selector: (row:any) => row.title,
     style: { fontWeight: 'bold' },
   },

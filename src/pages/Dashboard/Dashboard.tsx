@@ -1,5 +1,4 @@
 import {  Card, CardContent, Grid, Typography } from '@mui/material';
-import { BoxesCore } from '../../components/ui/background-boxes';
 import { cn } from '../../lib/utils';
 import './dashboard.scss';
 import DashboardTable from './DashboardTable';
@@ -45,7 +44,6 @@ const Dashboard = () => {
       <div className="h-40 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center mt-10">
         <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
 
-        <BoxesCore />
         <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
           Welcome to MLM Dashboard
         </h1>
@@ -53,18 +51,21 @@ const Dashboard = () => {
           Manage your network and track your success
         </p>
       </div>
-      <Grid container spacing={2} sx={{  mx: 1 , my: 2}}>
+      <Grid container spacing={2} sx={{ mx:1, my: 2}}>
         <Grid item xs={12} sm={6} md={4} lg={4}>
-          <DashboardCard amount={1000} title="Level Benefits" />
+          <DashboardCard amount={0} title="Level Benefits" />
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={4}>
-          <DashboardCard amount={1000} title="Level Benefits" />
+          <DashboardCard amount={180.0} title="Direct Benefits" />
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={4}>
-          <DashboardCard amount={1000} title="Level Benefits" />
+          <DashboardCard amount={180.0} title="Total Earnings" />
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={4}>
-          <DashboardCard amount={1000} title="Level Benefits" />
+          <DashboardCard amount={0.0} title="Total Withdraws" />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={4}>
+          <DashboardCard amount={180.0} title="Wallet Balance" />
         </Grid>
       </Grid>
       <div className='mt-10 p-4 rounded shadow'>    
