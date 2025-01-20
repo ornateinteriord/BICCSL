@@ -19,8 +19,8 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ amount, title }) => {
         alignItems: 'center',
         boxShadow: 3,
         width: '24rem',
-        flexGrow: 1, // Allow the card to grow when sidebar is closed
-        flexShrink: 1, // Allow the card to shrink when sidebar is opened
+        flexGrow: 1, 
+        flexShrink: 1,
       }}
     >
       <Box
