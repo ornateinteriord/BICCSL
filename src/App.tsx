@@ -3,6 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import './index.css';
 import {  Dialog, DialogContent, CircularProgress } from '@mui/material';
+import Profile from './pages/Profile/Profile';
+import KYC from './pages/KYC/KYC';
+import ChangePassword from './pages/Change-Password/ChangePassword';
+import Activate from './pages/Activate/Activate';
+import NewResgister from './pages/New-Resgister/NewResgister';
 
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
 const Navbar = lazy(() => import('./pages/Navbar/Navbar'));
@@ -36,6 +41,11 @@ function App() {
           <Routes>
             <Route index element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/account/profile" element={<Profile />} />
+            <Route path="/account/kyc" element={<KYC />} />
+            <Route path="/account/change-password" element={<ChangePassword />} />
+            <Route path="/activate" element={<Activate />} />
+            <Route path="/team/new-register" element={<NewResgister />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
