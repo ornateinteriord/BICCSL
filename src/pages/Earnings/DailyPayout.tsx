@@ -3,7 +3,7 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE } from '../../utils/DataTableColumnsProvider';
 
-const UsedPackage = () => {
+const DailyPayout = () => {
   const columns = [
     {
       name: 'Date',
@@ -11,48 +11,32 @@ const UsedPackage = () => {
       sortable: true,
     },
     {
-      name: 'Member Code',
-      selector: (row: any) => row.memberCode,
+      name: 'Level Earnings',
+      selector: (row: any) => row.levelEarnings,
       sortable: true,
     },
     {
-      name: 'Package Code',
-      selector: (row: any) => row.packageCode,
+      name: 'Direct Benefits',
+      selector: (row: any) => row.directBenefits,
       sortable: true,
     },
     {
-      name: 'Amount',
-      selector: (row: any) => row.amount,
-      sortable: true,
-    },
-    {
-      name: 'Used For',
-      selector: (row: any) => row.usedFor,
-      sortable: true,
-    },
-    {
-      name: 'Used Date',
-      selector: (row: any) => row.usedDate,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: (row: any) => row.status,
+      name: 'Gross Earnings',
+      selector: (row: any) => row.grossEarnings,
       sortable: true,
     },
   ];
 
   const data = [
     {
-      date: '18/11/2024',
-      memberCode: 'MANJUNATH N (SF000001)',
-      packageCode: 'pZrqqSd',
-      amount: '₹ 2000.0',
-      usedFor: 'Shivananda C (BIC882898)',
-      usedDate: '18/11/2024',
-      status: 'used',
+      date: '18-Nov-2024',
+      levelEarnings: '0.0',
+      directBenefits: '180.0',
+      grossEarnings: '180.0',
     },
   ];
+
+  const noDataComponent = <div style={{ padding: '24px' }}>No data available in table</div>;
 
   return (
     <Card sx={{ margin: '2rem', mt: 10 }}>
@@ -61,12 +45,12 @@ const UsedPackage = () => {
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             sx={{
-                backgroundColor: '#04112f',
-                color: '#fff',
-                '& .MuiSvgIcon-root': { color: '#fff' }
-              }}
+              backgroundColor: '#04112f',
+              color: '#fff',
+              '& .MuiSvgIcon-root': { color: '#fff' }
+            }}
           >
-            List of Used Package
+            Daily Payout Details
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
@@ -76,8 +60,9 @@ const UsedPackage = () => {
               customStyles={DASHBOARD_CUTSOM_STYLE}
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
-              highlightOnHover
+              noDataComponent={noDataComponent}
               subHeader
+              highlightOnHover
               subHeaderComponent={
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', padding: '0.5rem' }}>
                   <TextField
@@ -95,4 +80,4 @@ const UsedPackage = () => {
   );
 };
 
-export default UsedPackage;
+export default DailyPayout;

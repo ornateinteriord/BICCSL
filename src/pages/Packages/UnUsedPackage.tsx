@@ -64,6 +64,7 @@ const UnUsedPackage = () => {
               customStyles={DASHBOARD_CUTSOM_STYLE}
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
+              highlightOnHover
               subHeader
               subHeaderComponent={
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', padding: '0.5rem' }}>

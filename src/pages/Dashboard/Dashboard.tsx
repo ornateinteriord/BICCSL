@@ -51,20 +51,33 @@ const Dashboard = () => {
           Manage your network and track your success
         </p>
       </div>
-      <Grid container spacing={2} sx={{ mx:1, my: 2}}>
-        <Grid item xs={12} sm={6} md={4} lg={4}>
+      <Grid 
+        container 
+        spacing={{ xs: 2, sm: 3 }} 
+        sx={{ 
+          mx: { xs: 1, sm: 2 }, 
+          my: 2,
+          pt : 5,
+          pr : 7,
+          width: 'auto',
+          '& .MuiGrid-item': {
+            display: 'flex',
+          }
+        }}
+      >
+        <Grid item xs={12} sm={6} md={4}>
           <DashboardCard amount={0} title="Level Benefits" />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <DashboardCard amount={180.0} title="Direct Benefits" />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <DashboardCard amount={180.0} title="Total Earnings" />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <DashboardCard amount={0.0} title="Total Withdraws" />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <DashboardCard amount={180.0} title="Wallet Balance" />
         </Grid>
       </Grid>

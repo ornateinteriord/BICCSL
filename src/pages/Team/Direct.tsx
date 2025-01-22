@@ -77,6 +77,7 @@ const Direct = () => {
               pagination
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
+              highlightOnHover
               customStyles={DASHBOARD_CUTSOM_STYLE}
               subHeader
               subHeaderComponent={

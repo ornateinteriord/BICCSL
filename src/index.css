@@ -12,7 +12,11 @@ html, body {
   overflow-x: hidden;
   background-color: #eaeaea;
 }
-
+@media (min-width: 769px) {
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
