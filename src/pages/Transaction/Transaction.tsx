@@ -1,10 +1,9 @@
-import React from 'react';
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE } from '../../utils/DataTableColumnsProvider';
 
-const LevelBenifits: React.FC = () => {
+const Transaction = () => {
   const columns = [
     {
       name: 'Date',
@@ -12,54 +11,48 @@ const LevelBenifits: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'Payout Level',
-      selector: (row: any) => row.payoutLevel,
+      name: 'Description',
+      selector: (row: any) => row.description,
       sortable: true,
     },
     {
-      name: 'Members',
-      selector: (row: any) => row.members,
+      name: 'Credits',
+      selector: (row: any) => `₹ ${row.credits}`,
       sortable: true,
     },
     {
-      name: 'Amount',
-      selector: (row: any) => row.amount,
+      name: 'Debit',
+      selector: (row: any) => `₹ ${row.debit}`,
       sortable: true,
+    },
+    {
+      name: 'Status',
+      selector: (row: any) => row.status,
+      sortable: true,
+      cell: (row: any) => (
+        <div
+          style={{
+            backgroundColor: row.status === 'Active' ? '#00d1b2' : '#ff3860',
+            color: 'white',
+            padding: '5px 10px',
+            borderRadius: '4px',
+          }}
+        >
+          {row.status}
+        </div>
+      ),
     },
   ];
 
-  const data: any[] = [
+  const data = [
     {
-      date: '21-Jan-2025',
-      payoutLevel: 'Level 1',
-      members: '2',
-      amount: '₹200'
+      date: '18-Nov-2024',
+      description: 'Direct Benefits',
+      credits: '180.0',
+      debit: '0.0',
+      status: 'Active',
     },
-    {
-      date: '20-Jan-2025', 
-      payoutLevel: 'Level 2',
-      members: '4',
-      amount: '₹400'
-    },
-    {
-      date: '19-Jan-2025',
-      payoutLevel: 'Level 3', 
-      members: '8',
-      amount: '₹800'
-    },
-    {
-      date: '18-Jan-2025',
-      payoutLevel: 'Level 4',
-      members: '16', 
-      amount: '₹1600'
-    },
-    {
-      date: '17-Jan-2025',
-      payoutLevel: 'Level 5',
-      members: '32',
-      amount: '₹3200'
-    }
-  ]; 
+  ];
 
   const noDataComponent = <div style={{ padding: '24px' }}>No data available in table</div>;
 
@@ -70,12 +63,12 @@ const LevelBenifits: React.FC = () => {
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             sx={{
-                backgroundColor: '#04112f',
-                color: '#fff',
-                '& .MuiSvgIcon-root': { color: '#fff' }
-              }}
+              backgroundColor: '#04112f',
+              color: '#fff',
+              '& .MuiSvgIcon-root': { color: '#fff' }
+            }}
           >
-            List of Level Benefits
+            List of Transaction
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
@@ -85,6 +78,7 @@ const LevelBenifits: React.FC = () => {
               customStyles={DASHBOARD_CUTSOM_STYLE}
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
+              highlightOnHover
               noDataComponent={noDataComponent}
               subHeader
               subHeaderComponent={
@@ -104,4 +98,4 @@ const LevelBenifits: React.FC = () => {
   );
 };
 
-export default LevelBenifits;
+export default Transaction;

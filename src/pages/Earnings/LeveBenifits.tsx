@@ -85,6 +85,7 @@ const LevelBenifits = () => {
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
               noDataComponent={noDataComponent}
+              highlightOnHover
               subHeader
               subHeaderComponent={
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', padding: '0.5rem' }}>
