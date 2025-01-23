@@ -18,8 +18,6 @@ import {
   Typography,
   Box,
   Divider,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -28,10 +26,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DASHBOARD_CUTSOM_STYLE } from '../../utils/DataTableColumnsProvider';
 
 const MailBox = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-
   const [formData, setFormData] = useState({
     ticketType: '',
     subject: '',
@@ -66,7 +60,6 @@ const MailBox = () => {
       name: 'Ticket Date',
       selector: (row: any) => row.ticketDate,
       sortable: true,
-      omit: isMobile,
     },
     {
       name: 'Ticket No',
@@ -79,7 +72,7 @@ const MailBox = () => {
             color: 'white',
             padding: '5px 10px',
             borderRadius: '4px',
-            fontSize: isMobile ? '12px' : '14px',
+            fontSize: '14px',
           }}
         >
           {row.ticketNo}
@@ -90,13 +83,11 @@ const MailBox = () => {
       name: 'Type of ticket',
       selector: (row: any) => row.typeOfTicket,
       sortable: true,
-      omit: isMobile,
     },
     {
       name: 'Subject',
       selector: (row: any) => row.subject,
       sortable: true,
-      omit: isMobile && isTablet,
     },
     {
       name: 'Status',
@@ -109,7 +100,7 @@ const MailBox = () => {
             color: 'white',
             padding: '5px 10px',
             borderRadius: '4px',
-            fontSize: isMobile ? '12px' : '14px',
+            fontSize: '14px',
           }}
         >
           {row.status}
@@ -121,7 +112,7 @@ const MailBox = () => {
       cell: (row: any) => (
         <IconButton
           onClick={() => handleOpenDialog(row)}
-          size={isMobile ? "small" : "medium"}
+          size="medium"
           sx={{
             color: '#04112f',
             '&:hover': {
@@ -129,7 +120,7 @@ const MailBox = () => {
             }
           }}
         >
-          <VisibilityIcon color='primary' fontSize={isMobile ? "small" : "medium"}/>
+          <VisibilityIcon color='primary' fontSize="medium"/>
         </IconButton>
       ),
       sortable: false,
@@ -175,11 +166,11 @@ const MailBox = () => {
   return (
     <>
       <Card sx={{ 
-        margin: isMobile ? '1rem' : '2rem', 
-        mt: isMobile ? 5 : 10, 
+        margin: '2rem', 
+        mt: 10, 
         boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
       }}>
-        <CardContent sx={{ padding: isMobile ? '12px' : '24px' }}>
+        <CardContent sx={{ padding: '24px' }}>
           <Accordion 
             defaultExpanded
             sx={{
@@ -195,13 +186,13 @@ const MailBox = () => {
                 backgroundColor: '#04112f',
                 color: '#fff',
                 '& .MuiSvgIcon-root': { color: '#fff' },
-                minHeight: isMobile ? '48px' : '64px',
+                minHeight: '64px',
               }}
             >
               Mail Box
             </AccordionSummary>
-            <AccordionDetails sx={{ padding: isMobile ? '1rem' : '2rem' }}>
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '1rem' : '1.5rem' }}>
+            <AccordionDetails sx={{ padding: '2rem' }}>
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <FormControl fullWidth>
                   <InputLabel>Ticket Type</InputLabel>
                   <Select
@@ -210,7 +201,7 @@ const MailBox = () => {
                     onChange={handleSelectChange}
                     name="ticketType"
                     required
-                    size={isMobile ? "small" : "medium"}
+                    size="medium"
                     sx={{
                       '& .MuiOutlinedInput-notchedOutline': {
                         '&:hover': {
@@ -235,7 +226,7 @@ const MailBox = () => {
                   onChange={handleInputChange}
                   fullWidth
                   required
-                  size={isMobile ? "small" : "medium"}
+                  size="medium"
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       '&:hover fieldset': {
@@ -254,10 +245,10 @@ const MailBox = () => {
                   value={formData.details}
                   onChange={handleInputChange}
                   multiline
-                  rows={isMobile ? 3 : 4}
+                  rows={4}
                   fullWidth
                   required
-                  size={isMobile ? "small" : "medium"}
+                  size="medium"
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       '&:hover fieldset': {
@@ -273,7 +264,7 @@ const MailBox = () => {
                 <Button
                   type="submit"
                   variant="contained"
-                  size={isMobile ? "small" : "medium"}
+                  size="medium"
                   sx={{
                     backgroundColor: '#04112f',
                     alignSelf: 'flex-end',
@@ -289,14 +280,14 @@ const MailBox = () => {
           </Accordion>
 
           {/* Table Section */}
-          <Accordion defaultExpanded sx={{ mt: isMobile ? 2 : 4 }}>
+          <Accordion defaultExpanded sx={{ mt: 4 }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               sx={{
                 backgroundColor: '#04112f',
                 color: '#fff',
                 '& .MuiSvgIcon-root': { color: '#fff' },
-                minHeight: isMobile ? '48px' : '64px',
+                minHeight: '64px',
               }}
             >
               List of Support Details
@@ -307,13 +298,13 @@ const MailBox = () => {
                 data={tickets}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
-                paginationPerPage={isMobile ? 10 : 25}
-                paginationRowsPerPageOptions={isMobile ? [10, 20, 50] : [25, 50, 100]}
+                paginationPerPage={25}
+                paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover
                 responsive
                 subHeader
                 subHeaderComponent={
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', padding: isMobile ? '0.25rem' : '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', padding: '0.5rem' }}>
                     <TextField
                       placeholder="Search"
                       variant="outlined"
@@ -333,7 +324,7 @@ const MailBox = () => {
         onClose={handleCloseDialog}
         maxWidth="md"
         fullWidth
-        fullScreen={isMobile}
+        fullScreen={false}
       >
         <DialogTitle sx={{ 
           backgroundColor: '#04112f', 
@@ -341,26 +332,26 @@ const MailBox = () => {
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'center',
-          padding: isMobile ? '12px' : '16px'
+          padding: '16px'
         }}>
           Ticket Details
           <IconButton
             onClick={handleCloseDialog}
-            size={isMobile ? "small" : "medium"}
+            size="medium"
             sx={{ color: '#fff' }}
           >
-            <CloseIcon fontSize={isMobile ? "small" : "medium"} />
+            <CloseIcon fontSize="medium" />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ mt: isMobile ? 1 : 2, padding: isMobile ? '12px' : '24px' }}>
+        <DialogContent sx={{ mt: 2, padding: '24px' }}>
           {selectedTicket && (
             <>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 1 : 2 }}>
-                <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ color: '#04112f' }}>Ticket Information</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Typography variant="h6" sx={{ color: '#04112f' }}>Ticket Information</Typography>
                 <Box sx={{ 
                   display: 'grid', 
-                  gridTemplateColumns: isMobile ? '120px 1fr' : 'auto 1fr', 
-                  gap: isMobile ? 1 : 2, 
+                  gridTemplateColumns: 'auto 1fr', 
+                  gap: 2, 
                   alignItems: 'center' 
                 }}>
                   <Typography variant="subtitle2">Ticket No:</Typography>
@@ -382,22 +373,22 @@ const MailBox = () => {
                     padding: '4px 8px',
                     borderRadius: '4px',
                     width: 'fit-content',
-                    fontSize: isMobile ? '12px' : '14px'
+                    fontSize: '14px'
                   }}>
                     {selectedTicket.status}
                   </Typography>
                 </Box>
 
-                <Divider sx={{ my: isMobile ? 1 : 2 }} />
+                <Divider sx={{ my: 2 }} />
 
-                <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ color: '#04112f' }}>Reply Details</Typography>
+                <Typography variant="h6" sx={{ color: '#04112f' }}>Reply Details</Typography>
                 <Box sx={{ 
                   backgroundColor: '#f5f5f5',
-                  padding: isMobile ? '0.75rem' : '1rem',
+                  padding: '1rem',
                   borderRadius: '4px',
                   textAlign: 'center'
                 }}>
-                  <Typography color="text.secondary" variant={isMobile ? "body2" : "body1"}>No Reply</Typography>
+                  <Typography color="text.secondary" variant="body1">No Reply</Typography>
                 </Box>
               </Box>
             </>

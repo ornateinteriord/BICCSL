@@ -31,6 +31,7 @@ const Sidebar = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
 
   const handleSelect = (itemName: string) => {
     setSelectedItem(itemName);
+    // Close sidebar on mobile regardless of submenu state
     if (window.innerWidth <= 768) {
       onClose();
     }
@@ -80,9 +81,10 @@ const Sidebar = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
                 onClick={() => {
                   if (item.isExpandable) {
                     handleToggle(item.name);
+                  } else {
+                    navigate(item.path!);
+                    handleSelect(item.name);
                   }
-                  navigate(item.path!);
-                  handleSelect(item.name);
                 }} 
                 className={`menu-item ${selectedItem === item.name ? 'selected' : ''}`}
               >
@@ -120,9 +122,7 @@ const Sidebar = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
                           to={subItem.path} 
                           className="sub-item"
                           onClick={() => {
-                            if (window.innerWidth <= 768) {
-                              onClose();
-                            }
+                            handleSelect(item.name);
                           }}
                         >
                           <span className="sub-item-icon">{subItem.icon}</span>
