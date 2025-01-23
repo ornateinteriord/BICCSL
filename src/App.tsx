@@ -23,6 +23,9 @@ const TransferPackage = lazy(() => import('./pages/Packages/TransferPackage'));
 const Direct = lazy(() => import('./pages/Team/Direct'));
 const LevelBenifits = lazy(() => import('./pages/Earnings/LeveBenifits'));
 const DailyPayout = lazy(() => import('./pages/Earnings/DailyPayout'));
+const Login = lazy(() => import('./pages/Auth/Login'));
+const Register = lazy(() => import('./pages/Auth/Register'));
+const Wallet = lazy(() => import('./pages/Wallet/Wallet'));
 
 const LoadingComponent = () => {
   return (
@@ -59,10 +62,13 @@ function App() {
           }}>
             <Routes>
               <Route index element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/account/profile" element={<Profile />} />
               <Route path="/account/kyc" element={<KYC />} />
               <Route path="/account/change-password" element={<ChangePassword />} />
+              
               <Route path="/activate" element={<Activate />} />
               <Route path="/team/new-register" element={<NewResgister />} />
               <Route path="/package/used" element={<UsedPackage />} />
@@ -75,6 +81,7 @@ function App() {
               <Route path="/earnings/daily-payout" element={<DailyPayout />} />
               <Route path="/transactions" element={<Transaction />} />
               <Route path="/mailbox" element={<MailBox />} />
+              <Route path="/wallet" element={<Wallet />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
