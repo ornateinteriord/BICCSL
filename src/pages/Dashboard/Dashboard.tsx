@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {  Card, CardContent, Grid, Typography } from '@mui/material';
 import { cn } from '../../lib/utils';
 import './dashboard.scss';
@@ -5,7 +6,14 @@ import DashboardTable from './DashboardTable';
 import DateFilterComponent from '../../components/common/DateFilterComponent';
 import DashboardCard from '../../components/common/DashboardCard';
 
-const Dashboard = () => {
+const Dashboard = () => { 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  console.log(selectedDate);
+
+  const handleDateChange = (date: Date | undefined) => {
+    setSelectedDate(date!);
+  };
+
   const data = [
     {
       title: "Today's Registration",
@@ -86,7 +94,7 @@ const Dashboard = () => {
           <CardContent>
             <div className="flex justify-between items-center mb-4">
               <Typography variant="h6" style={{ fontWeight: 'bold', color: '#04112f' }}>Member Statistics</Typography>
-              <DateFilterComponent />
+              <DateFilterComponent onSelect={handleDateChange} />
             </div>
             <DashboardTable data={data} />
           </CardContent>

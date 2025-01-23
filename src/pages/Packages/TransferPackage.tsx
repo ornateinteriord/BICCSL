@@ -9,10 +9,11 @@ import {
   CardContent,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DateFilterComponent from '../../components/common/DateFilterComponent';
 
 const TransferPackage: React.FC = () => {
   const [formData, setFormData] = useState({
-    date: '21/01/2025',
+    date: '',
     packageQty: '1',
     transferedTo: '',
   });
@@ -22,6 +23,13 @@ const TransferPackage: React.FC = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleDateChange = (date: Date | undefined) => {
+    setFormData(prev => ({
+      ...prev,
+      date: date ? date.toISOString() : ''
     }));
   };
 
@@ -54,25 +62,7 @@ const TransferPackage: React.FC = () => {
           </AccordionSummary>
           <AccordionDetails sx={{ padding: '2rem' }}>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              <TextField
-                label="Date"
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                fullWidth
-                variant="outlined"
-                disabled
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    '&:hover fieldset': {
-                      borderColor: '#04112f',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#04112f',
-                    }
-                  }
-                }}
-              />
+                <DateFilterComponent onSelect={handleDateChange} width="100%" />
               <TextField
                 label="Package Qty"
                 name="packageQty"

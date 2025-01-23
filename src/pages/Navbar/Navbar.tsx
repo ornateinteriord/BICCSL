@@ -17,10 +17,10 @@ const Navbar = ({ toggelSideBar }: { toggelSideBar: () => void }) => {
             BICCSL
           </Typography>
           <div style={{ marginLeft: 'auto' }}>
-            <Button variant="ghost" style={{ marginRight: '8px' }}>
+            <Button variant="ghost" style={{ marginRight: '8px' }} onClick={() => navigate('/login')}>
               Login
             </Button>
-            <Button variant="secondary" style={{ marginRight: '8px' }}>
+            <Button variant="secondary" style={{ marginRight: '8px' }} onClick={() => navigate('/register')}>
               Signup
             </Button>
           </div>
