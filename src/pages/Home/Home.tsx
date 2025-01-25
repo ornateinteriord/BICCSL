@@ -1,12 +1,10 @@
 import { Button} from '../../components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { Box, FormControl, MenuItem, Select, Typography } from '@mui/material'
-import { useState } from 'react'
 import { SelectChangeEvent } from '@mui/material/Select'
 
-const Home = () => {
+const Home = ({role , setRole }: { role: string, setRole: (role: string) => void }) => {
   const navigate = useNavigate()
-  const [role, setRole] = useState('ADMIN')
 
   const handleNavigate = () => {
     if (role === 'ADMIN') {

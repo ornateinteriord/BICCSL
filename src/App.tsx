@@ -83,6 +83,7 @@ function App() {
 
 const RoutesProvider = ({ isOpen, setIsOpen, toggelSideBar }: { isOpen: boolean, setIsOpen: (value: boolean) => void, toggelSideBar: () => void }) => {
   const shouldHide = ShouldHideSidebarComponent();
+  const [role, setRole] = useState('ADMIN');
   
   return (
     <>
@@ -93,7 +94,7 @@ const RoutesProvider = ({ isOpen, setIsOpen, toggelSideBar }: { isOpen: boolean,
         overflowX: 'hidden',
       }}>
         {!shouldHide && (
-          <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)} role="ADMIN" />
+          <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)} role={role} />
         )}
         <div style={{ 
           flex: 1, 
@@ -104,7 +105,7 @@ const RoutesProvider = ({ isOpen, setIsOpen, toggelSideBar }: { isOpen: boolean,
         }}>
           <Routes>
             {/* public routes */}
-            <Route index element={<Home />} />
+            <Route index element={<Home role={role} setRole={setRole} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             

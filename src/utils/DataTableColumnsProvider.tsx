@@ -1,5 +1,5 @@
 
-export const getDashboardTableColumns = () => [
+export const getUserDashboardTableColumns = () => [
   {
     selector: (row:any) => row.title,
     style: { fontWeight: 'bold' },
@@ -20,6 +20,25 @@ export const getDashboardTableColumns = () => [
     center: true,
   },
 ]
+
+export const getAdminDashboardTableColumns = () => [
+  {
+    name: 'Date',
+    selector: (row: any) => row.date,
+    center: true,
+  },
+  {
+    name: 'Member',
+    selector: (row: any) => row.member,
+    center: true,
+  },
+  {
+    name: 'Package Amount',
+    selector: (row: any) => row.packageAmount,
+    center: true,
+  },
+];
+
 
 const TABLE_ROW_CUSTOM_STYLE = {
   style: {

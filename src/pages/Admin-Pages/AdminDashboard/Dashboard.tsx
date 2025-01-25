@@ -1,49 +1,28 @@
-import { useState } from 'react';
 import {  Card, CardContent, Grid, Typography } from '@mui/material';
 import { cn } from '../../../lib/utils';
 import '../../Dashboard/dashboard.scss';
 import DashboardTable from '../../Dashboard/DashboardTable';
-import DateFilterComponent from '../../../components/common/DateFilterComponent';
 import DashboardCard from '../../../components/common/DashboardCard';
+import { getAdminDashboardTableColumns } from '../../../utils/DataTableColumnsProvider';
+import PersonIcon from '@mui/icons-material/Person';
 
 const AdminDashboard = () => { 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  console.log(selectedDate);
-
-  const handleDateChange = (date: Date | undefined) => {
-    setSelectedDate(date!);
-  };
 
   const data = [
     {
-      title: "Today's Registration",
-      direct: 0,
-      indirect: 0,
-      total: 0,
+      date: "2023-10-01",
+      member: "John Doe",
+      packageAmount: 100,
     },
     {
-      title: "Today's Activation",
-      direct: 0,
-      indirect: 0,
-      total: 0,
+      date: "2023-10-02",
+      member: "Jane Smith",
+      packageAmount: 150,
     },
     {
-      title: 'Total Registration',
-      direct: 2,
-      indirect: 7,
-      total: 9,
-    },
-    {
-      title: 'Total Activation',
-      direct: 1,
-      indirect: 0,
-      total: 1,
-    },
-    {
-      title: 'Current Month Activation',
-      direct: 0,
-      indirect: 0,
-      total: 0,
+      date: "2023-10-03",
+      member: "Alice Johnson",
+      packageAmount: 200,
     },
   ];
 
@@ -53,7 +32,7 @@ const AdminDashboard = () => {
         <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
 
         <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
-          Welcome to MLM Dashboard
+          Welcome to Admin Dashboard
         </h1>
         <p className="text-center mt-2 text-neutral-300 relative z-20">
           Manage your network and track your success
@@ -74,19 +53,13 @@ const AdminDashboard = () => {
         }}
       >
         <Grid item xs={12} sm={6} md={4}>
-          <DashboardCard amount={0} title="Level Benefits" />
+          <DashboardCard amount={2} title="Total Members" subTitle="12 More members added" IconComponent={PersonIcon} />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <DashboardCard amount={180.0} title="Direct Benefits" />
+          <DashboardCard amount={2} title="Active Members" subTitle="5 More members activated" IconComponent={PersonIcon} />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <DashboardCard amount={180.0} title="Total Earnings" />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <DashboardCard amount={0.0} title="Total Withdraws" />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <DashboardCard amount={180.0} title="Wallet Balance" />
+          <DashboardCard amount={0} title="Pending Members" IconComponent={PersonIcon} />
         </Grid>
       </Grid>
       <div className='mt-10 p-4 rounded shadow'>    
@@ -94,9 +67,8 @@ const AdminDashboard = () => {
           <CardContent>
             <div className="flex justify-between items-center mb-4">
               <Typography variant="h6" style={{ fontWeight: 'bold', color: '#04112f' }}>Member Statistics</Typography>
-              <DateFilterComponent onSelect={handleDateChange} />
             </div>
-            <DashboardTable data={data} />
+            <DashboardTable data={data} columns={getAdminDashboardTableColumns()} />
           </CardContent>
         </Card>
       </div>
