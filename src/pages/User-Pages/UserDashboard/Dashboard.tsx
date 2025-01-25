@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import {  Card, CardContent, Grid, Typography } from '@mui/material';
-import { cn } from '../../lib/utils';
-import './dashboard.scss';
-import DashboardTable from './DashboardTable';
-import DateFilterComponent from '../../components/common/DateFilterComponent';
-import DashboardCard from '../../components/common/DashboardCard';
+import { cn } from '../../../lib/utils';
+import '../../Dashboard/dashboard.scss';
+import DashboardTable from '../../Dashboard/DashboardTable';
+import DateFilterComponent from '../../../components/common/DateFilterComponent';
+import DashboardCard from '../../../components/common/DashboardCard';
 
-const Dashboard = () => { 
+const UserDashboard = () => { 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   console.log(selectedDate);
 
@@ -102,6 +102,6 @@ const Dashboard = () => {
       </div>
     </>
   )
-}
+    }
 
-export default Dashboard
+export default UserDashboard

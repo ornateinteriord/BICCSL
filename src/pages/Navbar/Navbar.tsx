@@ -4,15 +4,15 @@ import './navbar.scss';
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = ({ toggelSideBar }: { toggelSideBar: () => void }) => {
+const Navbar = ({ toggelSideBar , shouldHide }: { toggelSideBar: () => void , shouldHide: boolean }) => {
   const navigate = useNavigate();
   return (
     <>
       <AppBar position="fixed" className="navbar" style={{ background: 'linear-gradient(170deg, #0f172a 43%, #071337 70%)' }}>
         <Toolbar className="navbar-toolbar">
-          <IconButton onClick={() => toggelSideBar()}>
+          {!shouldHide && <IconButton onClick={() => toggelSideBar()}>
             <MenuIcon color='white'/>
-          </IconButton>
+          </IconButton>}
           <Typography variant="h4" className="navbar-title" style={{ marginLeft: '12px', cursor: 'pointer' }} onClick={() => navigate('/')}>
             BICCSL
           </Typography>

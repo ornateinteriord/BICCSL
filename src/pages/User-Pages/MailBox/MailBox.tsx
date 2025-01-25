@@ -23,7 +23,7 @@ import DataTable from 'react-data-table-component';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { DASHBOARD_CUTSOM_STYLE } from '../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
 
 const MailBox = () => {
   const [formData, setFormData] = useState({

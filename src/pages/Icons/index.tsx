@@ -20,6 +20,17 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ComputerIcon from '@mui/icons-material/Computer';
+import LaptopIcon from '@mui/icons-material/Laptop';
+import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
+import BuildIcon from '@mui/icons-material/Build';
+import SupportIcon from '@mui/icons-material/Support';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
+import EventIcon from '@mui/icons-material/Event';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import SmsIcon from '@mui/icons-material/Sms';
 
 export {
   DashboardIcon,
@@ -43,6 +54,16 @@ export {
   AccountTreeIcon,
   PersonAddIcon,
   TrendingUpIcon,
-  PaymentsIcon
+  PaymentsIcon,
+  ComputerIcon,
+  LaptopIcon,
+  PhoneAndroidIcon,
+  DevicesOtherIcon,
+  BuildIcon,
+  SupportIcon,
+  AnnouncementIcon,
+  EventIcon,
+  RequestQuoteIcon,
+  ReceiptLongIcon,
+  SmsIcon
 };
-
