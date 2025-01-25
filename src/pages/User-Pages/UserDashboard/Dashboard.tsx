@@ -5,6 +5,7 @@ import '../../Dashboard/dashboard.scss';
 import DashboardTable from '../../Dashboard/DashboardTable';
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
 import DashboardCard from '../../../components/common/DashboardCard';
+import { getUserDashboardTableColumns } from '../../../utils/DataTableColumnsProvider';
 
 const UserDashboard = () => { 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -53,7 +54,7 @@ const UserDashboard = () => {
         <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
 
         <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
-          Welcome to MLM Dashboard
+          Welcome toDashboard
         </h1>
         <p className="text-center mt-2 text-neutral-300 relative z-20">
           Manage your network and track your success
@@ -96,7 +97,7 @@ const UserDashboard = () => {
               <Typography variant="h6" style={{ fontWeight: 'bold', color: '#04112f' }}>Member Statistics</Typography>
               <DateFilterComponent onSelect={handleDateChange} />
             </div>
-            <DashboardTable data={data} />
+            <DashboardTable data={data} columns={getUserDashboardTableColumns()} />
           </CardContent>
         </Card>
       </div>

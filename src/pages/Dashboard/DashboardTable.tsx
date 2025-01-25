@@ -1,9 +1,7 @@
 import DataTable from 'react-data-table-component';
-import { DASHBOARD_CUTSOM_STYLE, getDashboardTableColumns } from '../../utils/DataTableColumnsProvider';
-import { useMemo } from 'react';
+import { DASHBOARD_CUTSOM_STYLE } from '../../utils/DataTableColumnsProvider';
 
-const DashboardTable = ({ data }: { data: any }) => {
-    const columns = useMemo(() => getDashboardTableColumns(), []);
+const DashboardTable = ({ data , columns}: { data: any , columns: any }) => {
 
     return (
         <DataTable
