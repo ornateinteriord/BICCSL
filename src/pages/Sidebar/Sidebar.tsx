@@ -1,17 +1,18 @@
 import './sidebar.scss';
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SideBarMenuItem } from './SidebarUtils'
+import { UserSideBarMenuItems, AdminSideBarMenuItems } from './SidebarUtils'
 import { Avatar, Toolbar, Typography } from '@mui/material';
 import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 
-const Sidebar = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
+const Sidebar = ({isOpen, onClose , role}: {isOpen: boolean, onClose: () => void, role: string}) => {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [closingItem, setClosingItem] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (closingItem) {
@@ -36,6 +37,7 @@ const Sidebar = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
       onClose();
     }
   };
+  const menuItems = role === "ADMIN" ? AdminSideBarMenuItems : UserSideBarMenuItems;
 
   return (
     <motion.div 
@@ -69,7 +71,7 @@ const Sidebar = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
       </AnimatePresence>
       <div style={{ height: 'calc(100vh - 100px)', overflowY: 'auto', paddingBottom: '80px' }}>
         <AnimatePresence>
-          {SideBarMenuItem.map((item: SideBarMenuItemType) => (
+          {menuItems.map((item: SideBarMenuItemType) => (
             <motion.div 
               key={item.name}
               initial={{ opacity: 0, x: -20 }}
@@ -120,7 +122,7 @@ const Sidebar = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
                       >
                         <Link 
                           to={subItem.path} 
-                          className="sub-item"
+                          className={`sub-item ${location.pathname === subItem.path ? 'selected' : ''}`}
                           onClick={() => {
                             handleSelect(item.name);
                           }}

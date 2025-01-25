@@ -2,7 +2,7 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
 import { useMediaQuery } from '@mui/material';
-import { DASHBOARD_CUTSOM_STYLE } from '../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
 
 const Wallet = () => {
   const isMobile = useMediaQuery('(max-width:600px)');

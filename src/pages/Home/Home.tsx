@@ -1,9 +1,20 @@
-import { Button } from '../../components/ui/button'
+import { Button} from '../../components/ui/button'
 import { useNavigate } from 'react-router-dom'
-import { Box, Typography } from '@mui/material'
+import { Box, FormControl, MenuItem, Select, Typography } from '@mui/material'
+import { useState } from 'react'
+import { SelectChangeEvent } from '@mui/material/Select'
 
 const Home = () => {
   const navigate = useNavigate()
+  const [role, setRole] = useState('ADMIN')
+
+  const handleNavigate = () => {
+    if (role === 'ADMIN') {
+      navigate('/admin/dashboard')
+    } else {
+      navigate('/user/dashboard')
+    }
+  }
 
   return (
     <Box 
@@ -22,9 +33,24 @@ const Home = () => {
       <Typography variant="body1" gutterBottom>
         This is where you can find the latest updates and information.
       </Typography>
-      <Button variant="default" onClick={() => navigate('/dashboard')}>
-        Go to Dashboard
-      </Button>
+      <Box sx={{ display: 'flex', width: '100%', gap: '1rem', justifyContent: 'center' , mt: 2 }}>
+        <FormControl sx={{ marginBottom: '1rem', minWidth: 120 }}>
+          <Select
+            value={role}
+            onChange={(e: SelectChangeEvent) => setRole(e.target.value)}
+            size="small"
+          >
+            <MenuItem value="ADMIN">ADMIN</MenuItem>
+            <MenuItem value="USER">USER</MenuItem>
+          </Select>
+        </FormControl>
+        <Button variant="default" onClick={handleNavigate}>
+          Go to Dashboard
+        </Button>
+      </Box>
+        <Typography variant="body2" gutterBottom sx={{ color: 'red' }}>
+          Note: Temporarily adding role selection for testing purposes.
+        </Typography>
     </Box>
   )
 }

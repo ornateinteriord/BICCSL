@@ -47,10 +47,13 @@
   display: flex;
   align-items: center;
   transition: color 0.3s ease;
-}
 
-.sub-items a:hover {
-  color: #51f986;
+  &:hover {
+    color: #51f986;
+  }
+  &.selected {
+    color: #51f986;
+  }
 }
 
 .sub-item-icon {

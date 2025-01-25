@@ -1,0 +1,451 @@
+import React, { useState } from 'react';
+import {
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  InputAdornment,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  IconButton,
+} from '@mui/material';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import PersonIcon from '@mui/icons-material/Person';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import PaidIcon from '@mui/icons-material/Paid';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DataTable from 'react-data-table-component';
+import { Typography } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+
+interface PackageTableProps {
+  title: string;
+  summaryTitle: string;
+  data: any[];
+  columns: any[];
+}
+
+
+const usedPackagesData = [
+  {
+    memberCode: 'BICCSL - SF000001',
+    usedQuantity: 1,
+    status: 'used',
+  },
+  // Add more data as needed
+];
+
+const unusedPackagesData = [
+  {
+    memberCode: 'BICCSL - SF000002',
+    usedQuantity: 1,
+    status: 'unused',
+  },
+  // Add unused packages data
+];
+
+export const PackageRequests = () => {
+  const columns = [
+    {
+      name: 'Date',
+      selector: (row: any) => row.date,
+      sortable: true,
+    },
+    {
+      name: 'Member',
+      selector: (row: any) => row.member,
+      sortable: true,
+    },
+    {
+      name: 'Package Amount',
+      selector: (row: any) => row.packageAmount,
+      sortable: true,
+    },
+    {
+      name: 'Action',
+      cell: () => (
+        <IconButton
+          onClick={() => {}}
+          size="medium"
+          sx={{
+            color: '#04112f',
+            '&:hover': {
+              backgroundColor: 'rgba(4, 17, 47, 0.04)'
+            }
+          }}
+        >
+          <VisibilityIcon color='primary' fontSize="medium"/>
+        </IconButton>
+      ),
+    },
+  ];
+
+  const data = [
+    { date: '2024-01-01', member: 'Rajesh Kumar', packageAmount: 2000 },
+    { date: '2024-01-02', member: 'Priya Sharma', packageAmount: 5000 },
+    { date: '2024-01-03', member: 'Amit Patel', packageAmount: 10000 },
+  ];
+
+  return (
+    <>
+      {/* <Typography variant="h4" sx={{ margin: '2rem', mt: 10 }}>
+        Package Requests
+      </Typography>
+      <Card sx={{ margin: '2rem', mt: 2 }}>
+        <CardContent>
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                backgroundColor: '#04112f',
+                color: '#fff',
+                '& .MuiSvgIcon-root': { color: '#fff' }
+              }}
+            >
+              List of Package Request
+            </AccordionSummary>
+            <AccordionDetails>
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                <TextField
+                  size="small"
+                  placeholder="Search..."
+                  sx={{ minWidth: 200 }}
+                />
+                <Button 
+                  variant="contained" 
+                  sx={{ 
+                    backgroundColor: '#04112f',
+                    '&:hover': { backgroundColor: '#0a1f4d' }
+                  }}
+                >
+                  Search
+                </Button>
+              </div>
+              <DataTable
+                columns={columns}
+                data={data}
+                pagination
+                customStyles={DASHBOARD_CUTSOM_STYLE}
+                paginationPerPage={25}
+                paginationRowsPerPageOptions={[25, 50, 100]}
+                highlightOnHover
+              />
+            </AccordionDetails>
+          </Accordion>
+        </CardContent>
+      </Card> */}
+      <PackageTable 
+        title="Package Requests" 
+        summaryTitle="List of Package Request" 
+        data={data}
+        columns={columns}
+      />
+    </>
+  );
+};
+
+  const usedandUnUsedColumns = [
+    {
+      name: 'Member Code',
+      selector: (row: any) => row.memberCode,
+      sortable: true,
+    },
+    {
+      name: 'Used Quantity',
+      selector: (row: any) => row.usedQuantity,
+      sortable: true,
+    },
+    {
+      name: 'Status',
+      selector: (row: any) => row.status,
+      sortable: true,
+    },
+  ];
+
+export const UnusedPackages = () => {
+  return (
+    <>
+      <PackageTable 
+        title="Unused Package" 
+        summaryTitle="List of Unused Package" 
+        data={unusedPackagesData}
+        columns={usedandUnUsedColumns}
+      />
+    </>
+  );
+};
+
+export const UsedPackages = () => {
+  return (
+    <>
+      <PackageTable 
+        title="Used Package" 
+        summaryTitle="List of Used Package" 
+        data={usedPackagesData}
+        columns={usedandUnUsedColumns}
+      />
+    </>
+  );
+};
+
+export const PackageHistory = () => {
+  return (
+    <div>PackageHistory</div>
+  )
+}
+
+const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data , columns }) => {
+  // const [filterText, setFilterText] = useState('');
+  
+
+
+  // const filteredItems = data.filter(
+  //   item => item?.memberCode?.toLowerCase().includes(filterText.toLowerCase())
+  // );
+
+  return (
+    <>
+      <Typography variant="h4" sx={{ margin: '2rem', mt: 10 }}>
+        {title}
+      </Typography>
+      <Card sx={{ margin: '2rem', mt: 2 }}>
+        <CardContent>
+          <Accordion defaultExpanded>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            sx={{
+              backgroundColor: '#04112f',
+              color: '#fff',
+              '& .MuiSvgIcon-root': { color: '#fff' }
+            }}
+          >
+            {summaryTitle}
+          </AccordionSummary>
+          <AccordionDetails>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+              <TextField
+                size="small"
+                placeholder="Search..."
+                value={''}
+                // onChange={e => setFilterText(e.target.value)}
+                sx={{ minWidth: 200 }}
+              />
+            </div>
+            <DataTable
+              columns={columns}
+              data={data}
+              pagination
+              paginationPerPage={25}
+              paginationRowsPerPageOptions={[25, 50, 100]}
+              customStyles={DASHBOARD_CUTSOM_STYLE}
+            />
+          </AccordionDetails>
+        </Accordion>
+        </CardContent>
+      </Card>
+    </>
+  );
+};
+
+export const GeneratePackages = () => {
+  const [formData, setFormData] = useState({
+    package: '',
+    sendTo: '',
+    quantity: 1,
+    amount: 0,
+  });
+
+  const packages = [
+    { name: 'Package 1', value: 2000 },
+    { name: 'Package 2', value: 5000 },
+    { name: 'Package 3', value: 10000 },
+  ];
+
+  const handlePackageChange = (event: any) => {
+    const selectedValue = event.target.value;
+    const selectedPackage = packages.find(p => p.name === selectedValue);
+    setFormData(prev => ({
+      ...prev,
+      package: selectedValue,
+      amount: selectedPackage ? selectedPackage.value : 0
+    }));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const totalAmount = formData.amount * formData.quantity;
+
+  return (
+    <Card sx={{ margin: '2rem', mt: 10, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
+      <CardContent>
+        <Accordion 
+          defaultExpanded
+          sx={{
+            boxShadow: 'none',
+            '&.MuiAccordion-root': {
+              backgroundColor: '#fff'
+            }
+          }}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="package-content"
+            id="package-header"
+            sx={{
+              backgroundColor: '#04112f',
+              color: '#fff',
+              '& .MuiSvgIcon-root': {
+                color: '#fff'
+              }
+            }}
+          >
+            Generate Package
+          </AccordionSummary>
+          <AccordionDetails sx={{ padding: '2rem' }}>
+            <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <FormControl fullWidth>
+                <InputLabel id="package-label">Package</InputLabel>
+                <Select
+                  labelId="package-label"
+                  value={formData.package}
+                  onChange={handlePackageChange}
+                  displayEmpty
+                  label="Package"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <LocalOfferIcon sx={{ color: '#04112f' }} />
+                    </InputAdornment>
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      '&:hover': {
+                        borderColor: '#04112f',
+                      }
+                    }
+                  }}
+                >
+                  <MenuItem value="" disabled>
+                    Select Package
+                  </MenuItem>
+                  {packages.map((pkg) => (
+                    <MenuItem key={pkg.name} value={pkg.name}>
+                      {`${pkg.name}(${pkg.value})`}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <TextField
+                label="Send To"
+                name="sendTo"
+                value={formData.sendTo}
+                onChange={handleInputChange}
+                fullWidth
+                variant="outlined"
+                placeholder="Enter recipient"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PersonIcon sx={{ color: '#04112f' }} />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                      borderColor: '#04112f',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#04112f',
+                    }
+                  }
+                }}
+              />
+
+              <TextField
+                label="Quantity"
+                name="quantity"
+                type="number"
+                value={formData.quantity}
+                onChange={handleInputChange}
+                fullWidth
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <InventoryIcon sx={{ color: '#04112f' }} />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                      borderColor: '#04112f',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#04112f',
+                    }
+                  }
+                }}
+              />
+
+              <TextField
+                label="Amount"
+                value={formData.amount}
+                fullWidth
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PaidIcon sx={{ color: '#04112f' }} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                label="Total Amount"
+                value={totalAmount}
+                disabled
+                fullWidth
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PaidIcon sx={{ color: '#04112f' }} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: '#04112f',
+                  alignSelf: 'flex-end',
+                  '&:hover': {
+                    backgroundColor: '#0a1f4d'
+                  }
+                }}
+              >
+                Submit
+              </Button>
+            </form>
+          </AccordionDetails>
+        </Accordion>
+      </CardContent>
+    </Card>
+  );
+};

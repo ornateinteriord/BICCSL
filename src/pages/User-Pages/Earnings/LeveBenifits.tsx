@@ -1,7 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
 
 const LevelBenifits = () => {
   const columns = [

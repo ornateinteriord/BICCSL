@@ -2,6 +2,7 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
 import { useMediaQuery } from '@mui/material';
+import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
 
 const PackageHistory = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -33,23 +34,6 @@ const PackageHistory = () => {
       sortable: true,
     }
   ];
-
-  const DASHBOARD_CUTSOM_STYLE = {
-    headRow: {
-      style: {
-        backgroundColor: '#04112f',
-        color: '#ffffff'
-      }
-    },
-    rows: {
-      style: {
-        minHeight: '60px',
-        '&:nth-child(odd)': {
-          backgroundColor: '#f5f5f5',
-        }
-      }
-    }
-  };
 
   // Sample data - replace with actual data
   const packages = [

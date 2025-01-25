@@ -14,8 +14,10 @@ import {
 
 const DateFilterComponent = ({ onSelect, mode = "single", width = "240px" }: { onSelect: (date: Date) => void, mode?: "single" | "range" | "multiple", width?: string }) => {
     const [date, setDate] = React.useState<Date | DateRange | Date[]>()
+    const [open, setOpen] = React.useState(false)
+    
     return (
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               variant={"outline"}
@@ -29,13 +31,18 @@ const DateFilterComponent = ({ onSelect, mode = "single", width = "240px" }: { o
               {date ? format(date as Date, "PPP") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent 
+            className="w-auto p-0" 
+            align="start"
+            style={{ zIndex: 9999 }}
+          >
             <Calendar
               mode={mode as "single"}
               selected={date as Date}
               onSelect={(selectedDate: Date | DateRange | undefined) => {
                 setDate(selectedDate);
                 onSelect(selectedDate as Date);
+                setOpen(false);
               }}
               initialFocus
             />
