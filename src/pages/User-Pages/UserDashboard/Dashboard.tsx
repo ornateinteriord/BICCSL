@@ -50,15 +50,36 @@ const UserDashboard = () => {
 
   return (
     <>
-      <div className="h-40 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center mt-10">
+      <div className="h-auto md:h-40 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center mt-10 py-6 md:py-0">
         <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
 
-        <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
-          Welcome to Dashboard
-        </h1>
-        <p className="text-center mt-2 text-neutral-300 relative z-20">
-          Manage your network and track your success
-        </p>
+        <div className="flex flex-col md:flex-row justify-evenly items-center w-full px-4 md:px-8 relative z-20 gap-6 md:gap-0">
+          <div className="text-center md:text-left">
+            <h1 className={cn("text-xl md:text-4xl text-white")}>
+              Welcome to Dashboard
+            </h1>
+            <p className="mt-2 text-neutral-300 text-sm md:text-base">
+              Manage your network and track your success
+            </p>
+          </div>
+
+          <div className="flex items-center gap-6 md:gap-12 text-white">
+            <div className="text-center">
+              <div className="text-xl md:text-2xl font-bold mb-2">1/1</div>
+              <div className="text-xs md:text-sm flex items-center justify-center gap-1">
+                <span className="material-icons text-base md:text-lg">person</span>
+                Direct
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-xl md:text-2xl font-bold mb-2">1/1</div>
+              <div className="text-xs md:text-sm flex items-center justify-center gap-1">
+                <span className="material-icons text-base md:text-lg">groups</span>
+                Team
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <Grid 
         container 
