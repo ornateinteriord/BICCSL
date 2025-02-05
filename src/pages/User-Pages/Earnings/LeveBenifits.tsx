@@ -1,31 +1,10 @@
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getLevelBenifitsColumns } from '../../../utils/DataTableColumnsProvider';
 
 const LevelBenifits = () => {
-  const columns = [
-    {
-      name: 'Date',
-      selector: (row: any) => row.date,
-      sortable: true,
-    },
-    {
-      name: 'Payout Level',
-      selector: (row: any) => row.payoutLevel,
-      sortable: true,
-    },
-    {
-      name: 'Members',
-      selector: (row: any) => row.members,
-      sortable: true,
-    },
-    {
-      name: 'Amount',
-      selector: (row: any) => row.amount,
-      sortable: true,
-    },
-  ];
+  
 
   const data: any[] = [
     {
@@ -78,7 +57,7 @@ const LevelBenifits = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
-              columns={columns}
+              columns={getLevelBenifitsColumns()}
               data={data}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}

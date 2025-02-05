@@ -1,37 +1,7 @@
+import { getSMSTransactionColumns } from "../../../utils/DataTableColumnsProvider"
 import { TransactionDataTable } from "./Transactions"
 
-const columns = [
-  {
-    name: 'Date',
-    selector: (row: any) => row.date,
-    sortable: true,
-  },
-  {
-    name: 'ID',
-    selector: (row: any) => row.id,
-    sortable: true,
-  },
-  {
-    name: 'Member',
-    selector: (row: any) => row.member,
-    sortable: true,
-  },
-  {
-    name: 'Message Type',
-    selector: (row: any) => row.messageType,
-    sortable: true,
-  },
-  {
-    name: 'Sent To',
-    selector: (row: any) => row.sentTo,
-    sortable: true,
-  },
-  {
-    name: 'Status',
-    selector: (row: any) => row.status,
-    sortable: true,
-  },
-];
+
 
 const data = [
   {
@@ -54,7 +24,7 @@ const data = [
 
 const SMSTransactions = () => {
   return (
-    <TransactionDataTable title="SMS Transactions" summaryTitle="List of SMS Transactions" data={data} columns={columns} />
+    <TransactionDataTable title="SMS Transactions" summaryTitle="List of SMS Transactions" data={data} columns={getSMSTransactionColumns()} />
   )
 }
 

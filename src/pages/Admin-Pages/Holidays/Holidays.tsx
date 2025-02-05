@@ -16,38 +16,10 @@ import {
   DialogActions
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getHolidaysColumns } from '../../../utils/DataTableColumnsProvider';
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
 
-const columns = [
-  {
-    name: 'Date',
-    selector: (row: any) => row.date,
-    sortable: true,
-  },
-  {
-    name: 'Description',
-    selector: (row: any) => row.description,
-    sortable: true,
-  },
-  {
-    name: 'Status',
-    selector: (row: any) => row.status,
-    cell: (row: any) => (
-      <span
-        style={{
-          backgroundColor: row.status === 'active' ? 'green' : 'transparent',
-          color: row.status === 'active' ? 'white' : 'inherit',
-          padding: '0.5rem',
-          borderRadius: '4px',
-        }}
-      >
-        {row.status.toUpperCase()}
-      </span>
-    ),
-    sortable: true,
-  },
-];
+
 
 const initialData = [
   {
@@ -120,7 +92,7 @@ const Holidays = () => {
                 />
               </div>
               <DataTable
-                columns={columns}
+                columns={getHolidaysColumns()}
                 data={data}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
