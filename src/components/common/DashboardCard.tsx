@@ -23,7 +23,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ amount, title, subTitle, 
         height: '100%',
         minHeight: { xs: '120px', sm: '160px' },
         width: '100%',
-        flexDirection: { xs: 'column', sm: 'row' },
+        flexDirection: { xs: 'row', sm: 'row' },
       }}
     >
       <Box

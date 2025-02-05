@@ -1,31 +1,10 @@
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getDailyPayoutColumns } from '../../../utils/DataTableColumnsProvider';
 
 const DailyPayout = () => {
-  const columns = [
-    {
-      name: 'Date',
-      selector: (row: any) => row.date,
-      sortable: true,
-    },
-    {
-      name: 'Level Earnings',
-      selector: (row: any) => row.levelEarnings,
-      sortable: true,
-    },
-    {
-      name: 'Direct Benefits',
-      selector: (row: any) => row.directBenefits,
-      sortable: true,
-    },
-    {
-      name: 'Gross Earnings',
-      selector: (row: any) => row.grossEarnings,
-      sortable: true,
-    },
-  ];
+  
 
   const data = [
     {
@@ -54,7 +33,7 @@ const DailyPayout = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
-              columns={columns}
+              columns={getDailyPayoutColumns()}
               data={data}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}

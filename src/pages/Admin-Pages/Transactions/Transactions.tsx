@@ -1,49 +1,18 @@
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, Typography, Button, Grid } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getAdminPageTransactionColumns } from '../../../utils/DataTableColumnsProvider';
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
 
 const Transactions = () => {
   return (
-    <TransactionDataTable title="Transactions" summaryTitle="List of Transactions" data={data} columns={columns} />
+    <TransactionDataTable title="Transactions" summaryTitle="List of Transactions" data={data} columns={getAdminPageTransactionColumns()} />
   );
 };
 
 export default Transactions;
 
-const columns = [
-  {
-    name: 'Date',
-    selector: (row: any) => row.date,
-    sortable: true,
-  },
-  {
-    name: 'Member',
-    selector: (row: any) => row.member,
-    sortable: true,
-  },
-  {
-    name: 'Description',
-    selector: (row: any) => row.description,
-    sortable: true,
-  },
-  {
-    name: 'Type',
-    selector: (row: any) => row.type,
-    sortable: true,
-  },
-  {
-    name: 'EW Credit',
-    selector: (row: any) => row.ewCredit,
-    sortable: true,
-  },
-  {
-    name: 'EW Debit',
-    selector: (row: any) => row.ewDebit,
-    sortable: true,
-  },
-];
+
 
 const data = [
   {

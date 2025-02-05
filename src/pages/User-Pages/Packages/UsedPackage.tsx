@@ -1,46 +1,10 @@
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getUsedPackageColumns } from '../../../utils/DataTableColumnsProvider';
 
 const UsedPackage = () => {
-  const columns = [
-    {
-      name: 'Date',
-      selector: (row: any) => row.date,
-      sortable: true,
-    },
-    {
-      name: 'Member Code',
-      selector: (row: any) => row.memberCode,
-      sortable: true,
-    },
-    {
-      name: 'Package Code',
-      selector: (row: any) => row.packageCode,
-      sortable: true,
-    },
-    {
-      name: 'Amount',
-      selector: (row: any) => row.amount,
-      sortable: true,
-    },
-    {
-      name: 'Used For',
-      selector: (row: any) => row.usedFor,
-      sortable: true,
-    },
-    {
-      name: 'Used Date',
-      selector: (row: any) => row.usedDate,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: (row: any) => row.status,
-      sortable: true,
-    },
-  ];
+  
 
   const data = [
     {
@@ -70,7 +34,7 @@ const UsedPackage = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
-              columns={columns}
+              columns={getUsedPackageColumns()}
               data={data}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}

@@ -22,7 +22,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
 import { Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getusedandUnUsedColumns } from '../../../utils/DataTableColumnsProvider';
 
 interface PackageTableProps {
   title: string;
@@ -150,23 +150,6 @@ export const PackageRequests = () => {
   );
 };
 
-  const usedandUnUsedColumns = [
-    {
-      name: 'Member Code',
-      selector: (row: any) => row.memberCode,
-      sortable: true,
-    },
-    {
-      name: 'Used Quantity',
-      selector: (row: any) => row.usedQuantity,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: (row: any) => row.status,
-      sortable: true,
-    },
-  ];
 
 export const UnusedPackages = () => {
   return (
@@ -175,7 +158,7 @@ export const UnusedPackages = () => {
         title="Unused Package" 
         summaryTitle="List of Unused Package" 
         data={unusedPackagesData}
-        columns={usedandUnUsedColumns}
+        columns={getusedandUnUsedColumns()}
       />
     </>
   );
@@ -188,7 +171,7 @@ export const UsedPackages = () => {
         title="Used Package" 
         summaryTitle="List of Used Package" 
         data={usedPackagesData}
-        columns={usedandUnUsedColumns}
+        columns={getusedandUnUsedColumns()}
       />
     </>
   );

@@ -1,48 +1,10 @@
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getTransactionColumns } from '../../../utils/DataTableColumnsProvider';
 
 const Transaction = () => {
-  const columns = [
-    {
-      name: 'Date',
-      selector: (row: any) => row.date,
-      sortable: true,
-    },
-    {
-      name: 'Description',
-      selector: (row: any) => row.description,
-      sortable: true,
-    },
-    {
-      name: 'Credits',
-      selector: (row: any) => `₹ ${row.credits}`,
-      sortable: true,
-    },
-    {
-      name: 'Debit',
-      selector: (row: any) => `₹ ${row.debit}`,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: (row: any) => row.status,
-      sortable: true,
-      cell: (row: any) => (
-        <div
-          style={{
-            backgroundColor: row.status === 'Active' ? '#00d1b2' : '#ff3860',
-            color: 'white',
-            padding: '5px 10px',
-            borderRadius: '4px',
-          }}
-        >
-          {row.status}
-        </div>
-      ),
-    },
-  ];
+  
 
   const data = [
     {
@@ -72,7 +34,7 @@ const Transaction = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
-              columns={columns}
+              columns={getTransactionColumns()}
               data={data}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}

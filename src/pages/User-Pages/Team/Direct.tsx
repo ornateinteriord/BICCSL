@@ -1,36 +1,10 @@
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getDirectColumns } from '../../../utils/DataTableColumnsProvider';
 
 const Direct = () => {
-  const columns = [
-    {
-      name: 'S No',
-      selector: (row: any) => row.sNo,
-      sortable: true,
-    },
-    {
-      name: 'Member',
-      selector: (row: any) => row.member,
-      sortable: true,
-    },
-    {
-      name: 'Mobile No',
-      selector: (row: any) => row.mobileNo,
-      sortable: true,
-    },
-    {
-      name: 'DOJ',
-      selector: (row: any) => row.doj,
-      sortable: true,
-    },
-    {
-      name: 'Sponsor',
-      selector: (row: any) => row.sponsor,
-      sortable: true,
-    },
-  ];
+  
 
   const data = [
     {
@@ -72,7 +46,7 @@ const Direct = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
-              columns={columns}
+              columns={getDirectColumns()}
               data={data}
               pagination
               paginationPerPage={25}

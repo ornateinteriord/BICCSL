@@ -1,7 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, Typography, Button, Grid } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getMembersColumns } from '../../../utils/DataTableColumnsProvider';
 import { Edit } from 'lucide-react';
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
 
@@ -64,14 +64,14 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false }: MemberTabl
                   />
               </div>
               <DataTable
-                columns={showEdit ? [...columns, {
+                columns={showEdit ? [...getMembersColumns(), {
                   name: 'Modify',
                   cell: () => (
                     <div style={{ color: '#000', padding: '5px', borderRadius: '4px', cursor: 'pointer' }}>
                       <Edit />
                     </div>
                   ),
-                }] : columns}
+                }] : getMembersColumns()}
                 data={data}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
@@ -130,43 +130,7 @@ const Members = () => {
 
 export default Members;
 
-const columns = [
-  {
-    name: 'SNo',
-    selector: (row: any) => row.sNo,
-    sortable: true,
-  },
-  {
-    name: 'Member',
-    selector: (row: any) => row.member,
-    sortable: true,
-  },
-  {
-    name: 'Approved On',
-    selector: (row: any) => row.approvedOn,
-    sortable: true,
-  },
-  {
-    name: 'Password',
-    selector: (row: any) => row.password,
-    sortable: true,
-  },
-  {
-    name: 'Sponsor',
-    selector: (row: any) => row.sponsor,
-    sortable: true,
-  },
-  {
-    name: 'Package',
-    selector: (row: any) => row.package,
-    sortable: true,
-  },
-  {
-    name: 'MobileNo',
-    selector: (row: any) => row.mobileNo,
-    sortable: true,
-  },
-];
+
 
 const data = [
   {

@@ -2,38 +2,11 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
 import { useMediaQuery } from '@mui/material';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getWalletColumns } from '../../../utils/DataTableColumnsProvider';
 
 const Wallet = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
-  const columns = [
-    {
-      name: 'Date',
-      selector: (row: any) => row.date,
-      sortable: true,
-    },
-    {
-      name: 'Transaction ID',
-      selector: (row: any) => row.transactionId,
-      sortable: true,
-    },
-    {
-      name: 'Type',
-      selector: (row: any) => row.type,
-      sortable: true,
-    },
-    {
-      name: 'Amount',
-      selector: (row: any) => row.amount,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: (row: any) => row.status,
-      sortable: true,
-    }
-  ];
 
   // Sample data - replace with actual data
   const transactions = [
@@ -150,7 +123,7 @@ const Wallet = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
-              columns={columns}
+              columns={getWalletColumns()}
               data={transactions}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}
