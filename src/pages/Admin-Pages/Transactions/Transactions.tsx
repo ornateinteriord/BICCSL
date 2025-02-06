@@ -23,7 +23,14 @@ const data = [
     ewCredit: '₹ 180.0',
     ewDebit: '₹ 0.0',
   },
-  // Add more sample data as needed
+  {
+    date: '18-Nov-2024',
+    member: 'BICCSL (SF000001)',
+    description: 'Direct Benefits',
+    type: 'payout',
+    ewCredit: '₹ 180.0',
+    ewDebit: '₹ 0.0',
+  },
 ];
 
 export const TransactionDataTable = ({title,summaryTitle, data, columns} : {title: string, summaryTitle: string, data: any, columns: any}) => {
