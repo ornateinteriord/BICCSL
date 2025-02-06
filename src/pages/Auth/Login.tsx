@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
+import API from '../../api/Api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,8 +33,16 @@ const Login = () => {
     e.preventDefault();
     // Add login logic here
     try {
-      // API call would go here
-      navigate('/dashboard');
+      const response = await API.post("/auth/login",formData);
+      if (response.success) {
+        if (response.role === "USER") {
+          navigate("/user/dashboard");
+        } else if (response.role === "ADMIN") {
+          navigate("/admin/dashboard");
+        }
+      } else {
+        console.error("Login failed:", response.message);
+      }
     } catch (error) {
       console.error('Login failed:', error);
     }

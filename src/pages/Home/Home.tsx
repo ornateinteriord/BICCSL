@@ -7,11 +7,7 @@ const Home = ({role , setRole }: { role: string, setRole: (role: string) => void
   const navigate = useNavigate()
 
   const handleNavigate = () => {
-    if (role === 'ADMIN') {
-      navigate('/admin/dashboard')
-    } else {
-      navigate('/user/dashboard')
-    }
+    navigate('/login');
   }
 
   return (
