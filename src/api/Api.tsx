@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5050",
+  baseURL: import.meta.env.VITE_MLM_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -17,6 +17,3 @@ export const post = async (path: string, data: any) => {
   }
 };
 
-const API = { post };
-
-export default API;

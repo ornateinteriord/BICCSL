@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
-import API from '../../api/Api';
+import { post } from '../../api/Api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,9 +31,8 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add login logic here
     try {
-      const response = await API.post("/auth/login",formData);
+      const response = await post("/auth/login",formData);
       if (response.success) {
         if (response.role === "USER") {
           navigate("/user/dashboard");
