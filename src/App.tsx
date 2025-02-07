@@ -31,6 +31,8 @@ import {
 import Tree from "./pages/User-Pages/Team/Tree";
 import Team from "./pages/User-Pages/Team/Team";
 import ProtectedRoute from "./routeProtecter/RouteProtecter";
+import useAuth from "./hooks/use-auth";
+import PublicRoute from "./routeProtecter/PublicRoutes";
 
 // public pages
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -153,7 +155,7 @@ const RoutesProvider = ({
   toggelSideBar: () => void;
 }) => {
   const shouldHide = ShouldHideSidebarComponent();
-  const [role, setRole] = useState(localStorage.getItem("userRole") || "");
+  const {userRole} = useAuth()
 
   return (
     <>
@@ -166,21 +168,11 @@ const RoutesProvider = ({
         }}
       >
         {!shouldHide && (
-          <>
-            {role === "ADMIN" ? (
-              <Sidebar
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-                role="ADMIN"
-              />
-            ) : role === "USER" ? (
-              <Sidebar
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-                role="USER"
-              />
-            ) : null}
-          </>
+          <Sidebar
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          role={userRole}
+        />
         )}
         <div
           style={{
@@ -194,13 +186,14 @@ const RoutesProvider = ({
           <Routes>
             {/* public routes */}
             <Route index element={<Home />} />
-            <Route path="/login" element={<Login setRole={setRole} />} />
-            <Route path="/register" element={<Register />} />
+            <Route element={<PublicRoute />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Route>
             {/* admin routes */}
 
             <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />{" "}
-              {/* @todo need to protect based on role */}
               {/* admin member routes */}
               <Route path="/admin/members" element={<Members />} />
               <Route
@@ -277,8 +270,7 @@ const RoutesProvider = ({
             {/* user routes */}
 
             <Route element={<ProtectedRoute allowedRoles={["USER"]} />}>
-              <Route path="/user/dashboard" element={<UserDashboard />} /> //
-              {/* @todo need to protect based on role */}
+              <Route path="/user/dashboard" element={<UserDashboard />} /> 
               {/* user account routes */}
               <Route path="/user/account/profile" element={<UserProfile />} />
               <Route path="/user/account/kyc" element={<UserKYC />} />
@@ -326,7 +318,9 @@ const RoutesProvider = ({
             <Route
               element={<ProtectedRoute allowedRoles={["USER", "ADMIN"]} />}
             >
+             <Route element={<ProtectedRoute allowedRoles={["USER", "ADMIN"]} />}>
               <Route path="*" element={<NotFound />} />
+            </Route>
             </Route>
           </Routes>
         </div>

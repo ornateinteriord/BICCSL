@@ -1,14 +1,6 @@
-import { Button } from "../../components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  const handleNavigate = () => {
-    navigate("/login");
-  };
-
   return (
     <Box
       sx={{
@@ -35,9 +27,6 @@ const Home = () => {
           mt: 2,
         }}
       >
-        <Button variant="default" onClick={handleNavigate}>
-          Go to Dashboard
-        </Button>
       </Box>
     </Box>
   );

@@ -14,7 +14,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import { post } from "../../api/Api";
 
-const Login = ({ setRole }: { setRole: (role: string) => void }) => {
+const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -35,7 +35,10 @@ const Login = ({ setRole }: { setRole: (role: string) => void }) => {
       const response = await post("/auth/login", formData);
       if (response.success) {
         localStorage.setItem("userRole", response.role);
-        setRole(response.role);
+        
+        // Manually trigger the "storage" event to notify `useAuth`
+        window.dispatchEvent(new Event("storage"));
+  
         if (response.role === "USER") {
           navigate("/user/dashboard");
         } else if (response.role === "ADMIN") {

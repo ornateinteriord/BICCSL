@@ -7,7 +7,7 @@ import { Avatar, Toolbar, Typography } from '@mui/material';
 import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 
-const Sidebar = ({isOpen, onClose , role}: {isOpen: boolean, onClose: () => void, role: string}) => {
+const Sidebar = ({isOpen, onClose , role}: {isOpen: boolean, onClose: () => void, role: string | null}) => {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [closingItem, setClosingItem] = useState<string | null>(null);

@@ -2,8 +2,9 @@ import { MenuIcon } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import "./navbar.scss";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ExitToAppIcon } from "../Icons";
+import useAuth from "../../hooks/use-auth";
 
 const Navbar = ({
   toggelSideBar,
@@ -13,13 +14,14 @@ const Navbar = ({
   shouldHide: boolean;
 }) => {
   const navigate = useNavigate();
-
-  const userRole = localStorage.getItem("userRole"); 
-  const isLoggedIn = Boolean(userRole);
+  const location = useLocation();
+  const { isLoggedIn , userRole } = useAuth();
   const handleLogout = () => {
-    localStorage.removeItem("userRole");
+    localStorage.clear();
     navigate("/");
+    window.dispatchEvent(new Event("storage"));
   };
+
   return (
     <>
       <AppBar
@@ -45,30 +47,41 @@ const Navbar = ({
           </Typography>
           <div style={{ marginLeft: "auto" }}>
             {isLoggedIn ? (
-              <Button
-                className="logout-btn"
-                variant="ghost"
-                style={{ marginRight: "8px", fontSize: "50px" }}
-                onClick={handleLogout}
-              >
-                <ExitToAppIcon />
-              </Button>
+              location.pathname === '/' ? (
+                <Button
+                  variant="ghost"
+                  style={{ marginRight: "8px" }}
+                  onClick={() => navigate(`/${userRole?.toLowerCase()}/dashboard`)}
+                >
+                  Go to Dashboard
+                </Button>
+              ) : (
+                <Button
+                  className="logout-btn"
+                  variant="ghost"
+                  style={{ marginRight: "8px", fontSize: "50px" }}
+                  onClick={handleLogout}
+                >
+                  <ExitToAppIcon />
+                </Button>
+              )
             ) : (
               <>
                 <Button
-                  variant="ghost"
+                  variant="secondary"
                   style={{ marginRight: "8px" }}
                   onClick={() => navigate("/login")}
                 >
                   Login
                 </Button>
-                <Button
+                {/* temporarily removed signup button */}
+                {/* <Button
                   variant="secondary"
                   style={{ marginRight: "8px" }}
                   onClick={() => navigate("/register")}
                 >
                   Signup
-                </Button>
+                </Button> */}
               </>
             )}
           </div>
