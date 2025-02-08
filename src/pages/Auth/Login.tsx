@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import { post } from "../../api/Api";
+import { LoadingComponent } from "../../App";
+import { useLoginMutation } from "../../api/Auth/Auth";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -29,69 +29,23 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const loginMutation = useLoginMutation()
+  const { mutate, isPending , isError , error} = loginMutation
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await post("/auth/login", formData);
-      if (response.success) {
-        localStorage.setItem("userRole", response.role);
-        
-        // Manually trigger the "storage" event to notify `useAuth`
-        window.dispatchEvent(new Event("storage"));
-  
-        if (response.role === "USER") {
-          navigate("/user/dashboard");
-        } else if (response.role === "ADMIN") {
-          navigate("/admin/dashboard");
-        }
-      } else {
-        console.error("Login failed:", response.message);
-      }
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
+    mutate(formData);
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <Card
-          sx={{
-            width: "100%",
-            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-            backgroundColor: "#fff",
-          }}
-        >
+    <Container component="main" maxWidth="xs" sx={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+        <Card sx={{ width: "100%", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)", backgroundColor: "#fff" }}>
           <CardContent sx={{ padding: "2rem" }}>
-            <Typography
-              component="h1"
-              variant="h5"
-              sx={{ color: "#04112f", mb: 3, textAlign: "center" }}
-            >
+            <Typography component="h1" variant="h5" sx={{ color: "#04112f", mb: 3, textAlign: "center" }}>
               Sign In
             </Typography>
-
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              sx={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-            >
+            <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
               <TextField
                 required
                 id="username"
@@ -108,16 +62,6 @@ const Login = () => {
                       <PersonIcon sx={{ color: "#04112f" }} />
                     </InputAdornment>
                   ),
-                }}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#04112f",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#04112f",
-                    },
-                  },
                 }}
               />
               <TextField
@@ -137,40 +81,15 @@ const Login = () => {
                     </InputAdornment>
                   ),
                 }}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#04112f",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#04112f",
-                    },
-                  },
-                }}
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{
-                  backgroundColor: "#04112f",
-                  "&:hover": {
-                    backgroundColor: "#0a1f4d",
-                  },
-                }}
-              >
+              {isError && <Typography color="error">Login failed: {error?.message}</Typography>}
+
+              <Button type="submit" fullWidth variant="contained" disabled={isPending} sx={{ backgroundColor: "#04112f", "&:hover": { backgroundColor: "#0a1f4d" } }}>
                 Sign In
               </Button>
               <Typography variant="body2" sx={{ textAlign: "center", mt: 1 }}>
                 Don't have an account?{" "}
-                <Link
-                  to="/register"
-                  style={{
-                    color: "#04112f",
-                    textDecoration: "none",
-                    fontWeight: "bold",
-                  }}
-                >
+                <Link to="/register" style={{ color: "#04112f", textDecoration: "none", fontWeight: "bold" }}>
                   Register
                 </Link>
               </Typography>
@@ -178,6 +97,7 @@ const Login = () => {
           </CardContent>
         </Card>
       </Box>
+      {isPending && <LoadingComponent />}
     </Container>
   );
 };

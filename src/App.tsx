@@ -1,4 +1,6 @@
 import { Suspense, lazy, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from 'react-toastify';
 import {
   BrowserRouter as Router,
   Route,
@@ -109,7 +111,7 @@ const UserDailyPayout = lazy(
 );
 const UserWallet = lazy(() => import("./pages/User-Pages/Wallet/Wallet"));
 
-const LoadingComponent = () => {
+export const LoadingComponent = () => {
   return (
     <Dialog open={true}>
       <DialogContent>
@@ -132,16 +134,21 @@ function App() {
     setIsOpen(!isOpen);
   };
 
+  const queryClient = new QueryClient();
+
   return (
-    <Router>
-      <Suspense fallback={<LoadingComponent />}>
-        <RoutesProvider
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          toggelSideBar={toggelSideBar}
-        />
-      </Suspense>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+    <ToastContainer />
+      <Router>
+        <Suspense fallback={<LoadingComponent />}>
+          <RoutesProvider
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            toggelSideBar={toggelSideBar}
+            />
+        </Suspense>
+      </Router>
+    </QueryClientProvider>
   );
 }
 
