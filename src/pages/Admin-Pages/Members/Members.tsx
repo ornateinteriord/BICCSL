@@ -3,6 +3,7 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getMembersColumns } from '../../../utils/DataTableColumnsProvider';
 import { Edit } from 'lucide-react';
+import './Members.scss'
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
 
 interface MemberTableProps {
@@ -24,11 +25,12 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false }: MemberTabl
 
   return (
     <>
-      <Grid display="flex" justifyContent="space-between" alignItems="center" sx={{ margin: '2rem', mt: 12 }}>
+      <Grid className="filter-container"  sx={{ margin: '2rem', mt: 12 }}>
+        
         <Typography variant="h4">
           {title}
         </Typography>
-        <Grid display="flex" gap={2}>
+        <Grid className="filter-actions" >
         <DateFilterComponent onSelect={handleFromDateSelect} />
         <DateFilterComponent onSelect={handleToDateSelect} />
         <Button
