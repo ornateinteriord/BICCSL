@@ -16,28 +16,32 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import BadgeIcon from '@mui/icons-material/Badge';
 import UserContext from '../../../context/user/userContext';
+import { useUpdateMember } from '../../../api/Memeber';
+import { LoadingComponent } from '../../../App';
 
 const KYC: React.FC = () => {
     const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({
     accountName: '',
-    accountNo: '',
-    ifscCode: '',
-    bankName: '',
-    panNo: '',
+    account_number: '',
+    ifsc_code: '',
+    bank_name: '',
+    Pan_no: '',
   });
 
   useEffect(()=>{
     if(user){
       setFormData({
         accountName: user?.Name ?? '',
-        accountNo: '',
-        ifscCode: '',
-        bankName: '',
-        panNo: user?.Pan_no ?? '',
+        account_number: user?.account_number ?? '',
+        ifsc_code: user?.ifsc_code ?? '',
+        bank_name: user?.bank_name ?? '',
+        Pan_no: user?.Pan_no ?? '',
       })
     }
   },[user])
+
+  const updateMember = useUpdateMember();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -48,8 +52,7 @@ const KYC: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    console.log('Form Data Submitted:', formData);
-    alert('Details Updated Successfully!');
+    updateMember.mutate(formData);
   };
 
   return (
@@ -108,8 +111,8 @@ const KYC: React.FC = () => {
               />
               <TextField
                 label="Account Number"
-                name="accountNo"
-                value={formData.accountNo}
+                name="account_number"
+                value={formData.account_number}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -134,8 +137,8 @@ const KYC: React.FC = () => {
               />
               <TextField
                 label="IFSC Code"
-                name="ifscCode"
-                value={formData.ifscCode}
+                name="ifsc_code"
+                value={formData.ifsc_code}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -160,8 +163,8 @@ const KYC: React.FC = () => {
               />
               <TextField
                 label="Bank Name"
-                name="bankName"
-                value={formData.bankName}
+                name="bank_name"
+                value={formData.bank_name}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -186,8 +189,8 @@ const KYC: React.FC = () => {
               />
               <TextField
                 label="PAN Number"
-                name="panNo"
-                value={formData.panNo}
+                name="Pan_no"
+                value={formData.Pan_no}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -213,6 +216,7 @@ const KYC: React.FC = () => {
               <Button
                 variant="contained"
                 onClick={handleSubmit}
+                disabled={updateMember.isPending}
                 sx={{
                   backgroundColor: '#04112f',
                   alignSelf: 'flex-end',
@@ -227,6 +231,7 @@ const KYC: React.FC = () => {
           </AccordionDetails>
         </Accordion>
       </CardContent>
+      {updateMember.isPending && <LoadingComponent />}
     </Card>
   );
 };

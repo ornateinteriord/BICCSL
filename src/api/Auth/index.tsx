@@ -12,8 +12,6 @@ export const useLoginMutation = () => {
     },
     onSuccess: (response) => {
       if (response.success) {
-        localStorage.clear();
-
         localStorage.setItem("userRole", response?.role);
         if(response?.role === "USER"){
           localStorage.setItem("userId", response?.user?.Member_id); 

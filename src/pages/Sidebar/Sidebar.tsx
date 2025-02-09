@@ -8,10 +8,12 @@ import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
 import { deepOrange } from '@mui/material/colors';
 import { useGetMemberDetails } from '../../api/Memeber';
+import { LoadingComponent } from '../../App';
+import { toast } from 'react-toastify';
 
 const Sidebar = ({isOpen, onClose , role }: {isOpen: boolean, onClose: () => void, role: string | null}) => {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>('Dashboard');
   const [closingItem, setClosingItem] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,9 +44,14 @@ const Sidebar = ({isOpen, onClose , role }: {isOpen: boolean, onClose: () => voi
   const menuItems = role === "ADMIN" ? AdminSideBarMenuItems : UserSideBarMenuItems;
   const userId = localStorage.getItem('userId')
   const memberMutatation = useGetMemberDetails(userId!)
-  const {data : fethedUser} = memberMutatation
-
+  const {data : fethedUser , isLoading , isError , error} = memberMutatation
   const name = fethedUser?.Name || fethedUser?.username
+
+  useEffect(()=>{
+    if(isError){
+     toast.error(error?.message || 'Failed to fetch user details')
+    }
+  },[isError , error])
   return (
     <motion.div 
       className={`sidebar ${isOpen ? 'open' : 'closed'}`}
@@ -65,7 +72,7 @@ const Sidebar = ({isOpen, onClose , role }: {isOpen: boolean, onClose: () => voi
           >
             <Avatar
               alt="User Avatar"
-              src={fethedUser?.profileImage || ''}
+              src={fethedUser?.profile_image || ''}
               sx={{ width: 50, height: 50, background: deepOrange[500] }}
             >
               {!fethedUser?.profileImage && name?.charAt(0).toUpperCase()}
@@ -146,6 +153,7 @@ const Sidebar = ({isOpen, onClose , role }: {isOpen: boolean, onClose: () => voi
             </motion.div>
           ))}
         </AnimatePresence>
+        {isLoading && <LoadingComponent />}
       </div>
     </motion.div>
   );
