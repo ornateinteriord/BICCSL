@@ -13,6 +13,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LockIcon from '@mui/icons-material/Lock';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import KeyIcon from '@mui/icons-material/Key';
+import { useUpdateMember } from '../../../api/Memeber';
+import { toast } from 'react-toastify';
+import { LoadingComponent } from '../../../App';
 
 const ChangePassword: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -29,13 +32,18 @@ const ChangePassword: React.FC = () => {
     }));
   };
 
+  const updateMember = useUpdateMember();
+
   const handleSubmit = () => {
-    if (formData.newPassword !== formData.confirmPassword) {
-      alert('New password and confirm password do not match!');
+    if (!formData.oldPassword || !formData.newPassword || !formData.confirmPassword) {
+      toast.error("All fields are required!");
       return;
     }
-    console.log('Form Data Submitted:', formData);
-    alert('Password Updated Successfully!');
+    if (formData.newPassword !== formData.confirmPassword) {
+      toast.error("New password and confirm password do not match!");
+      return;
+    }
+    updateMember.mutate({oldPassword: formData.oldPassword, newPassword: formData.newPassword});
   };
 
   return (
@@ -150,6 +158,7 @@ const ChangePassword: React.FC = () => {
               <Button
                 variant="contained"
                 onClick={handleSubmit}
+                disabled={!formData.oldPassword || !formData.newPassword || !formData.confirmPassword}
                 sx={{
                   backgroundColor: '#04112f',
                   alignSelf: 'flex-end',
@@ -164,6 +173,7 @@ const ChangePassword: React.FC = () => {
           </AccordionDetails>
         </Accordion>
       </CardContent>
+      {updateMember.isPending && <LoadingComponent />}
     </Card>
   );
 };

@@ -140,7 +140,10 @@ function App() {
   return (
     <UserProvider>
       <QueryClientProvider client={queryClient}>
-      <ToastContainer />
+      <ToastContainer           
+          toastClassName="bg-white shadow-lg rounded-lg p-4"
+          className="text-sm text-gray-800"
+          style={{ width: 'auto', minWidth: '25rem' }} />
         <Router>
           <Suspense fallback={<LoadingComponent />}>
             <RoutesProvider

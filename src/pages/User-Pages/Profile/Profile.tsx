@@ -20,30 +20,34 @@ import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import WcIcon from "@mui/icons-material/Wc";
 import UserContext from "../../../context/user/userContext";
+import { useUpdateMember } from "../../../api/Memeber";
+import { LoadingComponent } from "../../../App";
 
 const Profile: React.FC = () => {
   const { user } = useContext(UserContext);
   // Initialize state once user data is available
   const [formData, setFormData] = useState({
-    name: "",
+    Name: "",
     gender: "",
     email: "",
-    mobile: "",
-    profileImage: null as File | null,
+    mobileno: "",
+    profile_image: null as File | null,
   });
 
   // Update state when user data is fetched
   useEffect(() => {
     if (user) {
       setFormData({
-        name: user.Name ?? "",
+        Name: user.Name ?? "",
         gender: user.gender ?? "",
         email: user.email ?? "",
-        mobile: user.mobileno ?? "",
-        profileImage: null,
+        mobileno: user.mobileno ?? "",
+        profile_image: null,
       });
     }
   }, [user]);
+
+  const updateMember = useUpdateMember();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -71,8 +75,7 @@ const Profile: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    console.log("Form Data Submitted:", formData);
-    alert("Details Updated Successfully!");
+    updateMember.mutate(formData);
   };
 
   return (
@@ -98,8 +101,8 @@ const Profile: React.FC = () => {
             <form style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
               <TextField
                 label="Name"
-                name="name"
-                value={formData.name}
+                name="Name"
+                value={formData.Name}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -153,10 +156,10 @@ const Profile: React.FC = () => {
                 }}
               />
               <TextField
-                label="Mobile"
-                name="mobile"
+                label="Mobile No"
+                name="mobileno"
                 type="tel"
-                value={formData.mobile}
+                value={formData.mobileno}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -175,11 +178,12 @@ const Profile: React.FC = () => {
                   Choose File
                   <input type="file" hidden onChange={handleFileChange} />
                 </Button>
-                <span>{formData.profileImage ? formData.profileImage.name : "No file chosen"}</span>
+                <span>{formData.profile_image ? formData.profile_image.name : "No file chosen"}</span>
               </FormControl>
               <Button
                 variant="contained"
                 onClick={handleSubmit}
+                disabled={updateMember.isPending}
                 sx={{
                   backgroundColor: "#04112f",
                   alignSelf: "flex-end",
@@ -192,6 +196,7 @@ const Profile: React.FC = () => {
           </AccordionDetails>
         </Accordion>
       </CardContent>
+      {updateMember.isPending && <LoadingComponent />}
     </Card>
   );
 };

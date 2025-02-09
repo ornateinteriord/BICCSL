@@ -24,4 +24,12 @@ export const get = async (path: string) => {
     throw error;
   }
 };
+export const put = async (path: string , data : any) => {
+  try {
+    const response = await api.put(path , data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
