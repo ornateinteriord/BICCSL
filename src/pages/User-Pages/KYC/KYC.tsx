@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -15,8 +15,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import BadgeIcon from '@mui/icons-material/Badge';
-    
+import UserContext from '../../../context/user/userContext';
+
 const KYC: React.FC = () => {
+    const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({
     accountName: '',
     accountNo: '',
@@ -24,6 +26,18 @@ const KYC: React.FC = () => {
     bankName: '',
     panNo: '',
   });
+
+  useEffect(()=>{
+    if(user){
+      setFormData({
+        accountName: user?.Name ?? '',
+        accountNo: '',
+        ifscCode: '',
+        bankName: '',
+        panNo: user?.Pan_no ?? '',
+      })
+    }
+  },[user])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

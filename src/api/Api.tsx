@@ -16,4 +16,12 @@ export const post = async (path: string, data: any) => {
     throw error;
   }
 };
+export const get = async (path: string) => {
+  try {
+    const response = await api.get(path);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 

@@ -35,6 +35,7 @@ import Team from "./pages/User-Pages/Team/Team";
 import ProtectedRoute from "./routeProtecter/RouteProtecter";
 import useAuth from "./hooks/use-auth";
 import PublicRoute from "./routeProtecter/PublicRoutes";
+import UserProvider from "./context/user/userContextProvider";
 
 // public pages
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -137,18 +138,20 @@ function App() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-    <ToastContainer />
-      <Router>
-        <Suspense fallback={<LoadingComponent />}>
-          <RoutesProvider
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            toggelSideBar={toggelSideBar}
-            />
-        </Suspense>
-      </Router>
-    </QueryClientProvider>
+    <UserProvider>
+      <QueryClientProvider client={queryClient}>
+      <ToastContainer />
+        <Router>
+          <Suspense fallback={<LoadingComponent />}>
+            <RoutesProvider
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              toggelSideBar={toggelSideBar}
+              />
+          </Suspense>
+        </Router>
+      </QueryClientProvider>
+    </UserProvider>
   );
 }
 

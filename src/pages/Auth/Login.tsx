@@ -13,7 +13,7 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import { LoadingComponent } from "../../App";
-import { useLoginMutation } from "../../api/Auth/Auth";
+import { useLoginMutation } from "../../api/Auth";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ const Login = () => {
   };
 
   const loginMutation = useLoginMutation()
-  const { mutate, isPending , isError , error} = loginMutation
+  const { mutate, isPending} = loginMutation
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,8 +82,6 @@ const Login = () => {
                   ),
                 }}
               />
-              {isError && <Typography color="error">Login failed: {error?.message}</Typography>}
-
               <Button type="submit" fullWidth variant="contained" disabled={isPending} sx={{ backgroundColor: "#04112f", "&:hover": { backgroundColor: "#0a1f4d" } }}>
                 Sign In
               </Button>
