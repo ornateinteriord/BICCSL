@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -13,23 +13,41 @@ import {
   Card,
   CardContent,
   InputAdornment,
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import PersonIcon from '@mui/icons-material/Person';
-import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
-import WcIcon from '@mui/icons-material/Wc';
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
+import WcIcon from "@mui/icons-material/Wc";
+import UserContext from "../../../context/user/userContext";
 
 const Profile: React.FC = () => {
+  const { user } = useContext(UserContext);
+  // Initialize state once user data is available
   const [formData, setFormData] = useState({
-    name: '',
-    gender: 'Male',
-    email: '',
-    mobile: '',
+    name: "",
+    gender: "",
+    email: "",
+    mobile: "",
     profileImage: null as File | null,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // Update state when user data is fetched
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.Name ?? "",
+        gender: user.gender ?? "",
+        email: user.email ?? "",
+        mobile: user.mobileno ?? "",
+        profileImage: null,
+      });
+    }
+  }, [user]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -45,7 +63,7 @@ const Profile: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
+    const file = e.target.files?.[0] ?? null;
     setFormData((prevData) => ({
       ...prevData,
       profileImage: file,
@@ -53,38 +71,31 @@ const Profile: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    console.log('Form Data Submitted:', formData);
-    alert('Details Updated Successfully!');
+    console.log("Form Data Submitted:", formData);
+    alert("Details Updated Successfully!");
   };
 
   return (
-    <Card sx={{ margin: '2rem', mt: 10, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
+    <Card
+      sx={{
+        margin: "2rem",
+        mt: 10,
+        boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+      }}
+    >
       <CardContent>
-        <Accordion 
-          defaultExpanded
-          sx={{
-            boxShadow: 'none',
-            '&.MuiAccordion-root': {
-              backgroundColor: '#fff'
-            }
-          }}
-        >
+        <Accordion defaultExpanded sx={{ boxShadow: "none" }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="basic-details-content"
-            id="basic-details-header"
             sx={{
-              backgroundColor: '#04112f',
-              color: '#fff',
-              '& .MuiSvgIcon-root': {
-                color: '#fff'
-              }
+              backgroundColor: "#04112f",
+              color: "#fff",
             }}
           >
             Basic Details
           </AccordionSummary>
-          <AccordionDetails sx={{ padding: '2rem' }}>
-            <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <AccordionDetails sx={{ padding: "2rem" }}>
+            <form style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
               <TextField
                 label="Name"
                 name="name"
@@ -96,24 +107,14 @@ const Profile: React.FC = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <PersonIcon sx={{ color: '#04112f' }} />
+                      <PersonIcon sx={{ color: "#04112f" }} />
                     </InputAdornment>
                   ),
                 }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    '&:hover fieldset': {
-                      borderColor: '#04112f',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#04112f',
-                    }
-                  }
-                }}
               />
               <FormControl>
-                <FormLabel sx={{ color: '#04112f', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <WcIcon sx={{ color: '#04112f' }} />
+                <FormLabel sx={{ color: "#04112f" }}>
+                  <WcIcon sx={{ color: "#04112f" }} />
                   Gender
                 </FormLabel>
                 <RadioGroup
@@ -122,23 +123,15 @@ const Profile: React.FC = () => {
                   value={formData.gender}
                   onChange={handleRadioChange}
                 >
-                  <FormControlLabel 
-                    value="Male" 
-                    control={<Radio sx={{
-                      '&.Mui-checked': {
-                        color: '#04112f',
-                      }
-                    }}/>} 
-                    label="Male" 
+                  <FormControlLabel
+                    value="Male"
+                    control={<Radio sx={{ "&.Mui-checked": { color: "#04112f" } }} />}
+                    label="Male"
                   />
-                  <FormControlLabel 
-                    value="Female" 
-                    control={<Radio sx={{
-                      '&.Mui-checked': {
-                        color: '#04112f',
-                      }
-                    }}/>} 
-                    label="Female" 
+                  <FormControlLabel
+                    value="Female"
+                    control={<Radio sx={{ "&.Mui-checked": { color: "#04112f" } }} />}
+                    label="Female"
                   />
                 </RadioGroup>
               </FormControl>
@@ -154,19 +147,9 @@ const Profile: React.FC = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <EmailIcon sx={{ color: '#04112f' }} />
+                      <EmailIcon sx={{ color: "#04112f" }} />
                     </InputAdornment>
                   ),
-                }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    '&:hover fieldset': {
-                      borderColor: '#04112f',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#04112f',
-                    }
-                  }
                 }}
               />
               <TextField
@@ -181,58 +164,26 @@ const Profile: React.FC = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <PhoneIcon sx={{ color: '#04112f' }} />
+                      <PhoneIcon sx={{ color: "#04112f" }} />
                     </InputAdornment>
                   ),
                 }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    '&:hover fieldset': {
-                      borderColor: '#04112f',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#04112f',
-                    }
-                  }
-                }}
               />
               <FormControl>
-                <FormLabel sx={{ color: '#04112f', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  Profile Image
-                </FormLabel>
-                <Button 
-                  variant="outlined" 
-                  component="label"
-                  sx={{
-                    width: 'fit-content',
-                    color: '#04112f',
-                    borderColor: '#04112f',
-                    '&:hover': {
-                      borderColor: '#04112f',
-                      backgroundColor: 'rgba(4, 17, 47, 0.04)'
-                    }
-                  }}
-                >
+                <FormLabel sx={{ color: "#04112f" }}>Profile Image</FormLabel>
+                <Button variant="outlined" component="label">
                   Choose File
-                  <input
-                    type="file"
-                    hidden
-                    onChange={handleFileChange}
-                  />
+                  <input type="file" hidden onChange={handleFileChange} />
                 </Button>
-                <span style={{ marginTop: '0.5rem', color: '#666' }}>
-                  {formData.profileImage ? formData.profileImage.name : 'No file chosen'}
-                </span>
+                <span>{formData.profileImage ? formData.profileImage.name : "No file chosen"}</span>
               </FormControl>
               <Button
                 variant="contained"
                 onClick={handleSubmit}
                 sx={{
-                  backgroundColor: '#04112f',
-                  alignSelf: 'flex-end',
-                  '&:hover': {
-                    backgroundColor: '#0a1f4d'
-                  }
+                  backgroundColor: "#04112f",
+                  alignSelf: "flex-end",
+                  "&:hover": { backgroundColor: "#0a1f4d" },
                 }}
               >
                 Update

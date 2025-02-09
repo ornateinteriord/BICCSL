@@ -6,8 +6,10 @@ import { UserSideBarMenuItems, AdminSideBarMenuItems } from './SidebarUtils'
 import { Avatar, Toolbar, Typography } from '@mui/material';
 import { SideBarMenuItemType } from '../../store/store';
 import { ExpandMoreIcon, ExpandLessIcon } from '../Icons';
+import { deepOrange } from '@mui/material/colors';
+import { useGetMemberDetails } from '../../api/Memeber';
 
-const Sidebar = ({isOpen, onClose , role}: {isOpen: boolean, onClose: () => void, role: string | null}) => {
+const Sidebar = ({isOpen, onClose , role }: {isOpen: boolean, onClose: () => void, role: string | null}) => {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [closingItem, setClosingItem] = useState<string | null>(null);
@@ -38,7 +40,11 @@ const Sidebar = ({isOpen, onClose , role}: {isOpen: boolean, onClose: () => void
     }
   };
   const menuItems = role === "ADMIN" ? AdminSideBarMenuItems : UserSideBarMenuItems;
+  const userId = localStorage.getItem('userId')
+  const memberMutatation = useGetMemberDetails(userId!)
+  const {data : fethedUser} = memberMutatation
 
+  const name = fethedUser?.Name || fethedUser?.username
   return (
     <motion.div 
       className={`sidebar ${isOpen ? 'open' : 'closed'}`}
@@ -59,12 +65,14 @@ const Sidebar = ({isOpen, onClose , role}: {isOpen: boolean, onClose: () => void
           >
             <Avatar
               alt="User Avatar"
-              src={`https://api.multiavatar.com/${"Deepanshu"}.svg`}
-              sx={{ width: 50, height: 50 }}
-            />
+              src={fethedUser?.profileImage || ''}
+              sx={{ width: 50, height: 50, background: deepOrange[500] }}
+            >
+              {!fethedUser?.profileImage && name?.charAt(0).toUpperCase()}
+            </Avatar>
             <div className="welcome-text" style={{padding: '10px', color: '#fff'}}>
               <Typography>Welcome,</Typography>
-              <Typography style={{fontWeight: 'bold'}}>Dipanshu</Typography>
+              <Typography style={{fontWeight: 'bold'}}>{name ?? ''}</Typography>
             </div>
           </motion.div>
         )}

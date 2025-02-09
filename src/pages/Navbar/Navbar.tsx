@@ -1,9 +1,8 @@
-import { MenuIcon } from "lucide-react";
+import { LogOutIcon, MenuIcon } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import "./navbar.scss";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ExitToAppIcon } from "../Icons";
 import useAuth from "../../hooks/use-auth";
 
 const Navbar = ({
@@ -62,7 +61,7 @@ const Navbar = ({
                   style={{ marginRight: "8px", fontSize: "50px" }}
                   onClick={handleLogout}
                 >
-                  <ExitToAppIcon />
+                  <LogOutIcon />
                 </Button>
               )
             ) : (
