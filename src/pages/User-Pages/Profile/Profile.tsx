@@ -31,7 +31,8 @@ const Profile: React.FC = () => {
     gender: "",
     email: "",
     mobileno: "",
-    profile_image: null as File | null,
+    profile_image: null as string | null,
+    profile_image_name:"" , 
   });
 
   // Update state when user data is fetched
@@ -42,7 +43,8 @@ const Profile: React.FC = () => {
         gender: user.gender ?? "",
         email: user.email ?? "",
         mobileno: user.mobileno ?? "",
-        profile_image: null,
+        profile_image: user.profile_image,
+        profile_image_name: "", 
       });
     }
   }, [user]);
@@ -68,10 +70,18 @@ const Profile: React.FC = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
-    setFormData((prevData) => ({
-      ...prevData,
-      profileImage: file,
-    }));
+    if(file){
+      const reader = new FileReader();
+      reader.readAsDataURL(file)
+      reader.onload = ()=>{
+        setFormData((prevData) => ({
+          ...prevData,
+          profile_image: reader.result as string,
+           profile_image_name: file.name, 
+        }));
+      }
+    }
+   
   };
 
   const handleSubmit = () => {
@@ -178,7 +188,7 @@ const Profile: React.FC = () => {
                   Choose File
                   <input type="file" hidden onChange={handleFileChange} />
                 </Button>
-                <span>{formData.profile_image ? formData.profile_image.name : "No file chosen"}</span>
+                <span>{formData.profile_image ? formData.profile_image_name: "No file chosen"}</span>
               </FormControl>
               <Button
                 variant="contained"
