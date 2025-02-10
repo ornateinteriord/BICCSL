@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export const useLoginMutation = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: async (data: { username: string; password: string }) => {
@@ -13,14 +13,12 @@ export const useLoginMutation = () => {
     onSuccess: (response) => {
       if (response.success) {
         localStorage.setItem("userRole", response?.role);
-        if(response?.role === "USER"){
-          localStorage.setItem("userId", response?.user?.Member_id); 
-        }else {
-          localStorage.setItem("userId", response?.user?.username); 
-        }
+
+        localStorage.setItem("userId", response?.user?._id);
+
         localStorage.setItem("userData", JSON.stringify(response?.user));
 
-        window.dispatchEvent(new Event("storage"));  
+        window.dispatchEvent(new Event("storage"));
 
         toast.success(response.message);
 
