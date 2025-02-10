@@ -22,6 +22,7 @@ import WcIcon from "@mui/icons-material/Wc";
 import UserContext from "../../../context/user/userContext";
 import { useUpdateMember } from "../../../api/Memeber";
 import { LoadingComponent } from "../../../App";
+import axios from "axios";
 
 const Profile: React.FC = () => {
   const { user } = useContext(UserContext);
@@ -68,20 +69,24 @@ const Profile: React.FC = () => {
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
-    if(file){
-      const reader = new FileReader();
-      reader.readAsDataURL(file)
-      reader.onload = ()=>{
-        setFormData((prevData) => ({
-          ...prevData,
-          profile_image: reader.result as string,
-           profile_image_name: file.name, 
-        }));
-      }
-    }
-   
+    
+    if(!file) return;
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
+    
+
+    const uploadedImg = await axios.post(import.meta.env.VITE_CLOUDINARY_BASE_URL, data)
+
+    setFormData((prevData) => ({
+      ...prevData,
+      profile_image: uploadedImg.data.url,
+      profile_image_name: uploadedImg.data.display_name
+    }));
   };
 
   const handleSubmit = () => {
