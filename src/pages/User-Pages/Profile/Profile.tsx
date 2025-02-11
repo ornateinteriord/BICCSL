@@ -195,11 +195,7 @@ const Profile: React.FC = () => {
                 }}
               />
               
-              <Dialog open={loading} >
-                <DialogContent >
-                <CircularProgress />
-                </DialogContent>
-              </Dialog>
+             
               
               <FormControl>
                 <FormLabel sx={{ color: "#04112f" }}>Profile Image</FormLabel>
@@ -225,7 +221,7 @@ const Profile: React.FC = () => {
           </AccordionDetails>
         </Accordion>
       </CardContent>
-      {updateMember.isPending && <LoadingComponent />}
+      {(updateMember.isPending || loading)&& <LoadingComponent />}
     </Card>
   );
 };
