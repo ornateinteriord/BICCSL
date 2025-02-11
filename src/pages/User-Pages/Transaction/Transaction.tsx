@@ -1,36 +1,36 @@
 import DataTable from 'react-data-table-component';
-import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
+import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getTransactionColumns } from '../../../utils/DataTableColumnsProvider';
 import { useGetTransactionDetails } from '../../../api/Memeber';
-import { LoadingComponent } from '../../../App';
 import { useEffect } from 'react';
 
+interface Transaction {
+  transaction_date: string;
+  description: string;
+  ew_credit: number;
+  ew_debit: number;
+  status: string;
+}
 
 const Transaction = () => {
   const userId = localStorage.getItem('userId')
-  const { data: transactions, isLoading,isError, error } = useGetTransactionDetails(userId!)
-  
-  interface Transaction {
-    transaction_date: string;
-    description: string;
-    ew_credit: number;
-    ew_debit: number;
-    status: string;
-  }
-useEffect(()=>{
-    if(isError){
-     console.error(error?.message || 'Failed to fetch Transaction details')
+  const { data: transactions, isLoading, isError, error } = useGetTransactionDetails(userId!)
+
+  useEffect(() => {
+    if (isError) {
+      console.error(error?.message || 'Failed to fetch Transaction details')
     }
-  },[isError , error])
-  const data = transactions?.map((transaction: Transaction)=> ({
+  }, [isError, error])
+
+  const data = transactions?.map((transaction: Transaction) => ({
     date: transaction.transaction_date || "-",
     description: transaction.description || "-",
     credits: transaction.ew_credit || "-",
     debit: transaction.ew_debit || "-",
     status: transaction.status || "-",
   })) || [];
-  
+
 
   const noDataComponent = <div style={{ padding: '24px' }}>No data available in table</div>;
 
@@ -56,7 +56,9 @@ useEffect(()=>{
               customStyles={DASHBOARD_CUTSOM_STYLE}
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
-              highlightOnHover
+              highlightOnHover  
+              progressPending={isLoading}
+              progressComponent={<CircularProgress size={'4rem'} sx={{color:'#04112F'}}/>}
               noDataComponent={noDataComponent}
               subHeader
               subHeaderComponent={
@@ -72,9 +74,8 @@ useEffect(()=>{
           </AccordionDetails>
         </Accordion>
       </CardContent>
-      {isLoading && <LoadingComponent/>}
     </Card>
-    
+
   );
 };
 

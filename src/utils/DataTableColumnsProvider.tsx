@@ -217,7 +217,7 @@ export const getTransactionColumns = () => [
     cell: (row: any) => (
       <div
         style={{
-          backgroundColor: row.status === "Active" ? "#00d1b2" : "#ff3860",
+          backgroundColor: row.status?.toLowerCase() === "active" ? "#00d1b2" : "#ff3860",
           color: "white",
           padding: "5px 10px",
           borderRadius: "4px",
