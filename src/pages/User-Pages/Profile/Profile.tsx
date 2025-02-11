@@ -13,6 +13,9 @@ import {
   Card,
   CardContent,
   InputAdornment,
+  Dialog,
+  DialogContent,
+  CircularProgress,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonIcon from "@mui/icons-material/Person";
@@ -35,6 +38,7 @@ const Profile: React.FC = () => {
     profile_image: null as string | null,
     profile_image_name:"" , 
   });
+  const [loading, setLoading] = useState(false);
 
   // Update state when user data is fetched
   useEffect(() => {
@@ -71,22 +75,25 @@ const Profile: React.FC = () => {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
-    
     if(!file) return;
-
+    setLoading(true)
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
     data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
-    
-
-    const uploadedImg = await axios.post(import.meta.env.VITE_CLOUDINARY_BASE_URL, data)
-
+    try {
+      const uploadedImg = await axios.post(import.meta.env.VITE_CLOUDINARY_BASE_URL, data)
     setFormData((prevData) => ({
       ...prevData,
-      profile_image: uploadedImg.data.url,
+      profile_image: uploadedImg.data.secure_url,
       profile_image_name: uploadedImg.data.display_name
     }));
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }finally{
+      setLoading(false)
+    }
+    
   };
 
   const handleSubmit = () => {
@@ -187,9 +194,16 @@ const Profile: React.FC = () => {
                   ),
                 }}
               />
+              
+              <Dialog open={loading} >
+                <DialogContent >
+                <CircularProgress />
+                </DialogContent>
+              </Dialog>
+              
               <FormControl>
                 <FormLabel sx={{ color: "#04112f" }}>Profile Image</FormLabel>
-                <Button variant="outlined" component="label">
+                <Button variant="outlined" component="label" disabled={loading}>
                   Choose File
                   <input type="file" hidden onChange={handleFileChange} />
                 </Button>
