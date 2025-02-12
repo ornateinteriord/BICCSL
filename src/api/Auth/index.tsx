@@ -2,7 +2,6 @@ import { useMutation } from "@tanstack/react-query";
 import { post } from "../Api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import TokenService from "../token/tokenService";
 
 export const useLoginMutation = () => {
   const navigate = useNavigate();
@@ -12,26 +11,22 @@ export const useLoginMutation = () => {
       return post("/auth/login", data);
     },
     onSuccess: (response) => {
-      if (response.success && response.token) {
-       TokenService.setToken(response.token)
+      if (response.success) {
+        localStorage.setItem("userRole", response?.role);
+
+        localStorage.setItem("userId", response?.user?._id);
+
+        localStorage.setItem("userData", JSON.stringify(response?.user));
 
         window.dispatchEvent(new Event("storage"));
 
         toast.success(response.message);
 
-        setTimeout(() => {
-          const role = TokenService.getRole();
-          
-
-          if (role === "USER") {
-            navigate("/user/dashboard");
-          } else if (role === "ADMIN") {
-            navigate("/admin/dashboard");
-          } else {
-            console.error("Invalid role:", role);
-            toast.error("Invalid user role");
-          }
-        }, 100);
+        if (response.role === "USER") {
+          navigate("/user/dashboard");
+        } else {
+          navigate("/admin/dashboard");
+        }
       } else {
         console.error("Login failed:", response.message);
         toast.error(response.message);

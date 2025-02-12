@@ -4,7 +4,6 @@ import "./navbar.scss";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/use-auth";
-import TokenService from "../../api/token/tokenService";
 
 const Navbar = ({
   toggelSideBar,
@@ -15,9 +14,9 @@ const Navbar = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLoggedIn, userRole } = useAuth();
+  const { isLoggedIn , userRole } = useAuth();
   const handleLogout = () => {
-    TokenService.removeToken();
+    localStorage.clear();
     navigate("/");
     window.dispatchEvent(new Event("storage"));
   };
@@ -47,13 +46,11 @@ const Navbar = ({
           </Typography>
           <div style={{ marginLeft: "auto" }}>
             {isLoggedIn ? (
-              location.pathname === "/" ? (
+              location.pathname === '/' ? (
                 <Button
                   variant="ghost"
                   style={{ marginRight: "8px" }}
-                  onClick={() =>
-                    navigate(`/${userRole?.toLowerCase()}/dashboard`)
-                  }
+                  onClick={() => navigate(`/${userRole?.toLowerCase()}/dashboard`)}
                 >
                   Go to Dashboard
                 </Button>
