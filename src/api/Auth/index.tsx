@@ -13,7 +13,7 @@ export const useLoginMutation = () => {
     },
     onSuccess: (response) => {
       if (response.success && response.token) {
-       TokenService.setToken(response.token)
+        TokenService.setToken(response.token);
 
         window.dispatchEvent(new Event("storage"));
 
@@ -21,7 +21,6 @@ export const useLoginMutation = () => {
 
         setTimeout(() => {
           const role = TokenService.getRole();
-          
 
           if (role === "USER") {
             navigate("/user/dashboard");
