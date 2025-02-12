@@ -3,6 +3,7 @@ import { useContext } from "react";
 import UserContext from "../../context/user/userContext";
 import { toast } from "react-toastify";
 import { get, put } from "../Api";
+import TokenService from "../token/tokenService";
 
 export const useGetMemberDetails = (userId: string) => {
   const { getUser, setUser } = useContext(UserContext);
@@ -22,7 +23,7 @@ export const useGetMemberDetails = (userId: string) => {
 };
 
 export const useUpdateMember = () => {
-  const userId = localStorage.getItem("userId");
+  const userId = TokenService.getUserId();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: any) => {
