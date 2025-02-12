@@ -16,6 +16,7 @@ import {
 import { useGetTransactionDetails } from "../../../api/Memeber";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import TokenService from "../../../api/token/tokenService";
 
 interface Transaction {
   transaction_date: string;
@@ -25,7 +26,7 @@ interface Transaction {
   status: string;
 }
 const Transaction = () => {
-  const userId = localStorage.getItem("userId");
+  const userId = TokenService.getUserId();
   const {
     data: transactions,
     isLoading,
