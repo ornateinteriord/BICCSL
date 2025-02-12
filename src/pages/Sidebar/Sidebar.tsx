@@ -10,7 +10,6 @@ import { deepOrange } from '@mui/material/colors';
 import { useGetMemberDetails } from '../../api/Memeber';
 import { LoadingComponent } from '../../App';
 import { toast } from 'react-toastify';
-import TokenService from '../../api/token/tokenService';
 
 const Sidebar = ({isOpen, onClose , role }: {isOpen: boolean, onClose: () => void, role: string | null}) => {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
@@ -43,7 +42,7 @@ const Sidebar = ({isOpen, onClose , role }: {isOpen: boolean, onClose: () => voi
     }
   };
   const menuItems = role === "ADMIN" ? AdminSideBarMenuItems : UserSideBarMenuItems;
-  const userId = TokenService.getUserId()
+  const userId = localStorage.getItem('userId')
   const memberMutatation = useGetMemberDetails(userId!)
   const {data : fethedUser , isLoading , isError , error} = memberMutatation
   const name = fethedUser?.Name || fethedUser?.username
