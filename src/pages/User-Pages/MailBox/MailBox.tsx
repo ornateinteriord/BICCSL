@@ -22,8 +22,7 @@ import {
 import DataTable from 'react-data-table-component';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getMailBoxColumns } from '../../../utils/DataTableColumnsProvider';
 
 const MailBox = () => {
   const [formData, setFormData] = useState({
@@ -54,78 +53,6 @@ const MailBox = () => {
     setOpenDialog(false);
     setSelectedTicket(null);
   };
-
-  const columns = [
-    {
-      name: 'Ticket Date',
-      selector: (row: any) => row.ticketDate,
-      sortable: true,
-    },
-    {
-      name: 'Ticket No',
-      selector: (row: any) => row.ticketNo,
-      sortable: true,
-      cell: (row: any) => (
-        <div
-          style={{
-            backgroundColor: '#5bc0de',
-            color: 'white',
-            padding: '5px 10px',
-            borderRadius: '4px',
-            fontSize: '14px',
-          }}
-        >
-          {row.ticketNo}
-        </div>
-      ),
-    },
-    {
-      name: 'Type of ticket',
-      selector: (row: any) => row.typeOfTicket,
-      sortable: true,
-    },
-    {
-      name: 'Subject',
-      selector: (row: any) => row.subject,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: (row: any) => row.status,
-      sortable: true,
-      cell: (row: any) => (
-        <div
-          style={{
-            backgroundColor: row.status === 'Pending' ? '#ffd700' : '#00d1b2',
-            color: 'white',
-            padding: '5px 10px',
-            borderRadius: '4px',
-            fontSize: '14px',
-          }}
-        >
-          {row.status}
-        </div>
-      ),
-    },
-    {
-      name: 'Actions',
-      cell: (row: any) => (
-        <IconButton
-          onClick={() => handleOpenDialog(row)}
-          size="medium"
-          sx={{
-            color: '#04112f',
-            '&:hover': {
-              backgroundColor: 'rgba(4, 17, 47, 0.04)'
-            }
-          }}
-        >
-          <VisibilityIcon color='primary' fontSize="medium"/>
-        </IconButton>
-      ),
-      sortable: false,
-    },
-  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -294,7 +221,7 @@ const MailBox = () => {
             </AccordionSummary>
             <AccordionDetails>
               <DataTable
-                columns={columns}
+                columns={getMailBoxColumns(handleOpenDialog)}
                 data={tickets}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}

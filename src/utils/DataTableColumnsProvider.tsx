@@ -1,3 +1,7 @@
+import { IconButton } from "@mui/material";
+import  VisibilityIcon  from '@mui/icons-material/Visibility';
+import { Edit } from "lucide-react";
+
 export const getUserDashboardTableColumns = () => [
   {
     selector: (row: any) => row.title,
@@ -274,7 +278,7 @@ export const getAdminDashboardTableColumns = () => [
   },
 ];
 
-export const getMembersColumns = () => [
+export const getMembersColumns = (showEdit : boolean , setIsEdit : any) => [
   {
     name: "SNo",
     selector: (row: any) => row.sNo,
@@ -328,6 +332,16 @@ export const getMembersColumns = () => [
       </div>
     ),
   },
+  {
+    name: 'Modify',
+    omit : !showEdit,
+    cell: () => (
+      <IconButton onClick={()=>setIsEdit(true)} style={{ color: '#000', padding: '5px', borderRadius: '4px', cursor: 'pointer' }}>
+        <Edit />
+      </IconButton>
+    ),
+    
+  }
 ];
 
 export const getusedandUnUsedColumns = () => [
@@ -345,6 +359,78 @@ export const getusedandUnUsedColumns = () => [
     name: "Status",
     selector: (row: any) => row.status,
     sortable: true,
+  },
+];
+
+export const getMailBoxColumns = (handleOpenDialog : any) => [
+  {
+    name: 'Ticket Date',
+    selector: (row: any) => row.ticketDate,
+    sortable: true,
+  },
+  {
+    name: 'Ticket No',
+    selector: (row: any) => row.ticketNo,
+    sortable: true,
+    cell: (row: any) => (
+      <div
+        style={{
+          backgroundColor: '#5bc0de',
+          color: 'white',
+          padding: '5px 10px',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        {row.ticketNo}
+      </div>
+    ),
+  },
+  {
+    name: 'Type of ticket',
+    selector: (row: any) => row.typeOfTicket,
+    sortable: true,
+  },
+  {
+    name: 'Subject',
+    selector: (row: any) => row.subject,
+    sortable: true,
+  },
+  {
+    name: 'Status',
+    selector: (row: any) => row.status,
+    sortable: true,
+    cell: (row: any) => (
+      <div
+        style={{
+          backgroundColor: row.status === 'Pending' ? '#ffd700' : '#00d1b2',
+          color: 'white',
+          padding: '5px 10px',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        {row.status}
+      </div>
+    ),
+  },
+  {
+    name: 'Actions',
+    cell: (row: any) => (
+      <IconButton
+        onClick={() => handleOpenDialog(row)}
+        size="medium"
+        sx={{
+          color: '#04112f',
+          '&:hover': {
+            backgroundColor: 'rgba(4, 17, 47, 0.04)'
+          }
+        }}
+      >
+        <VisibilityIcon color='primary' fontSize="medium"/>
+      </IconButton>
+    ),
+    sortable: false,
   },
 ];
 
