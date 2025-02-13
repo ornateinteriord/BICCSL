@@ -11,6 +11,7 @@ import {
   Grid,
   CircularProgress,
 } from "@mui/material";
+import './Transactions.scss'
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   DASHBOARD_CUTSOM_STYLE,
@@ -97,14 +98,15 @@ export const TransactionDataTable = ({
         display="flex"
         justifyContent="space-between"
         alignItems="center"
+        className="transaction-container"
         sx={{ margin: "2rem", mt: 12 }}
       >
         <Typography variant="h4">{title}</Typography>
-        <Grid display="flex" gap={2}>
+        <Grid  className="transaction-content">
           <TextField
             size="small"
             placeholder="Member Id"
-            sx={{ minWidth: 200 }}
+            className="member-id"
           />
           <DateFilterComponent onSelect={handleFromDateSelect} />
           <DateFilterComponent onSelect={handleToDateSelect} />
