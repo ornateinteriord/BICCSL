@@ -97,9 +97,9 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = 
                     label="Status"
                   >
                     <MenuItem value="all">All</MenuItem>
-                    <MenuItem value="active">Active</MenuItem>
-                    <MenuItem value="inactive">Inactive</MenuItem>
-                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="active">Active Members</MenuItem>
+                    <MenuItem value="inactive">Inactive Members</MenuItem>
+                    <MenuItem value="pending">Pending Members</MenuItem>
                   </Select>
                 </FormControl>
 
@@ -146,6 +146,7 @@ interface MemberProp {
   Sponsor_name: number | string;
   spackage: number | string;
   mobileno: number | string;
+  status : string
 }
 
 export const ActiveMembers = () => {
@@ -184,7 +185,7 @@ export const PendingMembers = () => {
 
 const Members = () => {
   const { data: members, isLoading, isError, error } = useGetAllMembersDetails();
-  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   useEffect(() => {
     if (isError) {
@@ -203,7 +204,8 @@ const Members = () => {
         password: member.password || "-",
         sponsor: member.Sponsor_name ?? "-",
         package: member.spackage ?? "-",
-        mobileNo: member.mobileno ?? "-"
+        mobileNo: member.mobileno ?? "-",
+        status: member.status || "-"
       }))
     : [];
 

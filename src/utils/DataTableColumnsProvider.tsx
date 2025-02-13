@@ -310,6 +310,24 @@ export const getMembersColumns = () => [
     selector: (row: any) => row.mobileNo,
     sortable: true,
   },
+  {
+    name: "Status",
+    selector: (row: any) => row.status,
+    sortable: true,
+    cell: (row: any) => (
+      <div
+        style={{
+          backgroundColor: row.status === 'active' ? 'green' : row.status === 'pending' ? '#ffd700' : 'red',
+          color: 'white',
+          padding: '5px 10px',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        {row.status}
+      </div>
+    ),
+  },
 ];
 
 export const getusedandUnUsedColumns = () => [
