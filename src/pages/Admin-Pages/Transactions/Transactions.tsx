@@ -70,10 +70,6 @@ const Transactions = () => {
 export default Transactions;
 
 
-
-
-
-
 export const TransactionDataTable = ({
   title,
   summaryTitle,
@@ -85,7 +81,7 @@ export const TransactionDataTable = ({
   summaryTitle: string;
   data: any;
   columns: any;
-  isLoading: boolean;
+  isLoading?: boolean;
 }) => {
   const handleFromDateSelect = (date: any) => {
     console.log(date);
