@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, Typography, Button, Grid } from '@mui/material';
+import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, Typography, Button, Grid, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getMembersColumns } from '../../../utils/DataTableColumnsProvider';
 import { Edit } from 'lucide-react';
@@ -14,9 +14,10 @@ interface MemberTableProps {
   summaryTitle: string;
   data: any[];
   showEdit?: boolean;
+  isLoading?:boolean;
 }
 
-const MemberTable = ({ title, summaryTitle, data, showEdit = false }: MemberTableProps) => {
+const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading =false }: MemberTableProps) => {
 
   const handleFromDateSelect = (date: any) => {
     console.log(date);
@@ -81,6 +82,10 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false }: MemberTabl
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
+               progressPending={isLoading}
+               progressComponent ={
+                <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+               }
                 paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover
               />
@@ -108,6 +113,7 @@ export const ActiveMembers = () => {
       title="Active Members"
       summaryTitle="List of Active Members"
       data={data}
+     
     />
   )
 }
@@ -133,7 +139,7 @@ export const PendingMembers = () => {
 };
 
 const Members = () => {
-  const {data:members,isError,error} = useGetAllMembersDetails()
+  const {data:members,isLoading,isError,error} = useGetAllMembersDetails()
 
   useEffect(() => {
       if (isError) {
@@ -161,6 +167,7 @@ const Members = () => {
       summaryTitle="List of Members"
       data={memberdata}
       showEdit={true}
+      isLoading={isLoading}
     />
   );
 };
