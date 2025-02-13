@@ -5,6 +5,9 @@ import { DASHBOARD_CUTSOM_STYLE, getMembersColumns } from '../../../utils/DataTa
 import { Edit } from 'lucide-react';
 import './Members.scss'
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useGetAllMembersDetails } from '../../../api/Admin';
 
 interface MemberTableProps {
   title: string;
@@ -89,7 +92,17 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false }: MemberTabl
   );
 };
 
+
+interface Member {
+  Member_id: string;
+  Date_of_joining: string;
+  password: string;
+  Sponsor_name: number | string; 
+  spackage: number | string;
+  mobileno: number | string;
+}
 export const ActiveMembers = () => {
+  
   return (
     <MemberTable
       title="Active Members"
@@ -120,11 +133,33 @@ export const PendingMembers = () => {
 };
 
 const Members = () => {
+  const {data:members,isError,error} = useGetAllMembersDetails()
+
+  useEffect(() => {
+      if (isError) {
+        const err = error as any;
+        toast.error(
+          err?.response.data.message || "Failed to fetch Transaction details"
+        );
+      }
+    }, [isError, error]);
+
+    const memberdata = Array.isArray(members)
+    ? members.map((member: Member, index) => ({
+        sNo: index + 1,
+        member: member.Member_id || "-",
+        approvedOn: member.Date_of_joining || "-",
+        password: member.password || "-",
+        sponsor: member.Sponsor_name ?? "-", 
+        package: member.spackage ?? "-",
+        mobileNo: member.mobileno ?? "-",
+      }))
+    : [];
   return (
     <MemberTable
       title="Members"
       summaryTitle="List of Members"
-      data={data}
+      data={memberdata}
       showEdit={true}
     />
   );
