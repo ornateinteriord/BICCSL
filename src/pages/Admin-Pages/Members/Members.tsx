@@ -15,6 +15,7 @@ interface MemberTableProps {
   data: any[];
   showEdit?: boolean;
   isLoading?:boolean;
+ 
 }
 
 const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading =false }: MemberTableProps) => {
@@ -105,40 +106,11 @@ interface Member {
   Sponsor_name: number | string; 
   spackage: number | string;
   mobileno: number | string;
-}
-export const ActiveMembers = () => {
-  
-  return (
-    <MemberTable
-      title="Active Members"
-      summaryTitle="List of Active Members"
-      data={data}
-     
-    />
-  )
+  status:"All" | "active" | "Inactive" | "pending";
 }
 
-export const InActiveMembers = () => {
-  return (
-    <MemberTable
-      title="Inactive Members"
-      summaryTitle="List of Inactive Members"
-      data={data}
-    />
-  )
-}
 
-export const PendingMembers = () => {
-  return (
-    <MemberTable
-      title="Pending Members"
-      summaryTitle="List of Pending Members"
-      data={data}
-    />
-  );
-};
-
-const Members = () => {
+const useMembers = (status:"All"| "active" | "Inactive" | "pending") => {
   const {data:members,isLoading,isError,error} = useGetAllMembersDetails()
 
   useEffect(() => {
@@ -151,48 +123,74 @@ const Members = () => {
     }, [isError, error]);
 
     const memberdata = Array.isArray(members)
-    ? members.map((member: Member, index) => ({
-        sNo: index + 1,
-        member: member.Member_id || "-",
-        approvedOn: member.Date_of_joining || "-",
-        password: member.password || "-",
-        sponsor: member.Sponsor_name ?? "-", 
-        package: member.spackage ?? "-",
-        mobileNo: member.mobileno ?? "-",
+    ? members .filter((member: Member) => (status === "All" ? true: member.status === status )).map((member: Member, index) => ({
+      sNo: index + 1,
+      member: member.Member_id || "-",
+      approvedOn: member.Date_of_joining || "-",
+      password: member.password || "-",
+      sponsor: member.Sponsor_name ?? "-",
+      package: member.spackage ?? "-",
+      mobileNo: member.mobileno ?? "-",
+      status: member.status || "-"
       }))
     : [];
+  return  { memberdata, isLoading } 
+   
+};
+
+
+export const Members = () => {
+  const { memberdata, isLoading } = useMembers("All"); 
   return (
     <MemberTable
       title="Members"
-      summaryTitle="List of Members"
+      summaryTitle="List of All Members"
+      showEdit
       data={memberdata}
-      showEdit={true}
       isLoading={isLoading}
     />
   );
 };
 
+export const ActiveMembers = () => {
+  const {memberdata,isLoading} = useMembers("active")
+  return (
+    <MemberTable
+      title="Active Members"
+      summaryTitle="List of Active Members"
+      data={memberdata}
+      isLoading={isLoading}
+     
+    />
+  )
+}
+
+export const InActiveMembers = () => {
+  const {memberdata,isLoading} = useMembers("Inactive")
+  return (
+    <MemberTable
+      title="Inactive Members"
+      summaryTitle="List of Inactive Members"
+      data={memberdata}
+      isLoading={isLoading}
+    />
+  )
+}
+
+export const PendingMembers = () => {
+  const {memberdata,isLoading} = useMembers("pending")
+  return (
+    <MemberTable
+      title="Pending Members"
+      summaryTitle="List of Pending Members"
+      data={memberdata}
+      isLoading={isLoading}
+    />
+  );
+};
+
+
+
+
 export default Members;
 
-
-
-const data = [
-  {
-    sNo: 1,
-    member: 'BICCSL (SF000001)',
-    approvedOn: '06-Nov-2023',
-    password: '123456',
-    sponsor: '()',
-    package: 'STARTER',
-    mobileNo: '910000000',
-  },
-  {
-    sNo: 2,
-    member: 'BICCSL (SF000002)',
-    approvedOn: '07-Nov-2023',
-    password: '123456',
-    sponsor: 'BICCSL (SF000001)',
-    package: 'STARTER',
-    mobileNo: '910000001',
-  },
-];
