@@ -2,12 +2,12 @@ import DataTable from 'react-data-table-component';
 import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, Typography, Button, Grid, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getMembersColumns } from '../../../utils/DataTableColumnsProvider';
-import { Edit } from 'lucide-react';
 import './Members.scss'
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useGetAllMembersDetails } from '../../../api/Admin';
+import MembersUpdateForm from '../UpdateForms/MembersForm';
 
 interface MemberTableProps {
   title: string;
@@ -18,7 +18,8 @@ interface MemberTableProps {
  
 }
 
-const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading =false }: MemberTableProps) => {
+const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = false }: MemberTableProps) => {
+  const [isEdit , setIsEdit] = useState(false);
 
   const handleFromDateSelect = (date: any) => {
     console.log(date);
@@ -29,6 +30,11 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading =f
   }
 
   return (
+    isEdit ? (
+    <>
+    <MembersUpdateForm />
+    </>
+    ) : (
     <>
       <Grid className="filter-container"  sx={{ margin: '2rem', mt: 12 }}>
         
@@ -71,14 +77,7 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading =f
                   />
               </div>
               <DataTable
-                columns={showEdit ? [...getMembersColumns(), {
-                  name: 'Modify',
-                  cell: () => (
-                    <div style={{ color: '#000', padding: '5px', borderRadius: '4px', cursor: 'pointer' }}>
-                      <Edit />
-                    </div>
-                  ),
-                }] : getMembersColumns()}
+                columns={getMembersColumns(showEdit , setIsEdit)}
                 data={data}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
@@ -95,6 +94,7 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading =f
         </CardContent>
       </Card>
     </>
+    )
   );
 };
 
@@ -106,11 +106,12 @@ interface Member {
   Sponsor_name: number | string; 
   spackage: number | string;
   mobileno: number | string;
-  status:"All" | "active" | "Inactive" | "pending";
+  status: string;
 }
 
+type status = "All" | "active" | "Inactive" | "pending";
 
-const useMembers = (status:"All"| "active" | "Inactive" | "pending") => {
+const useMembers = (status: status) => {
   const {data:members,isLoading,isError,error} = useGetAllMembersDetails()
 
   useEffect(() => {
@@ -125,13 +126,13 @@ const useMembers = (status:"All"| "active" | "Inactive" | "pending") => {
     const memberdata = Array.isArray(members)
     ? members .filter((member: Member) => (status === "All" ? true: member.status === status )).map((member: Member, index) => ({
       sNo: index + 1,
-      member: member.Member_id || "-",
-      approvedOn: member.Date_of_joining || "-",
-      password: member.password || "-",
+      member: member.Member_id ?? "-",
+      approvedOn: member.Date_of_joining ?? "-",
+      password: member.password ?? "-",
       sponsor: member.Sponsor_name ?? "-",
       package: member.spackage ?? "-",
       mobileNo: member.mobileno ?? "-",
-      status: member.status || "-"
+      status: member.status ?? "-"
       }))
     : [];
   return  { memberdata, isLoading } 
@@ -160,7 +161,6 @@ export const ActiveMembers = () => {
       summaryTitle="List of Active Members"
       data={memberdata}
       isLoading={isLoading}
-     
     />
   )
 }

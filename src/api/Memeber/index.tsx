@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import UserContext from "../../context/user/userContext";
 import { toast } from "react-toastify";
-import { get, put } from "../Api";
+import { get, post, put } from "../Api";
 import TokenService from "../token/tokenService";
 
 export const useGetMemberDetails = (userId: string) => {
@@ -59,5 +59,43 @@ export const useGetTransactionDetails = (userId: string) => {
       }
     },
     enabled:!!userId,
+  });
+};
+
+export const useGetTicketDetails = (userId:string) => {
+  return useQuery({
+    queryKey: ["TicketDetails", userId],
+    queryFn: async () => {
+      if (!userId) return [];
+      const response = await get(`/user/ticket/${userId}`);
+      if (response?.success && Array.isArray(response?.tickets)) {
+        return response.tickets;
+      } else {
+        return [];
+      }
+    },
+    enabled: !!userId,
+
+  })
+}
+
+export const useCreateTicket = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (ticketData: any) => {
+      const response = await post("/user/ticket", ticketData);
+      if (response.success) {
+        return response.ticket;
+      } else {
+        throw new Error(response.message || "Failed to create ticket");
+      }
+    },
+    onSuccess: (data) => {
+      toast.success(data.message)
+      queryClient.invalidateQueries({ queryKey: ["TicketDetails"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to create ticket. Please try again.");
+    },
   });
 };

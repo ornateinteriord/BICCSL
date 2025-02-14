@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -18,29 +18,50 @@ import {
   Typography,
   Box,
   Divider,
+  CircularProgress,
 } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getMailBoxColumns } from '../../../utils/DataTableColumnsProvider';
+import TokenService from '../../../api/token/tokenService';
+import { useCreateTicket, useGetTicketDetails } from '../../../api/Memeber';
+import { toast } from 'react-toastify';
 
+interface Ticket{
+  ticket_date:string;
+  ticket_no:string;
+  type_of_ticket:string;
+  SUBJECT:string;
+  ticket_status:"pending" | "solved";
+  reply_details:string;
+}
 const MailBox = () => {
-  const [formData, setFormData] = useState({
-    ticketType: '',
-    subject: '',
-    details: '',
-  });
+  const userId = TokenService.getUserId()
+  const {data:tickets, isLoading,isError,error} = useGetTicketDetails(userId!)
 
-  const [tickets, setTickets] = useState([
-    {
-      ticketDate: '18-Aug-2024',
-      ticketNo: '760',
-      typeOfTicket: 'Payments related',
-      subject: 'Ggg',
-      status: 'Pending',
-    },
-  ]);
+  useEffect(() => {
+    if (isError) {
+        toast.error(
+          error.message|| "Failed to fetch Transaction details"
+        );
+      }
+    }, [isError, error,tickets]);
+  const Ticketdata =Array.isArray(tickets)? tickets.map((ticket:Ticket)=>({
+    ticketDate:ticket.ticket_date ? new Date(ticket.ticket_date).toISOString().split('T')[0] : "-",
+    ticketNo:ticket.ticket_no || "-",
+    typeOfTicket:ticket.type_of_ticket || "-",
+    subject:ticket.SUBJECT || "-",
+    status:ticket.ticket_status || "-",
+    reply:ticket.reply_details || "No reply"
+  })) : []
+
+  
+  const [formData, setFormData] = useState({
+    ticketType:"",
+    subject: "",
+    details: "",
+  });
 
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -54,78 +75,8 @@ const MailBox = () => {
     setOpenDialog(false);
     setSelectedTicket(null);
   };
-
-  const columns = [
-    {
-      name: 'Ticket Date',
-      selector: (row: any) => row.ticketDate,
-      sortable: true,
-    },
-    {
-      name: 'Ticket No',
-      selector: (row: any) => row.ticketNo,
-      sortable: true,
-      cell: (row: any) => (
-        <div
-          style={{
-            backgroundColor: '#5bc0de',
-            color: 'white',
-            padding: '5px 10px',
-            borderRadius: '4px',
-            fontSize: '14px',
-          }}
-        >
-          {row.ticketNo}
-        </div>
-      ),
-    },
-    {
-      name: 'Type of ticket',
-      selector: (row: any) => row.typeOfTicket,
-      sortable: true,
-    },
-    {
-      name: 'Subject',
-      selector: (row: any) => row.subject,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: (row: any) => row.status,
-      sortable: true,
-      cell: (row: any) => (
-        <div
-          style={{
-            backgroundColor: row.status === 'Pending' ? '#ffd700' : '#00d1b2',
-            color: 'white',
-            padding: '5px 10px',
-            borderRadius: '4px',
-            fontSize: '14px',
-          }}
-        >
-          {row.status}
-        </div>
-      ),
-    },
-    {
-      name: 'Actions',
-      cell: (row: any) => (
-        <IconButton
-          onClick={() => handleOpenDialog(row)}
-          size="medium"
-          sx={{
-            color: '#04112f',
-            '&:hover': {
-              backgroundColor: 'rgba(4, 17, 47, 0.04)'
-            }
-          }}
-        >
-          <VisibilityIcon color='primary' fontSize="medium"/>
-        </IconButton>
-      ),
-      sortable: false,
-    },
-  ];
+  
+  const createTicketMutation = useCreateTicket()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -143,24 +94,24 @@ const MailBox = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const newTicket = {
-      ticketDate: new Date().toLocaleDateString('en-GB'),
-      ticketNo: Math.floor(Math.random() * 1000).toString(),
-      typeOfTicket: formData.ticketType,
-      subject: formData.subject,
-      status: 'Pending',
-    };
-
-    setTickets((prev) => [...prev, newTicket]);
-    
-    // Reset form
-    setFormData({
-      ticketType: '',
-      subject: '',
-      details: '',
-    });
+    try {
+      e.preventDefault();
+      const newTicket = {
+        type_of_ticket: formData.ticketType,
+        SUBJECT: formData.subject,
+        ticket_details: formData.details,
+      };
+  
+      createTicketMutation.mutate(newTicket)
+    } catch (error) {
+      console.error("Failed to create ticket", error);
+    } finally {
+      setFormData({
+        ticketType:"",
+        subject: "",
+        details: "",
+      });
+    }
   };
 
   return (
@@ -265,6 +216,7 @@ const MailBox = () => {
                   type="submit"
                   variant="contained"
                   size="medium"
+                  
                   sx={{
                     backgroundColor: '#04112f',
                     alignSelf: 'flex-end',
@@ -294,11 +246,15 @@ const MailBox = () => {
             </AccordionSummary>
             <AccordionDetails>
               <DataTable
-                columns={columns}
-                data={tickets}
+                columns={getMailBoxColumns(handleOpenDialog)}
+                data={Ticketdata}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
+                progressPending={isLoading || createTicketMutation.isPending}
+                progressComponent={
+                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+                }
                 paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover
                 responsive
@@ -368,7 +324,7 @@ const MailBox = () => {
                   
                   <Typography variant="subtitle2">Status:</Typography>
                   <Typography sx={{
-                    backgroundColor: selectedTicket.status === 'Pending' ? '#ffd700' : '#00d1b2',
+                    backgroundColor: selectedTicket?.status?.trim().toLowerCase() === 'pending' ? '#fb741a' : '#569f35',
                     color: 'white',
                     padding: '4px 8px',
                     borderRadius: '4px',
@@ -388,7 +344,7 @@ const MailBox = () => {
                   borderRadius: '4px',
                   textAlign: 'center'
                 }}>
-                  <Typography color="text.secondary" variant="body1">No Reply</Typography>
+                  <Typography color="text.secondary" variant="body1">{selectedTicket.reply}</Typography>
                 </Box>
               </Box>
             </>
