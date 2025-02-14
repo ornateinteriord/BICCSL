@@ -66,12 +66,12 @@ export const useGetTicketDetails = (userId:string) => {
   return useQuery({
     queryKey: ["TicketDetails", userId],
     queryFn: async () => {
-      if (!userId) return []; 
+      if (!userId) return [];
       const response = await get(`/user/ticket/${userId}`);
       if (response?.success && Array.isArray(response?.tickets)) {
         return response.tickets;
       } else {
-        return []; 
+        return [];
       }
     },
     enabled: !!userId,
@@ -80,15 +80,22 @@ export const useGetTicketDetails = (userId:string) => {
 }
 
 export const useCreateTicket = () => {
-  
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (ticketData:any) => {
+    mutationFn: async (ticketData: any) => {
       const response = await post("/user/ticket", ticketData);
       if (response.success) {
         return response.ticket;
       } else {
         throw new Error(response.message || "Failed to create ticket");
       }
+    },
+    onSuccess: (data) => {
+      toast.success(data.message)
+      queryClient.invalidateQueries({ queryKey: ["TicketDetails"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to create ticket. Please try again.");
     },
   });
 };

@@ -27,12 +27,6 @@ import { DASHBOARD_CUTSOM_STYLE, getMailBoxColumns } from '../../../utils/DataTa
 import TokenService from '../../../api/token/tokenService';
 import { useCreateTicket, useGetTicketDetails } from '../../../api/Memeber';
 import { toast } from 'react-toastify';
-import { useQueryClient } from '@tanstack/react-query';
-
-
-
-
-
 
 interface Ticket{
   ticket_date:string;
@@ -43,10 +37,8 @@ interface Ticket{
   reply_details:string;
 }
 const MailBox = () => {
-  const queryClient = useQueryClient();
   const userId = TokenService.getUserId()
-  const [loading, setLoading] = useState(false);
-  const {data:tickets, isLoading,isError,error,refetch} = useGetTicketDetails(userId!)
+  const {data:tickets, isLoading,isError,error} = useGetTicketDetails(userId!)
 
   useEffect(() => {
     if (isError) {
@@ -73,9 +65,6 @@ const MailBox = () => {
 
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
   const [openDialog, setOpenDialog] = useState(false);
-  
-
-  
 
   const handleOpenDialog = (ticket: any) => {
     setSelectedTicket(ticket);
@@ -105,31 +94,24 @@ const MailBox = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    const newTicket = {
-      userId,
-      type_of_ticket: formData.ticketType,
-      SUBJECT: formData.subject,
-      ticket_details: formData.details,
-      ticket_status:"pending"
-    };
-
-    createTicketMutation.mutate(newTicket,{
-      onSuccess :(data) =>{
-        toast.success(data.message || "Ticket created successfully!")
-        queryClient.invalidateQueries({queryKey:["TicketDetails", userId]});
-        refetch();
-        setFormData({ ticketType: "", subject: "", details: "" });
-      },
-      onError: (error: any) => {
-        toast.error(error.response?.data?.message || "Failed to create ticket. Please try again.");
-      
-      },
-      onSettled: () => {
-        setLoading(false); // Stop loader after request completes
-      }
-    })
+    try {
+      e.preventDefault();
+      const newTicket = {
+        type_of_ticket: formData.ticketType,
+        SUBJECT: formData.subject,
+        ticket_details: formData.details,
+      };
+  
+      createTicketMutation.mutate(newTicket)
+    } catch (error) {
+      console.error("Failed to create ticket", error);
+    } finally {
+      setFormData({
+        ticketType:"",
+        subject: "",
+        details: "",
+      });
+    }
   };
 
   return (
@@ -269,7 +251,7 @@ const MailBox = () => {
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
-                progressPending={isLoading || loading}
+                progressPending={isLoading || createTicketMutation.isPending}
                 progressComponent={
                   <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
                 }
