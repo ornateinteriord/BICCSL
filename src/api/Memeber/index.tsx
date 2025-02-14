@@ -85,13 +85,13 @@ export const useCreateTicket = () => {
     mutationFn: async (ticketData: any) => {
       const response = await post("/user/ticket", ticketData);
       if (response.success) {
+        toast.success(response.message)
         return response.ticket;
       } else {
         throw new Error(response.message || "Failed to create ticket");
       }
     },
-    onSuccess: (data) => {
-      toast.success(data.message)
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["TicketDetails"] });
     },
     onError: (error: any) => {
