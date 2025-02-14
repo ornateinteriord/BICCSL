@@ -403,7 +403,7 @@ export const getMailBoxColumns = (handleOpenDialog : any) => [
     cell: (row: any) => (
       <div
         style={{
-          backgroundColor: row.status === 'Pending' ? '#ffd700' : '#00d1b2',
+          backgroundColor: row.status === 'pending' ? '#ffd700' : '#569f35',
           color: 'white',
           padding: '5px 10px',
           borderRadius: '4px',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -18,31 +18,64 @@ import {
   Typography,
   Box,
   Divider,
+  CircularProgress,
 } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { DASHBOARD_CUTSOM_STYLE, getMailBoxColumns } from '../../../utils/DataTableColumnsProvider';
+import TokenService from '../../../api/token/tokenService';
+import { useCreateTicket, useGetTicketDetails } from '../../../api/Memeber';
+import { toast } from 'react-toastify';
+import { useQueryClient } from '@tanstack/react-query';
 
+
+
+
+
+
+interface Ticket{
+  ticket_date:string;
+  ticket_no:string;
+  type_of_ticket:string;
+  SUBJECT:string;
+  ticket_status:"pending" | "solved";
+  reply_details:string;
+}
 const MailBox = () => {
-  const [formData, setFormData] = useState({
-    ticketType: '',
-    subject: '',
-    details: '',
-  });
+  const queryClient = useQueryClient();
+  const userId = TokenService.getUserId()
+  const [loading, setLoading] = useState(false);
+  const {data:tickets, isLoading,isError,error,refetch} = useGetTicketDetails(userId!)
 
-  const [tickets, setTickets] = useState([
-    {
-      ticketDate: '18-Aug-2024',
-      ticketNo: '760',
-      typeOfTicket: 'Payments related',
-      subject: 'Ggg',
-      status: 'Pending',
-    },
-  ]);
+  useEffect(() => {
+    if (isError) {
+        toast.error(
+          error.message|| "Failed to fetch Transaction details"
+        );
+      }
+    }, [isError, error,tickets]);
+  const Ticketdata =Array.isArray(tickets)? tickets.map((ticket:Ticket)=>({
+    ticketDate:ticket.ticket_date ? new Date(ticket.ticket_date).toISOString().split('T')[0] : "-",
+    ticketNo:ticket.ticket_no || "-",
+    typeOfTicket:ticket.type_of_ticket || "-",
+    subject:ticket.SUBJECT || "-",
+    status:ticket.ticket_status || "-",
+    reply:ticket.reply_details || "No reply"
+  })) : []
+
+  
+  const [formData, setFormData] = useState({
+    ticketType:"",
+    subject: "",
+    details: "",
+  });
 
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
   const [openDialog, setOpenDialog] = useState(false);
+  
+
+  
 
   const handleOpenDialog = (ticket: any) => {
     setSelectedTicket(ticket);
@@ -53,6 +86,8 @@ const MailBox = () => {
     setOpenDialog(false);
     setSelectedTicket(null);
   };
+  
+  const createTicketMutation = useCreateTicket()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -71,23 +106,30 @@ const MailBox = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setLoading(true);
     const newTicket = {
-      ticketDate: new Date().toLocaleDateString('en-GB'),
-      ticketNo: Math.floor(Math.random() * 1000).toString(),
-      typeOfTicket: formData.ticketType,
-      subject: formData.subject,
-      status: 'Pending',
+      userId,
+      type_of_ticket: formData.ticketType,
+      SUBJECT: formData.subject,
+      ticket_details: formData.details,
+      ticket_status:"pending"
     };
 
-    setTickets((prev) => [...prev, newTicket]);
-    
-    // Reset form
-    setFormData({
-      ticketType: '',
-      subject: '',
-      details: '',
-    });
+    createTicketMutation.mutate(newTicket,{
+      onSuccess :(data) =>{
+        toast.success(data.message || "Ticket created successfully!")
+        queryClient.invalidateQueries({queryKey:["TicketDetails", userId]});
+        refetch();
+        setFormData({ ticketType: "", subject: "", details: "" });
+      },
+      onError: (error: any) => {
+        toast.error(error.response?.data?.message || "Failed to create ticket. Please try again.");
+      
+      },
+      onSettled: () => {
+        setLoading(false); // Stop loader after request completes
+      }
+    })
   };
 
   return (
@@ -192,6 +234,7 @@ const MailBox = () => {
                   type="submit"
                   variant="contained"
                   size="medium"
+                  
                   sx={{
                     backgroundColor: '#04112f',
                     alignSelf: 'flex-end',
@@ -222,10 +265,14 @@ const MailBox = () => {
             <AccordionDetails>
               <DataTable
                 columns={getMailBoxColumns(handleOpenDialog)}
-                data={tickets}
+                data={Ticketdata}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
+                progressPending={isLoading || loading}
+                progressComponent={
+                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+                }
                 paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover
                 responsive
@@ -295,7 +342,7 @@ const MailBox = () => {
                   
                   <Typography variant="subtitle2">Status:</Typography>
                   <Typography sx={{
-                    backgroundColor: selectedTicket.status === 'Pending' ? '#ffd700' : '#00d1b2',
+                    backgroundColor: selectedTicket?.status?.trim().toLowerCase() === 'pending' ? '#fb741a' : '#569f35',
                     color: 'white',
                     padding: '4px 8px',
                     borderRadius: '4px',
@@ -315,7 +362,7 @@ const MailBox = () => {
                   borderRadius: '4px',
                   textAlign: 'center'
                 }}>
-                  <Typography color="text.secondary" variant="body1">No Reply</Typography>
+                  <Typography color="text.secondary" variant="body1">{selectedTicket.reply}</Typography>
                 </Box>
               </Box>
             </>
