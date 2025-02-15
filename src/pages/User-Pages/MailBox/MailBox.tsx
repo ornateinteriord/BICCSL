@@ -46,7 +46,7 @@ const MailBox = () => {
           error.message|| "Failed to fetch Transaction details"
         );
       }
-    }, [isError, error,tickets]);
+    }, [isError, error]);
   const Ticketdata =Array.isArray(tickets)? tickets.map((ticket:Ticket)=>({
     ticketDate:ticket.ticket_date ? new Date(ticket.ticket_date).toISOString().split('T')[0] : "-",
     ticketNo:ticket.ticket_no || "-",

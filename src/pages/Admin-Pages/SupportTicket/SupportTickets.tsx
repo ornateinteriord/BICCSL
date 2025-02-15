@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   TextField,
   Button,
@@ -11,16 +11,33 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  CircularProgress,
 } from '@mui/material';
 import { Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
 import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { useGetAllTickets, useUpdateTickets } from '../../../api/Admin';
+import { toast } from 'react-toastify';
+
+
+interface Ticket{
+  _id:string;
+  ticket_date:string;
+  ticket_no:string;
+  reference_id:string;
+  type_of_ticket:string;
+  SUBJECT:string;
+  ticket_status:"pending" | "solved";
+
+}
+
 
 const SupportTickets = () => {
   const [isReplyDialogOpen, setIsReplyDialogOpen] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
+  const {data:tickets,isLoading,isError,error} = useGetAllTickets()
 
   const handleReplyClick = (ticket: any) => {
     setSelectedTicket(ticket);
@@ -31,14 +48,34 @@ const SupportTickets = () => {
     setIsReplyDialogOpen(false);
     setReplyText('');
   };
-
-  const handleSubmitReply = () => {
-    // Handle reply submission logic here
-    console.log('Reply submitted:', replyText, 'for ticket:', selectedTicket);
-    handleCloseDialog();
+  
+  const replyTicketMutation = useUpdateTickets()
+  const handleSubmitReply = (e: React.FormEvent) => {
+    try {
+      e.preventDefault();
+      if (!selectedTicket) return;
+      const replyTicket = {
+        id:selectedTicket._id,
+        reply_details:replyText,
+        ticket_status: "solved" 
+      }
+     replyTicketMutation.mutate(replyTicket,{
+      onSuccess: () => {
+        handleCloseDialog();
+      },
+     })
+    } catch (error) {
+      console.error("Failed to update ticket", error);
+    }
+    
   };
 
   const columns = [
+    {
+      name: 'Member',
+      selector: (row: any) => row.Memberid,
+      sortable: true,
+    },
     {
       name: 'Ticket Date',
       selector: (row: any) => row.ticketDate,
@@ -49,6 +86,7 @@ const SupportTickets = () => {
       selector: (row: any) => row.ticketNo,
       sortable: true,
     },
+    
     {
       name: 'Type of ticket',
       selector: (row: any) => row.type,
@@ -65,7 +103,7 @@ const SupportTickets = () => {
       cell: (row: any) => (
         <span
           style={{
-            backgroundColor: row.status === 'Pending' ? '#ffd700' : '#90EE90',
+            backgroundColor: row.status === 'pending' ? '#ffd700' : '#90EE90',
             padding: '0.5rem',
             borderRadius: '4px',
             color: '#000',
@@ -93,16 +131,25 @@ const SupportTickets = () => {
     },
   ];
 
-  const data = [
-    {
-      ticketDate: '2024-03-18',
-      ticketNo: '760',
-      type: 'Payments related',
-      subject: 'Payment Issue',
-      status: 'Pending',
-    },
-    // Add more ticket data as needed
-  ];
+   useEffect(() => {
+    if (isError) {
+        toast.error(
+          error.message|| "Failed to fetch Transaction details"
+        );
+      }
+    }, [isError, error]);
+    
+  const data = Array.isArray(tickets)?tickets.map((ticket:Ticket)=>({
+    _id: ticket._id, 
+    ticketDate:ticket.ticket_date ? new Date(ticket.ticket_date).toISOString().split('T')[0] : "-",
+    ticketNo:ticket.ticket_no || "-",
+    Memberid:ticket.reference_id|| "-",
+    type:ticket.type_of_ticket || "-",
+    subject:ticket.SUBJECT || "-",
+    status:ticket.ticket_status || "-",
+  })) : []
+  
+    
 
   return (
     <>
@@ -136,6 +183,10 @@ const SupportTickets = () => {
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
+                progressPending={isLoading}
+                progressComponent={
+                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }}  />
+                }
                 paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover
               />
@@ -187,16 +238,19 @@ const SupportTickets = () => {
           <Button onClick={handleCloseDialog} variant="outlined" color="error">
             Cancel
           </Button>
-          <Button
-            onClick={handleSubmitReply}
-            variant="contained"
-            sx={{
-              backgroundColor: '#04112f',
-              '&:hover': { backgroundColor: '#0a1f4d' }
-            }}
-          >
-            Reply
-          </Button>
+         
+         <Button
+         onClick={handleSubmitReply}
+         variant="contained"
+         sx={{
+           backgroundColor: '#04112f',
+           '&:hover': { backgroundColor: '#0a1f4d' }
+         }}
+         disabled={!selectedTicket}
+       >
+         Reply
+       </Button>
+      
         </DialogActions>
       </Dialog>
     </>
