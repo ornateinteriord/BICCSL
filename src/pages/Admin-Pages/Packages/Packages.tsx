@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TextField,
   Button,
@@ -13,6 +13,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import PersonIcon from '@mui/icons-material/Person';
@@ -23,32 +24,54 @@ import DataTable from 'react-data-table-component';
 import { Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DASHBOARD_CUTSOM_STYLE, getusedandUnUsedColumns } from '../../../utils/DataTableColumnsProvider';
+import { getEpinsSummary } from '../../../api/Admin';
+import { toast } from 'react-toastify';
 
 interface PackageTableProps {
   title: string;
   summaryTitle: string;
   data: any[];
+  loading ?: boolean
   columns: any[];
 }
 
+const useGetEpins = (status : "used" | "unUsed") => {
+  const { data: epinsData, isLoading, isError, error } = getEpinsSummary();
+  useEffect(() => {
+      if (isError) {
+        const err = error as any;
+        toast.error(
+          err?.response.data.message || "Failed to fetch Transaction details"
+        );
+      }
+    }, [isError, error]);
+    let result = {isLoading}
 
-const usedPackagesData = [
-  {
-    memberCode: 'BICCSL - SF000001',
-    usedQuantity: 1,
-    status: 'used',
-  },
-  // Add more data as needed
-];
+    if(status === "used"){
+      return {...result , epinsData : epinsData?.usedEpins || []}
+    } else {
+      return {...result , epinsData : epinsData?.activeEpins || []}
+    }
+}
 
-const unusedPackagesData = [
-  {
-    memberCode: 'BICCSL - SF000002',
-    usedQuantity: 1,
-    status: 'unused',
-  },
-  // Add unused packages data
-];
+
+// const usedPackagesData = [
+//   {
+//     memberCode: 'BICCSL - SF000001',
+//     usedQuantity: 1,
+//     status: 'used',
+//   },
+//   // Add more data as needed
+// ];
+
+// const unusedPackagesData = [
+//   {
+//     memberCode: 'BICCSL - SF000002',
+//     usedQuantity: 1,
+//     status: 'unused',
+//   },
+//   // Add unused packages data
+// ];
 
 export const PackageRequests = () => {
   const columns = [
@@ -152,12 +175,14 @@ export const PackageRequests = () => {
 
 
 export const UnusedPackages = () => {
+  const {isLoading , epinsData} = useGetEpins("unUsed")
   return (
     <>
       <PackageTable 
         title="Unused Package" 
         summaryTitle="List of Unused Package" 
-        data={unusedPackagesData}
+        data={epinsData}
+        loading={isLoading}
         columns={getusedandUnUsedColumns()}
       />
     </>
@@ -165,12 +190,14 @@ export const UnusedPackages = () => {
 };
 
 export const UsedPackages = () => {
+  const {isLoading , epinsData} = useGetEpins("used")
   return (
     <>
       <PackageTable 
         title="Used Package" 
         summaryTitle="List of Used Package" 
-        data={usedPackagesData}
+        data={epinsData}
+        loading={isLoading}
         columns={getusedandUnUsedColumns()}
       />
     </>
@@ -183,7 +210,7 @@ export const PackageHistory = () => {
   )
 }
 
-const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data , columns }) => {
+const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data , columns  , loading}) => {
   // const [filterText, setFilterText] = useState('');
   
 
@@ -224,6 +251,8 @@ const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data ,
               columns={columns}
               data={data}
               pagination
+              progressPending={loading}
+              progressComponent={<CircularProgress />}
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
               customStyles={DASHBOARD_CUTSOM_STYLE}

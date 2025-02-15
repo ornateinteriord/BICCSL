@@ -68,3 +68,17 @@ export const useUpdateTickets = () => {
   });
 };
 
+export const getEpinsSummary = () => {
+  return useQuery({
+      queryKey: ["epinsSummary"],
+      queryFn: async () => {
+          const response = await get("/admin/epin-summary");
+          if (response.success) {
+              return response.data;
+          } else {
+              throw new Error(response.message || "Failed to fetch E-Pin summary");
+          }
+      }
+  });
+};
+
