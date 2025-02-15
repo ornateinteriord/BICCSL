@@ -1,19 +1,41 @@
 import DataTable from 'react-data-table-component';
-import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
+import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getUnUsedPackageColumns } from '../../../utils/DataTableColumnsProvider';
+import TokenService from '../../../api/token/tokenService';
+import { getUsedandUnusedPackages } from '../../../api/Memeber';
+import { useContext, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import moment from 'moment';
+import UserContext from '../../../context/user/userContext';
 
 const UnUsedPackage = () => {
+   
+  const memberId = TokenService.getMemberId();
+  const { user} = useContext(UserContext);
+  const { data: usedPackage, isLoading, error , isError} = getUsedandUnusedPackages({
+    memberId: memberId,
+    status: 'active'
+  });
 
-  const data = [
-    {
-      date: '18/11/2024',
-      code: 'MANJUNATH N (SF000001)',
-      packageCode: 'ZbtbEoV',
-      amount: '₹ 3000.0',
-      status: 'active',
-    },
-  ];
+  useEffect(() => {
+    if (isError) {
+      const err = error as any;
+
+      toast.error(
+        err?.response.data.message || "Failed to fetch package details"
+      );
+    }
+  }, [isError, error]);
+
+  const data = usedPackage?.map((pkg: any) => ({
+    date: moment(pkg.date , "MM/DD/YYYY").format("DD/MM/YYYY") || "-",
+    code: `${user.Name} (${pkg.purchasedby})` || "-",
+    packageCode: pkg.epin_no || "-",
+    amount: `₹ ${pkg.amount.toLocaleString()}` || "-",
+    status: pkg.status || "-",
+  })) || [];
+
 
   return (
     <Card sx={{ margin: '2rem', mt: 10 }}>
@@ -38,6 +60,8 @@ const UnUsedPackage = () => {
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
               highlightOnHover
+              progressPending={isLoading}
+              progressComponent={<CircularProgress />}
               subHeader
               subHeaderComponent={
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', padding: '0.5rem' }}>

@@ -10,12 +10,12 @@ class TokenService {
     return localStorage.getItem("token");
   }
 
-  static decodeToken(): { id: string; role: string } | null {
+  static decodeToken(): { id: string; role: string , memberId : string } | null {
     const token = this.getToken();
     if (!token) return null;
 
     try {
-        const decoded = jwtDecode<{ id: string; role: string }>(token);
+        const decoded = jwtDecode<{ id: string; role: string; memberId:string }>(token);
       
         return decoded;
     } catch (error) {
@@ -26,6 +26,10 @@ class TokenService {
 
   static getRole(): string | null {
     return this.decodeToken()?.role || null;
+  }
+
+  static getMemberId() : string | null {
+    return this.decodeToken()?.memberId || null;
   }
 
   static getUserId(): string | null {

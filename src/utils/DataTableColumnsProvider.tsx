@@ -30,11 +30,13 @@ export const getUsedPackageColumns = () => {
       name: "Date",
       selector: (row: any) => row.date,
       sortable: true,
+      width : "10%"
     },
     {
       name: "Member Code",
       selector: (row: any) => row.memberCode,
       sortable: true,
+      width : "20%"
     },
     {
       name: "Package Code",
@@ -50,6 +52,7 @@ export const getUsedPackageColumns = () => {
       name: "Used For",
       selector: (row: any) => row.usedFor,
       sortable: true,
+      width : "20%"
     },
     {
       name: "Used Date",
@@ -69,6 +72,7 @@ export const getUnUsedPackageColumns = () => [
     name: "Date",
     selector: (row: any) => row.date,
     sortable: true,
+    width : "12%"
   },
   {
     name: "Code",
