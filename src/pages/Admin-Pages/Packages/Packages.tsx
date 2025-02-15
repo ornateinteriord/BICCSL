@@ -54,25 +54,6 @@ const useGetEpins = (status : "used" | "unUsed") => {
     }
 }
 
-
-// const usedPackagesData = [
-//   {
-//     memberCode: 'BICCSL - SF000001',
-//     usedQuantity: 1,
-//     status: 'used',
-//   },
-//   // Add more data as needed
-// ];
-
-// const unusedPackagesData = [
-//   {
-//     memberCode: 'BICCSL - SF000002',
-//     usedQuantity: 1,
-//     status: 'unused',
-//   },
-//   // Add unused packages data
-// ];
-
 export const PackageRequests = () => {
   const columns = [
     {
