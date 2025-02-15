@@ -321,8 +321,8 @@ export const getMembersColumns = (showEdit : boolean , setIsEdit : any) => [
     cell: (row: any) => (
       <div
         style={{
-          backgroundColor: row.status === 'active' ? 'green' : row.status === 'pending' ? '#ffd700' : 'red',
-          color: 'white',
+          color: row.status === 'active' ? 'green' : row.status.toLowerCase() === 'pending' ? '#ffd700' : 'red',
+          
           padding: '5px 10px',
           borderRadius: '4px',
           fontSize: '14px',
@@ -403,8 +403,7 @@ export const getMailBoxColumns = (handleOpenDialog : any) => [
     cell: (row: any) => (
       <div
         style={{
-          backgroundColor: row.status === 'pending' ? '#ffd700' : '#569f35',
-          color: 'white',
+         color: row.status.toLowerCase() === 'pending' ? '#ffd700' : '#569f35',
           padding: '5px 10px',
           borderRadius: '4px',
           fontSize: '14px',
@@ -522,8 +521,7 @@ export const getNewsColumns = () => [
     cell: (row: any) => (
       <span
         style={{
-          backgroundColor: row.status === "active" ? "green" : "transparent",
-          color: row.status === "active" ? "white" : "inherit",
+          color: row.status === "active" ? "green" : "transparent",
           padding: "0.5rem",
           borderRadius: "4px",
         }}
@@ -552,8 +550,7 @@ export const getHolidaysColumns = () => [
     cell: (row: any) => (
       <span
         style={{
-          backgroundColor: row.status === "active" ? "green" : "transparent",
-          color: row.status === "active" ? "white" : "inherit",
+          color: row.status === "active" ? "green" : "transparent",
           padding: "0.5rem",
           borderRadius: "4px",
         }}

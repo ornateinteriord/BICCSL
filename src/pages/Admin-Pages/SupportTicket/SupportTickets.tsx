@@ -19,7 +19,7 @@ import DataTable from 'react-data-table-component';
 import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
 import { useGetAllTickets, useUpdateTickets } from '../../../api/Admin';
 import { toast } from 'react-toastify';
-
+import moment from 'moment'
 
 interface Ticket{
   _id:string;
@@ -57,7 +57,7 @@ const SupportTickets = () => {
       const replyTicket = {
         id:selectedTicket._id,
         reply_details:replyText,
-        ticket_status: "solved" 
+        
       }
      replyTicketMutation.mutate(replyTicket,{
       onSuccess: () => {
@@ -103,10 +103,10 @@ const SupportTickets = () => {
       cell: (row: any) => (
         <span
           style={{
-            backgroundColor: row.status === 'pending' ? '#ffd700' : '#90EE90',
+            color: row.status === 'pending' ? '#CC5500' : '#008000',
             padding: '0.5rem',
             borderRadius: '4px',
-            color: '#000',
+            
           }}
         >
           {row.status}
@@ -134,14 +134,16 @@ const SupportTickets = () => {
    useEffect(() => {
     if (isError) {
         toast.error(
-          error.message|| "Failed to fetch Transaction details"
+          error.message
         );
       }
     }, [isError, error]);
     
   const data = Array.isArray(tickets)?tickets.map((ticket:Ticket)=>({
     _id: ticket._id, 
-    ticketDate:ticket.ticket_date ? new Date(ticket.ticket_date).toISOString().split('T')[0] : "-",
+    ticketDate: ticket.ticket_date && typeof ticket.ticket_date === "string" 
+    ? moment(ticket.ticket_date, "YYYY/MM/DD").format("DD/MM/YYYY") 
+    : "-",
     ticketNo:ticket.ticket_no || "-",
     Memberid:ticket.reference_id|| "-",
     type:ticket.type_of_ticket || "-",
