@@ -71,7 +71,7 @@ export const useGetTicketDetails = (userId:string) => {
       if (response?.success && Array.isArray(response?.tickets)) {
         return response.tickets;
       } else {
-        return [];
+        throw new Error(response.message || "Failed to fetch tickets");
       }
     },
     enabled: !!userId,
@@ -99,3 +99,18 @@ export const useCreateTicket = () => {
     },
   });
 };
+
+
+export const getUsedandUnusedPackages = ({memberId , status} : {memberId : string |  null,status : string}) => { 
+  return useQuery({
+    queryKey: ["usedAndUnusedPackages", memberId, status],
+    queryFn: async () => {
+      const response = await get("/user/epin" ,{ memberId, status } );
+      if (response.success) {
+        return response.data;
+      } else {
+        throw new Error(response.message || "Failed to fetch packages");
+      }
+    },
+  });
+}

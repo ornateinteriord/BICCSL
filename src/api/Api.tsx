@@ -31,9 +31,9 @@ export const post = async (path: string, data: any) => {
     throw error;
   }
 };
-export const get = async (path: string) => {
+export const get = async (path: string, params?: Record<string, any>) => {
   try {
-    const response = await api.get(path);
+    const response = await api.get(path, { params });
     return response.data;
   } catch (error) {
     throw error;

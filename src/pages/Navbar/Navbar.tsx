@@ -17,8 +17,8 @@ const Navbar = ({
   const location = useLocation();
   const { isLoggedIn, userRole } = useAuth();
   const handleLogout = () => {
-    TokenService.removeToken();
     navigate("/");
+    TokenService.removeToken();
     window.dispatchEvent(new Event("storage"));
   };
 
