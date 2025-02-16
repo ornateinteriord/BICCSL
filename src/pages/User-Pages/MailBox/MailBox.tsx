@@ -363,19 +363,19 @@ const MailBox = () => {
                   <Typography variant="subtitle2">Status:</Typography>
                   <Typography
                     sx={{
-                      backgroundColor:
+                      color:
                         selectedTicket?.status?.trim().toLowerCase() ===
                         "pending"
                           ? "#fb741a"
                           : "#569f35",
-                      color: "white",
+                    
                       padding: "4px 8px",
                       borderRadius: "4px",
                       width: "fit-content",
                       fontSize: "14px",
                     }}
                   >
-                    {selectedTicket.status}
+                    {selectedTicket.status.charAt(0).toUpperCase() + selectedTicket.status.slice(1)}
                   </Typography>
                 </Box>
 
