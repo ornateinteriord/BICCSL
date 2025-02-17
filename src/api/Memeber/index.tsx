@@ -114,3 +114,17 @@ export const getUsedandUnusedPackages = ({memberId , status} : {memberId : strin
     },
   });
 }
+
+export const useGetSponsers = () => {
+  return useQuery({
+    queryKey : ["sponsers"],
+    queryFn : async () => {
+      const response = await get('/user/sponsers');
+      if(response.success){
+        return response.sponsoredUsers
+      } else {
+        throw new Error(response.message || "Failed to fetch sponsers");
+      }
+    }
+  })
+}
