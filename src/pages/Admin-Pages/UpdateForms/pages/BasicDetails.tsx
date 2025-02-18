@@ -55,8 +55,8 @@ export  const  BasicDetails: React.FC<BasicDetailsProps> = ({
           >
             <TextField
               label="Name"
-              name="name"
-              value={formData.name}
+              name="Name"
+              value={formData.Name}
               onChange={handleInputChange}
               fullWidth
               variant="outlined"
@@ -71,8 +71,8 @@ export  const  BasicDetails: React.FC<BasicDetailsProps> = ({
             />
             <TextField
               label="FatherName"
-              name="fatherName"
-              value={formData.fatherName}
+              name="Father_name"
+              value={formData.Father_name}
               onChange={handleInputChange}
               fullWidth
               variant="outlined"
@@ -257,9 +257,9 @@ export  const  BasicDetails: React.FC<BasicDetailsProps> = ({
             />
             <TextField
               label="Transaction Password"
-              name="transactionpassword"
+              name="transaction_pass"
               type="tel"
-              value={formData.transactionpassword}
+              value={formData.transaction_pass}
               onChange={handleInputChange}
               fullWidth
               variant="outlined"

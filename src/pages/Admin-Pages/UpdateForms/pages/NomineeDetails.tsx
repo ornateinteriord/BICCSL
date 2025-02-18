@@ -47,8 +47,8 @@ import {
             >
               <TextField
                 label="Nominee Name"
-                name="nomineeName"
-                value={formData.nomineeName}
+                name=" Nominee_name"
+                value={formData. Nominee_name}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -63,8 +63,8 @@ import {
               />
               <TextField
                 label="Nominee Relation"
-                name="nomineeRelation"
-                value={formData.nomineeRelation}
+                name="Nominee_Relation"
+                value={formData.Nominee_Relation}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -88,8 +88,8 @@ import {
             >
               <TextField
                 label="Nominee Age"
-                name="nomineeAge"
-                value={formData.nomineeAge}
+                name="Nominee_age"
+                value={formData.Nominee_age}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"

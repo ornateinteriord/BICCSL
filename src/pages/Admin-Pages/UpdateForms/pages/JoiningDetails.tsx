@@ -42,8 +42,8 @@ export const JoiningDetails: React.FC<JoiningDetailsProps> = ({
           >
             <TextField
               label="Sponsor Code"
-              name="sponsorCode"
-              value={formData.sponsorCode}
+              name="Sponsor_code"
+              value={formData.Sponsor_code}
               onChange={handleInputChange}
               fullWidth
               variant="outlined"
@@ -99,9 +99,9 @@ export const JoiningDetails: React.FC<JoiningDetailsProps> = ({
           >
             <TextField
               label="Sponsor Name"
-              name="sponsorName"
+              name="Sponsor_name"
               type="email"
-              value={formData.sponsorName}
+              value={formData.Sponsor_name}
               onChange={handleInputChange}
               fullWidth
               variant="outlined"

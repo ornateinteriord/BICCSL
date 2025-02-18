@@ -9,10 +9,11 @@ import "./MemberForm.scss";
 import CustomBreadcrumbs from "../../../context/user/CustomBreadcrumps";
 import { useGetMemberDetails, useUpdateMemberbyId } from "../../../api/Admin";
 import { toast } from "react-toastify";
-import { BasicDetails } from "./BasicDetails";
-import { BankDetails } from "./BankDetails";
-import { NomineeDetails } from "./NomineeDetails";
-import {JoiningDetails} from "./JoiningDetails"
+import { BasicDetails } from "./pages/BasicDetails";
+import { BankDetails } from "./pages/BankDetails";
+import { NomineeDetails } from "./pages/NomineeDetails";
+import {JoiningDetails} from "./pages/JoiningDetails"
+import { LoadingComponent } from "../../../App";
 
 
 
@@ -25,8 +26,8 @@ interface MembersUpdateFormProps {
 const MembersUpdateForm: React.FC<MembersUpdateFormProps> = ({ memberId }) => {
 
   const [formData, setFormData] = useState({
-    name: "",
-    fatherName: "",
+    Name: "",
+    Father_name: "",
     address: "",
     state: "",
     city: "",
@@ -36,28 +37,28 @@ const MembersUpdateForm: React.FC<MembersUpdateFormProps> = ({ memberId }) => {
     email: "",
     mobileno: "",
     password: "",
-    transactionpassword: "",
+    transaction_pass: "",
     accountNo: "",
     branchName: "",
     ifsc: "",
-    bankName: "",
+    bank_details : "",
     bankAddress: "",
-    pancardNo: "",
-    googlePay: "",
+    Pan_no : "",
+    google_pay: "",
     paytm: "",
-    phonePay: "",
-    nomineeName: "",
-    nomineeRelation: "",
-    nomineeAge: "",
-    sponsorCode: "",
+    phonepe: "",
+    Nominee_name : "",
+    Nominee_Relation: "",
+    Nominee_age: "",
+    Sponsor_code: "",
     position: "",
     positionName: "",
-    sponsorName: "",
+    Sponsor_name: "",
     positionId: "",
   });
 
  
-  const {data:member,isError,error} = useGetMemberDetails(memberId)
+  const {data:member,isLoading,isError,error} = useGetMemberDetails(memberId)
  
 
   useEffect(() => {
@@ -72,41 +73,34 @@ const MembersUpdateForm: React.FC<MembersUpdateFormProps> = ({ memberId }) => {
 useEffect(()=>{
   if(member){
     setFormData({
-      name:member .Name ?? "-",
-      fatherName:member.Father_name ?? "-",
-      address:member.address ?? "-",
-      state:member.state ?? "-",
-      city: member.
-      city?? "-",
-      pincode:member.pincode ?? "-",
-      gender: member.
-      gender ?? "-",
-      dob: member.dob?? "-",
-      email: member.
-      email?? "-",
-      mobileno: member.mobileno?? "-",
-      password: member.password ?? "-",
-      transactionpassword: member.transaction_pass ?? "-",
-      accountNo: member.accountNo ?? "-",
-      branchName: member.branchName ?? "-",
-      ifsc: member.ifsc ?? "-",
-      bankName: member.bank_details ??"-",
-      bankAddress: member.bankAddress ?? "-",
-      pancardNo: member.Pan_no ?? "-",
-      googlePay: member. google_pay ?? "-",
-      paytm: member.paytm ?? "-",
-      phonePay: member.phonepe?? "-",
-      nomineeName: member.
-      Nominee_name ?? "-",
-      nomineeRelation: member.
-      Nominee_Relation ?? "-",
-      nomineeAge: member.
-      Nominee_age?? "-",
-      sponsorCode:member.Sponsor_code?? "-",
+      Name:member.Name ?? "",
+      Father_name:member.Father_name ?? "",
+      address:member.address ?? "",
+      state:member.state ?? "",
+      city: member.city?? "",
+      pincode:member.pincode ?? "",
+      gender: member.gender ?? "",
+      dob: member.dob?? "",
+      email: member.email?? "",
+      mobileno: member.mobileno?? "",
+      password: member.password ?? "",
+      transaction_pass: member.transaction_pass ?? "",
+      accountNo: member.accountNo ?? "",
+      branchName: member.branchName ?? "",
+      ifsc: member.ifsc ?? "",
+      bank_details : member.bank_details ??"",
+      bankAddress: member.bankAddress ?? "",
+      Pan_no : member.Pan_no ?? "",
+      google_pay: member. google_pay ?? "",
+      paytm: member.paytm ?? "",
+      phonepe: member.phonepe?? "",
+      Nominee_name : member.Nominee_name ?? "",
+      Nominee_Relation: member.Nominee_Relation ?? " ",
+      Nominee_age: member.Nominee_age?? "-",
+      Sponsor_code:member.Sponsor_code?? "-",
       position: member.position?? "-",
       positionName: member. positionName ??"-",
-      sponsorName: member.
-      Sponsor_name ?? "-",
+      Sponsor_name: member.Sponsor_name ?? "-",
       positionId: member.positionId ?? "-",
       
     })
@@ -181,7 +175,9 @@ useEffect(()=>{
           Update
         </Button>
         </div>
+
       </CardContent>
+      {(isLoading || updateMember.isPending) && <LoadingComponent/>}
     </Card>
   );
 };
