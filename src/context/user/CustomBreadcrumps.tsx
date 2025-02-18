@@ -6,8 +6,11 @@ interface breadcrumbsProp {
   path : string
   breadcrumb : string
 }
-
-const CustomBreadcrumbs = ({routes}:breadcrumbsProp[]) => {
+const routes = [
+  { path: "/admin/members", breadcrumb: "Members" },
+  { path: "/admin/members/update-member", breadcrumb: "Update Member" },
+];
+const CustomBreadcrumbs = () => {
   const breadcrumbs = useBreadcrumbs(routes,{ excludePaths: ["/admin", "/"] });
 
   return (
