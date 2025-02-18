@@ -6,7 +6,7 @@ interface breadcrumbsProp {
   path : string
   breadcrumb : string
 }
-const routes : breadcrumbsProp[] [
+const routes : breadcrumbsProp[] = [
   { path: "/admin/members", breadcrumb: "Members" },
   { path: "/admin/members/update-member", breadcrumb: "Update Member" },
 ];
