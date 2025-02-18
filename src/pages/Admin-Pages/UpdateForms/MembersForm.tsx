@@ -145,7 +145,7 @@ useEffect(()=>{
     >
       <CardContent>
       <div>
-        <CustomBreadcrumbs/>
+        <CustomBreadcrumbs routes={[{path:"", breadcrumb:""}]}/>
       </div>
        {/* BasicDetails----------------------------------------- */}
 
