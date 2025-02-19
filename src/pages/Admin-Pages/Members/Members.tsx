@@ -8,8 +8,6 @@ import {  useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useGetAllMembersDetails } from '../../../api/Admin';
 import MembersUpdateForm from '../UpdateForms/MembersForm';
-// import { useNavigate } from 'react-router-dom';
-
 
 
 
@@ -22,11 +20,10 @@ interface MemberTableProps {
 
  
 }
-
 const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = false }: MemberTableProps) => {
   const [isEdit , setIsEdit] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
-  // const navigate = useNavigate()
+ 
   const handleFromDateSelect = (date: any) => {
     console.log(date);
   }
@@ -37,14 +34,9 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = 
 
   const handleEditClick = (memberId: string) => {
     setIsEdit(true);
-    setSelectedMemberId(memberId); // Set the selected member ID
+    setSelectedMemberId(memberId); 
   };
-  // useEffect(()=>{
-  //   if(isEdit){
-  //     navigate("/admin/members/update-members")
-     
-  //   }
-  // },[isEdit,navigate])
+ 
   
   
   return (
