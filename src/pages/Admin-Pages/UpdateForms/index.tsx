@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, Button } from "@mui/material";
 import "./MemberForm.scss";
-import CustomBreadcrumbs from "../../../context/user/CustomBreadcrumps";
+import CustomBreadcrumbs, { breadcrumbsProp } from "../../../components/common/CustomBreadcrumps";
 import { useGetMemberDetails, useUpdateMemberbyId } from "../../../api/Admin";
 import { toast } from "react-toastify";
-import { BasicDetails } from "./pages/BasicDetails";
-import { BankDetails } from "./pages/BankDetails";
-import { NomineeDetails } from "./pages/NomineeDetails";
-import { JoiningDetails } from "./pages/JoiningDetails";
+import { BasicDetails } from "./updated-forms/BasicDetails";
+import { BankDetails } from "./updated-forms/BankDetails";
+import { NomineeDetails } from "./updated-forms/NomineeDetails";
+import { JoiningDetails } from "./updated-forms/JoiningDetails";
 import { LoadingComponent } from "../../../App";
+import { useParams } from "react-router-dom";
 
-interface MembersUpdateFormProps {
-  memberId: string | null;
-}
-
-const MembersUpdateForm: React.FC<MembersUpdateFormProps> = ({ memberId }) => {
+const MembersUpdateForm: React.FC = () => {
+  const {memberId} = useParams()
   const [formData, setFormData] = useState<Record<string, string>>({});
   const {
     data: member,
@@ -58,6 +56,11 @@ const MembersUpdateForm: React.FC<MembersUpdateFormProps> = ({ memberId }) => {
     updateMember.mutate({ memberId, data: formData });
   };
 
+  const routes : breadcrumbsProp[] = [
+    { path: "/admin/members", breadcrumb: "Members" },
+    { path:  `/admin/members/${memberId}`, breadcrumb: "Update Member" },
+  ];
+
   return (
     <Card
       sx={{
@@ -68,7 +71,7 @@ const MembersUpdateForm: React.FC<MembersUpdateFormProps> = ({ memberId }) => {
     >
       <CardContent>
         <div>
-          <CustomBreadcrumbs />
+          <CustomBreadcrumbs routes={routes} />
         </div>
         {/* BasicDetails----------------------------------------- */}
 

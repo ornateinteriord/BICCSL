@@ -39,7 +39,7 @@ export const useLoginMutation = () => {
     },
     onError: (err: any) => {
       const errorMessage =
-        err.response?.data?.message || "An unknown error occurred during login";
+        err.response?.data?.message || "Login failed. Please try again.";
       console.error("Login error:", errorMessage);
       toast.error(errorMessage);
     },
