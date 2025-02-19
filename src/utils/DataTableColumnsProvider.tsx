@@ -2,6 +2,7 @@ import { IconButton } from "@mui/material";
 import  VisibilityIcon  from '@mui/icons-material/Visibility';
 import { Edit } from "lucide-react";
 
+
 export const getUserDashboardTableColumns = () => [
   {
     selector: (row: any) => row.title,
@@ -281,7 +282,7 @@ export const getAdminDashboardTableColumns = () => [
   },
 ];
 
-export const getMembersColumns = (showEdit : boolean , setIsEdit : any) => [
+export const getMembersColumns = (showEdit : boolean , handleEditClick: (memberId: string) => void) => [
   {
     name: "SNo",
     selector: (row: any) => row.sNo,
@@ -338,8 +339,8 @@ export const getMembersColumns = (showEdit : boolean , setIsEdit : any) => [
   {
     name: 'Modify',
     omit : !showEdit,
-    cell: () => (
-      <IconButton onClick={()=>setIsEdit(true)} style={{ color: '#000', padding: '5px', borderRadius: '4px', cursor: 'pointer' }}>
+    cell: (row:any) => (
+      <IconButton onClick={()=> handleEditClick(row.Member_id)} style={{ color: '#000', padding: '5px', borderRadius: '4px', cursor: 'pointer' }}>
         <Edit />
       </IconButton>
     ),

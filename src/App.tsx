@@ -37,6 +37,7 @@ import useAuth from "./hooks/use-auth";
 import PublicRoute from "./routeProtecter/PublicRoutes";
 import UserProvider from "./context/user/userContextProvider";
 
+
 // public pages
 const Home = lazy(() => import("./pages/Home/Home"));
 const Login = lazy(() => import("./pages/Auth/Login"));
@@ -209,6 +210,7 @@ const RoutesProvider = ({
               <Route path="/admin/dashboard" element={<AdminDashboard />} />{" "}
               {/* admin member routes */}
               <Route path="/admin/members" element={<Members />} />
+              
               <Route
                 path="/admin/members/pending"
                 element={<PendingMembers />}
