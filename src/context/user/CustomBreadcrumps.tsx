@@ -2,11 +2,14 @@ import { Breadcrumbs, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import useBreadcrumbs from "use-react-router-breadcrumbs";
 
-const routes = [
+interface breadcrumbsProp {
+  path : string
+  breadcrumb : string
+}
+const routes : breadcrumbsProp[] = [
   { path: "/admin/members", breadcrumb: "Members" },
   { path: "/admin/members/update-member", breadcrumb: "Update Member" },
 ];
-
 const CustomBreadcrumbs = () => {
   const breadcrumbs = useBreadcrumbs(routes,{ excludePaths: ["/admin", "/"] });
 
