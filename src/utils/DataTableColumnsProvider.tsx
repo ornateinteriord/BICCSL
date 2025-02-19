@@ -2,6 +2,7 @@ import { IconButton } from "@mui/material";
 import  VisibilityIcon  from '@mui/icons-material/Visibility';
 import { Edit } from "lucide-react";
 
+
 export const getUserDashboardTableColumns = () => [
   {
     selector: (row: any) => row.title,
@@ -225,13 +226,12 @@ export const getTransactionColumns = () => [
     cell: (row: any) => (
       <div
         style={{
-          backgroundColor: row.status?.toLowerCase() === "active" ? "#00d1b2" : "#ff3860",
-          color: "white",
+          color: row.status?.toLowerCase() === "active" ? "#569f35" : "#ff3860",
           padding: "5px 10px",
           borderRadius: "4px",
         }}
       >
-        {row.status}
+        {row.status.charAt(0).toUpperCase()+row.status.slice(1)}
       </div>
     ),
   },
@@ -282,7 +282,7 @@ export const getAdminDashboardTableColumns = () => [
   },
 ];
 
-export const getMembersColumns = (showEdit : boolean , setIsEdit : any) => [
+export const getMembersColumns = (showEdit : boolean , handleEditClick: (memberId: string) => void) => [
   {
     name: "SNo",
     selector: (row: any) => row.sNo,
@@ -332,15 +332,15 @@ export const getMembersColumns = (showEdit : boolean , setIsEdit : any) => [
           fontSize: '14px',
         }}
       >
-        {row.status}
+        {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
       </div>
     ),
   },
   {
     name: 'Modify',
     omit : !showEdit,
-    cell: () => (
-      <IconButton onClick={()=>setIsEdit(true)} style={{ color: '#000', padding: '5px', borderRadius: '4px', cursor: 'pointer' }}>
+    cell: (row:any) => (
+      <IconButton onClick={()=> handleEditClick(row.Member_id)} style={{ color: '#000', padding: '5px', borderRadius: '4px', cursor: 'pointer' }}>
         <Edit />
       </IconButton>
     ),
@@ -407,13 +407,13 @@ export const getMailBoxColumns = (handleOpenDialog : any) => [
     cell: (row: any) => (
       <div
         style={{
-         color: row.status.toLowerCase() === 'pending' ? '#ffd700' : '#569f35',
+         color: row.status.toLowerCase() === 'pending' ? '#fb741a' : '#569f35',
           padding: '5px 10px',
           borderRadius: '4px',
           fontSize: '14px',
         }}
       >
-        {row.status}
+        {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
       </div>
     ),
   },
@@ -525,12 +525,12 @@ export const getNewsColumns = () => [
     cell: (row: any) => (
       <span
         style={{
-          color: row.status === "active" ? "green" : "transparent",
+          color: row.status === "active" ? "#569f35" : "transparent",
           padding: "0.5rem",
           borderRadius: "4px",
         }}
       >
-        {row.status.toUpperCase()}
+        {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
       </span>
     ),
     sortable: true,
@@ -554,12 +554,12 @@ export const getHolidaysColumns = () => [
     cell: (row: any) => (
       <span
         style={{
-          color: row.status === "active" ? "green" : "transparent",
+          color: row.status === "active" ? "#569f35" : "transparent",
           padding: "0.5rem",
           borderRadius: "4px",
         }}
       >
-        {row.status.toUpperCase()}
+        {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
       </span>
     ),
     sortable: true,

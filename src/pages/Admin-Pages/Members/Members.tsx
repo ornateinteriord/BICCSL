@@ -4,10 +4,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getMembersColumns } from '../../../utils/DataTableColumnsProvider';
 import './Members.scss'
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
-import { useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useGetAllMembersDetails } from '../../../api/Admin';
 import MembersUpdateForm from '../UpdateForms/MembersForm';
+
+
 
 interface MemberTableProps {
   title: string;
@@ -15,12 +17,13 @@ interface MemberTableProps {
   data: any[];
   showEdit?: boolean;
   isLoading?:boolean;
+
  
 }
-
 const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = false }: MemberTableProps) => {
   const [isEdit , setIsEdit] = useState(false);
-
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+ 
   const handleFromDateSelect = (date: any) => {
     console.log(date);
   }
@@ -29,12 +32,17 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = 
     console.log(date);
   }
 
+  const handleEditClick = (memberId: string) => {
+    setIsEdit(true);
+    setSelectedMemberId(memberId); 
+  };
+ 
+  
+  
   return (
-    isEdit ? (
+    
     <>
-    <MembersUpdateForm />
-    </>
-    ) : (
+    {isEdit? (<MembersUpdateForm memberId={selectedMemberId} />):(
     <>
       <Grid className="filter-container"  sx={{ margin: '2rem', mt: 12 }}>
         
@@ -77,7 +85,7 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = 
                   />
               </div>
               <DataTable
-                columns={getMembersColumns(showEdit , setIsEdit)}
+                columns={getMembersColumns(showEdit , handleEditClick)}
                 data={data}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
@@ -93,8 +101,10 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = 
           </Accordion>
         </CardContent>
       </Card>
+     
     </>
-    )
+   )}
+   </>
   );
 };
 
@@ -124,7 +134,8 @@ const useMembers = (status: status) => {
     }, [isError, error]);
 
     const memberdata = Array.isArray(members)
-    ? members .filter((member: Member) => (status === "All" ? true: member.status === status )).map((member: Member, index) => ({
+    ? members .filter((member:Member) => (status === "All" ? true: member.status === status )).map((member: Member, index) => ({
+      ...member,
       sNo: index + 1,
       member: member.Member_id ?? "-",
       approvedOn: member.Date_of_joining ?? "-",
@@ -150,6 +161,7 @@ export const Members = () => {
       data={memberdata}
       isLoading={isLoading}
     />
+    
   );
 };
 

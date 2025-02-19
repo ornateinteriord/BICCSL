@@ -109,7 +109,7 @@ const SupportTickets = () => {
             
           }}
         >
-          {row.status}
+          {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
         </span>
       ),
       sortable: true,

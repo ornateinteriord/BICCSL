@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, put } from "../Api";
 import { toast } from "react-toastify";
 
+
 export const useGetAllMembersDetails = () =>{
     return useQuery({
         queryKey:["allMembers"],
@@ -15,6 +16,44 @@ export const useGetAllMembersDetails = () =>{
         }
     })
 }
+
+export const  useGetMemberDetails =(memberId:any)=>{
+  return useQuery({
+    queryKey:["members",memberId],
+    queryFn:async()=>{
+      const response = await get(`/admin/get-member/${memberId}`)
+      if(response.success){
+        return response.member
+      }else{
+        throw new Error(response.message)
+      }
+    },
+    enabled: !!memberId,
+  })
+}
+
+export const useUpdateMemberbyId=()=>{
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn:async({memberId,data}:{memberId:any;data:any})=>{
+        return put(`/admin/update-member/${memberId}`,data)
+    },
+    onSuccess:(response)=>{
+      if(response.success){
+        toast.success(response.message)
+        queryClient.invalidateQueries({ queryKey: ["members"] });  
+      }  else {
+        toast.error(response.message);
+      }
+    },
+    onError: (err: any) => {
+      const errorMessage =
+        err.response?.message || "An unknown error occurred ";
+      toast.error(errorMessage);
+    },
+  })
+}
+
 
 export const useGetAllTransactionDetails = () => {
   return useQuery({
