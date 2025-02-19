@@ -36,6 +36,7 @@ import ProtectedRoute from "./routeProtecter/RouteProtecter";
 import useAuth from "./hooks/use-auth";
 import PublicRoute from "./routeProtecter/PublicRoutes";
 import UserProvider from "./context/user/userContextProvider";
+import MembersUpdateForm from "./pages/Admin-Pages/UpdateForms";
 
 
 // public pages
@@ -280,6 +281,7 @@ const RoutesProvider = ({
               />
               <Route path="/admin/news" element={<AdminNews />} />
               <Route path="/admin/holidays" element={<AdminHolidays />} />
+              <Route path="/admin/members/:memberId" element={<MembersUpdateForm />} />
             </Route>
 
             {/* user routes */}
