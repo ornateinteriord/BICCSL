@@ -13,7 +13,9 @@ import { useParams } from "react-router-dom";
 
 const MembersUpdateForm: React.FC = () => {
   const {memberId} = useParams()
-  const [formData, setFormData] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState<Record<string, string>>({
+    gender: "", 
+  });
   const {
     data: member,
     isLoading,
@@ -29,7 +31,7 @@ const MembersUpdateForm: React.FC = () => {
 
   useEffect(() => {
     if (member) {
-      setFormData((prev) => ({ ...prev, ...member }));
+      setFormData((prev) => ({ ...prev, ...member,gender: member.gender || "", }));
     }
   }, [member]);
 
@@ -46,7 +48,7 @@ const MembersUpdateForm: React.FC = () => {
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevData) => ({
       ...prevData,
-      gender: e.target.value,
+      gender:e.target.value,
     }));
   };
 

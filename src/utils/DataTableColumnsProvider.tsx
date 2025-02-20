@@ -133,25 +133,26 @@ export const getDirectColumns = () => [
   },
   {
     name: "Member",
-    selector: (row: any) => row.member,
+    selector: (row: any) => row.Name,
     sortable: true,
   },
   {
     name: "Mobile No",
-    selector: (row: any) => row.mobileNo,
+    selector: (row: any) => row.mobileno,
     sortable: true,
   },
   {
     name: "DOJ",
-    selector: (row: any) => row.doj,
+    selector: (row: any) => row.Date_of_joining,
     sortable: true,
   },
   {
     name: "Sponsor",
-    selector: (row: any) => row.sponsor,
+    selector: (row: any) => row.Sponsor_name,
     sortable: true,
   },
 ];
+
 export const getLevelBenifitsColumns = () => [
   {
     name: "Date",

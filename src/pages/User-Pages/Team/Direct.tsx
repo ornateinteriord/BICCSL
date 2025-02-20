@@ -1,34 +1,35 @@
 import DataTable from 'react-data-table-component';
-import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
+import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getDirectColumns } from '../../../utils/DataTableColumnsProvider';
+import { useGetSponsers } from '../../../api/Memeber';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
+interface Sponser{
+  sNo:string;
+  Name:string;
+  Member_id:string;
+  mobileno:string;
+  Date_of_joining:string;
+  Sponsor_name:string;
+  Sponsor_code:string;
+}
 const Direct = () => {
-  
+   const { data: sponsers, isLoading, isError, error } = useGetSponsers();
 
-  const data = [
-    {
-      sNo: '1',
-      member: 'Shivananda C - BIC882898',
-      mobileNo: '9696968585',
-      doj: '18-Nov-2024',
-      sponsor: 'BICCSL - SF000001',
-    },
-    {
-      sNo: '2',
-      member: 'Ggg - BIC192700',
-      mobileNo: '9845044424',
-      doj: '24-Dec-2024',
-      sponsor: 'BICCSL - SF000001',
-    },
-    {
-      sNo: '3',
-      member: 'Nnn - BIC043465',
-      mobileNo: '9100000000',
-      doj: '07-Jan-2025',
-      sponsor: 'MANJUNATH N - SF000001',
-    },
-  ];
+   useEffect(() => {
+       if (isError) toast.error(error.message);
+     }, [isError, error]);
+
+  const data = Array.isArray(sponsers)?sponsers.map((sponser: Sponser,index)=>({
+    sNo:index+1,
+    Name:`${sponser.Name || "-"} - ${sponser.Member_id || "-"}`,
+    mobileno:sponser. mobileno || "-",
+    Date_of_joining:sponser. Date_of_joining || "-",
+    Sponsor_name:`${sponser.Sponsor_name || "-"} - ${sponser.Sponsor_code || "-"}`,
+  })) :[]
+    
 
   return (
     <Card sx={{ margin: '2rem', mt: 10 }}>
@@ -42,13 +43,17 @@ const Direct = () => {
                 '& .MuiSvgIcon-root': { color: '#fff' }
               }}
           >
-            List of Direct (3)
+            {`List of Direct (${data.length})`}
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
               columns={getDirectColumns()}
               data={data}
               pagination
+              progressPending={isLoading}
+              progressComponent={
+                <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+              }
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
               highlightOnHover

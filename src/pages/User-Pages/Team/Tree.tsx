@@ -23,12 +23,14 @@ interface Sponser {
   Name: string;
   Member_id: string;
   status: string;
+  Date_of_joining: string;
 }
 const Tree = () => {
   const { user } = useContext(UserContext);
   const [hoveredSponsor, setHoveredSponsor] = useState<{
     Name: string;
     status:string;
+    Date_of_joining:string;
   } | null>(null);
 
   const [userDetails, setUserDetails] = useState({
@@ -60,6 +62,7 @@ const Tree = () => {
         Name: sponser.Name,
         Member_id: sponser.Member_id,
         status:sponser.status,
+        Date_of_joining:sponser.Date_of_joining,
       }))
     : [];
 
@@ -72,7 +75,7 @@ const Tree = () => {
     { field: "Status", value: hoveredSponsor.status },
     { field: "Direct", value: "0/0" },
     { field: "Team", value: "0/0" },
-    { field: "Activation Date", value: "18-11-2024" },
+    { field: "Activation Date", value: hoveredSponsor.Date_of_joining },
     { field: "Club", value: "2K" },
     { field: "Earnings", value: "Rs. 0" },
   ]:[]
@@ -141,14 +144,9 @@ const Tree = () => {
               
 
                 {sponsored.length > 0 && (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      width: "100%",
-                      maxWidth: 800,
-                      gap: 6,
-                    }}
+                  <Box 
+                  className="SponsoredProfile"
+                    
                   >
                     {sponsored.map((user: any) => (
                       <SponsoredProfile key={user.Member_id} user={user} />
@@ -158,18 +156,10 @@ const Tree = () => {
               </Box>
               {hoveredSponsor && (
                 <ClickAwayListener onClickAway={() => setHoveredSponsor(null)}>
+                  <Box  className="sponsor-popup-container">
                   <Box
                     className="sponsor-popup"
-                    sx={{
-                      position: "relative",
-                      backgroundColor: "white",
-                      boxShadow: 3,
-                      borderRadius: 2,
-                      p: 2,
-                      minWidth: 300,
-                      height: 320,
-                      border: "1px solid black",
-                    }}
+              
                   >
                     <Typography
                       variant="h6"
@@ -180,15 +170,16 @@ const Tree = () => {
                     <DataTable
                       columns={columns}
                       data={data}
-                      dense // Removes extra padding inside rows
+                      dense 
                       customStyles={{
                         cells: {
                           style: {
-                            padding: "4px", // Reduce padding inside cells
+                            padding: "4px", 
                           },
                         },
                       }}
                     />
+                  </Box>
                   </Box>
                 </ClickAwayListener>
               )}

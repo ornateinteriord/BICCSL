@@ -47,7 +47,7 @@ import {
             >
               <TextField
                 label="Nominee Name"
-                name=" Nominee_name"
+                name="Nominee_name"
                 value={formData. Nominee_name}
                 onChange={handleInputChange}
                 fullWidth
