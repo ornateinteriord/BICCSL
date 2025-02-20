@@ -153,7 +153,7 @@ export const useAddNews = ()=>{
      
     },
     onError:(error:any)=>{
-      toast.error(error.response.message)
+      toast.error(error.response.data.message)
     }
   })
 }
