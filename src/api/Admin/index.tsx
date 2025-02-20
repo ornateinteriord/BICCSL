@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { get, put } from "../Api";
+import { get, post, put } from "../Api";
 import { toast } from "react-toastify";
+
 
 
 export const useGetAllMembersDetails = () =>{
@@ -36,7 +37,7 @@ export const useUpdateMemberbyId=()=>{
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn:async({memberId,data}:{memberId:any;data:any})=>{
-        return put(`/admin/update-member/${memberId}`,data)
+        return await put(`/admin/update-member/${memberId}`,data)
     },
     onSuccess:(response)=>{
       if(response.success){
@@ -88,7 +89,7 @@ export const useUpdateTickets = () => {
 
   return useMutation({
     mutationFn: async ({ id, reply_details }: { id: string; reply_details: string })=> {
-     return put(`/admin/ticket/${id}`, { reply_details });
+     return await put(`/admin/ticket/${id}`, { reply_details });
     },
     onSuccess: (response) => {
       if (response.success) {
@@ -121,3 +122,38 @@ export const getEpinsSummary = () => {
   });
 };
 
+export const useGetNews = ()=>{
+  return useQuery({
+    queryKey:["news"],
+    queryFn:async ()=>{
+      const response = await get("/admin/getnews")
+      if(response.success){
+        return response.news
+      }else{
+        throw new Error(response.message)
+      }
+    }
+  });
+};
+
+export const useAddNews = ()=>{
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn:async(newsData:any) =>{
+    return await post("/admin/addnews",newsData);
+    },
+    onSuccess:(response)=>{
+      if(response.success){
+        toast.success(response.message)
+        queryClient.invalidateQueries({queryKey:["news"]})
+        return response.news
+      }else{
+        console.error( response.message)
+      }
+     
+    },
+    onError:(error:any)=>{
+      toast.error(error.response.data.message)
+    }
+  })
+}

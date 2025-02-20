@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { 
   Card, 
@@ -13,25 +13,27 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  CircularProgress
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getNewsColumns } from '../../../utils/DataTableColumnsProvider';
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
+import { useAddNews, useGetNews } from '../../../api/Admin';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 
 
-
-const initialData = [
-  {
-    fromDate: '18/06/2022',
-    toDate: '20/06/2022',
-    content: 'FREE LAUNCHING JUNE 20TH MONDAY',
-    status: 'active',
-  },
-];
+interface newsData{
+  from_date:string;
+  to_date:string;
+  news_details:string;
+  status:string;
+}
 
 const News = () => {
-  const [data, setData] = useState(initialData);
+  const {data:news,isLoading,isError,error} = useGetNews()
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newNews, setNewNews] = useState<{
     fromDate: Date | null;
@@ -43,16 +45,38 @@ const News = () => {
     content: '',
   });
 
-  const handleSubmit = () => {
+  useEffect(() => {
+      if (isError) {
+        toast.error(error.message );
+      }
+    }, [isError, error]);
+
+  const initialData = Array.isArray(news)?news.map((News:newsData)=>({
+  fromDate:News.from_date || "-",
+  toDate:News.to_date || "-",
+  content:News.news_details|| "-",
+  status:News.status|| "-",
+  })):[]
+
+  const updateNews = useAddNews()
+
+  const handleSubmit = (e: React.FormEvent) => {
     if (newNews.fromDate && newNews.toDate && newNews.content) {
-      setData([...data, {
-        ...newNews,
-        fromDate: newNews.fromDate?.toLocaleDateString() || '',
-        toDate: newNews.toDate?.toLocaleDateString() || '',
-        status: 'active'
-      }]);
+      try{
+      e.preventDefault();
+      const NewsData ={
+        from_date: newNews.fromDate  ? moment(newNews.fromDate).format("DD/MM/YYYY") :"-", 
+        to_date: newNews.toDate? moment(newNews.toDate).format("DD/MM/YYYY") :"-",
+        news_details: newNews.content,
+      }
+      updateNews.mutate(NewsData)
       setIsModalOpen(false);
+    }catch(error){
+      console.error("Failed to create ticket", error);
+    }finally{
       setNewNews({ fromDate: null, toDate: null, content: '' });
+    }
+
     }
   };
 
@@ -97,8 +121,12 @@ const News = () => {
               </div>
               <DataTable
                 columns={getNewsColumns()}
-                data={data}
+                data={initialData}
                 pagination
+                progressPending={isLoading || updateNews.isPending}
+                progressComponent={
+                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+                }
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
                 paginationRowsPerPageOptions={[25, 50, 100]}
