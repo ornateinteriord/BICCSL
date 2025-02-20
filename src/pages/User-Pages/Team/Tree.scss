@@ -1,8 +1,7 @@
 .tree-container {
-    min-height: 100vh;
+   
     padding: 2rem;
     display: flex;
-    
     justify-content: space-around;
   }
 .tree-user-profile {
@@ -27,11 +26,20 @@
   
 
 
+
   .sponsor-avatar {
     width: 48px;
     height: 48px;
     margin-bottom: 0.5rem;
     background-color: var(--secondary-color);
+  }
+
+  .SponsoredProfile{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 800;
+    gap: 40px;
   }
 
   .sponsor-popup {
@@ -52,6 +60,48 @@
       color: #fff;
     }
   }
+
+  @media(max-width: 821px) {
+    .tree-container{
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 50px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sponsor-popup-container {
+      display: flex;
+      justify-content: center; 
+      align-items: center; 
+      width: 100%;
+     
+    }
+  
+    .sponsor-popup {
+      min-width: 250px;
+      padding: 10px;
+      border-radius: 8px;
+    }
+   
+    .SponsoredProfile {
+      display: flex;
+      flex-wrap: nowrap; /* Prevents items from wrapping */
+      overflow-x: auto;  
+     justify-content: flex-start;
+      gap: 16px;
+      padding: 10px;
+      max-width: 100%;
+      -ms-overflow-style: none; /* Hides scrollbar in Internet Explorer and Edge */
+      scrollbar-width: none; /* Hides scrollbar in Firefox */
+    }
+  
+    /* Hides scrollbar for WebKit browsers (Chrome, Safari) */
+    .SponsoredProfile::-webkit-scrollbar {
+      display: none;
+    }
+    
+}
   
  
   

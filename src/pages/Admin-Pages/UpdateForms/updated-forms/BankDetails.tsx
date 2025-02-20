@@ -98,7 +98,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
               />
               <TextField
                 label="Bank Name"
-                name="bank_details "
+                name="bank_details"
                 value={formData.bank_details }
                 onChange={handleInputChange}
                 fullWidth
@@ -132,8 +132,8 @@ import PaymentIcon from "@mui/icons-material/Payment";
               />
               <TextField
                 label="Pancard Number"
-                name="Pan_no "
-                value={formData.Pan_no }
+                name="Pan_no"
+                value={formData.Pan_no}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -157,7 +157,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
             >
               <TextField
                 label="Google Pay"
-                name=" google_pay"
+                name="google_pay"
                 value={formData. google_pay}
                 onChange={handleInputChange}
                 fullWidth
