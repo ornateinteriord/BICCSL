@@ -27,7 +27,7 @@ export const useUpdateMember = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: any) => {
-      return put(`/user/member/${userId}`, data);
+      return await put(`/user/member/${userId}`, data);
     },
     onSuccess: (response) => {
       if (response.success) {
@@ -83,7 +83,7 @@ export const useCreateTicket = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (ticketData: any) => {
-    return post("/user/ticket", ticketData);
+    return await post("/user/ticket", ticketData);
     },
     onSuccess: (response) => {
       if (response.success){
