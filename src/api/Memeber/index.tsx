@@ -83,16 +83,16 @@ export const useCreateTicket = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (ticketData: any) => {
-      const response = await post("/user/ticket", ticketData);
-      if (response.success) {
-        toast.success(response.message)
-        return response.ticket;
-      } else {
-        throw new Error(response.message || "Failed to create ticket");
-      }
+    return post("/user/ticket", ticketData);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["TicketDetails"] });
+    onSuccess: (response) => {
+      if (response.success){
+        toast.success(response.message)
+        queryClient.invalidateQueries({ queryKey: ["TicketDetails"] });
+        return response.ticket;
+      }else{
+        throw new Error(response.message)
+      } 
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Failed to create ticket. Please try again.");

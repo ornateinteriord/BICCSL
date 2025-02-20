@@ -127,7 +127,7 @@ export const useGetNews = ()=>{
     queryKey:["news"],
     queryFn:async ()=>{
       const response = await get("/admin/getnews")
-      if(response){
+      if(response.success){
         return response.news
       }else{
         throw new Error(response.message)
@@ -140,16 +140,17 @@ export const useAddNews = ()=>{
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn:async(newsData:any) =>{
-    const response = await post("/admin/addnews",newsData);
-    if(response.success){
-       toast.success(response.message)
-       return response.news
-    }else{
-      throw new Error(response.message)
-    }
+    return post("/admin/addnews",newsData);
     },
-    onSuccess:()=>{
-      queryClient.invalidateQueries({queryKey:["news"]})
+    onSuccess:(response)=>{
+      if(response.success){
+        toast.success(response.message)
+        queryClient.invalidateQueries({queryKey:["news"]})
+        return response.news
+      }else{
+        console.error( response.message)
+      }
+     
     },
     onError:(error:any)=>{
       toast.error(error.response.message)
