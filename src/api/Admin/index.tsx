@@ -148,7 +148,7 @@ export const useAddNews = ()=>{
         queryClient.invalidateQueries({queryKey:["news"]})
         return response.news
       }else{
-        console.error( response.data.message)
+        console.error( response.message)
       }
      
     },
