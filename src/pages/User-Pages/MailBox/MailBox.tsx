@@ -31,6 +31,7 @@ import TokenService from "../../../api/token/tokenService";
 import { useCreateTicket, useGetTicketDetails } from "../../../api/Memeber";
 import { toast } from "react-toastify";
 import moment from "moment";
+import useSearch from "../../../components/common/SearchQuery";
 
 interface Ticket {
   ticket_date: string;
@@ -67,6 +68,15 @@ const MailBox = () => {
         reply: ticket.reply_details || "No reply",
       }))
     : [];
+
+    const { searchQuery, setSearchQuery, filteredData } = useSearch(Ticketdata,[
+      "ticketDate",
+      "ticketNo",
+      "typeOfTicket",
+      "subject",
+      "status",
+      "reply"
+    ])
 
   const [formData, setFormData] = useState({
     ticketType: "",
@@ -272,7 +282,7 @@ const MailBox = () => {
             <AccordionDetails>
               <DataTable
                 columns={getMailBoxColumns(handleOpenDialog)}
-                data={Ticketdata}
+                data={filteredData }
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
@@ -297,6 +307,8 @@ const MailBox = () => {
                       placeholder="Search"
                       variant="outlined"
                       size="small"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                     />
                   </div>
                 }

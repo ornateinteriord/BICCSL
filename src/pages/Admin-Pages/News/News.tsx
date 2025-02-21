@@ -22,6 +22,8 @@ import DateFilterComponent from '../../../components/common/DateFilterComponent'
 import { useAddNews, useGetNews } from '../../../api/Admin';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+import useSearch from '../../../components/common/SearchQuery';
+import './News.scss'
 
 
 interface newsData{
@@ -57,6 +59,12 @@ const News = () => {
   content:News.news_details|| "-",
   status:News.status|| "-",
   })):[]
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(initialData,[
+    "fromDate",
+    "toDate",
+    "content",
+    "status"
+  ])
 
   const updateNews = useAddNews()
 
@@ -117,11 +125,13 @@ const News = () => {
                   size="small"
                   placeholder="Search..."
                   sx={{ minWidth: 200 }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <DataTable
                 columns={getNewsColumns()}
-                data={initialData}
+                data={ filteredData }
                 pagination
                 progressPending={isLoading || updateNews.isPending}
                 progressComponent={
@@ -144,7 +154,7 @@ const News = () => {
       >
         <DialogTitle>Add News</DialogTitle>
         <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1, zIndex: 1300 }}>
+          <Grid container spacing={2} sx={{ mt: 1, zIndex: 1300 }} >
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -155,19 +165,22 @@ const News = () => {
                 onChange={(e) => setNewNews({ ...newNews, content: e.target.value })}
               />
             </Grid>
-            <Grid item xs={6}>
+           <Grid className='addnews-container'>
+            <Grid item  className='date-container'>
+            <Typography  className="date-label">From:</Typography>
               <DateFilterComponent
                 onSelect={(date) => setNewNews({ ...newNews, fromDate: date })}
-                mode="single"
-                width="100%"
+                mode="single"   
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6}className='date-container'>
+            <Typography  className="date-label">To:</Typography>
               <DateFilterComponent
                 onSelect={(date) => setNewNews({ ...newNews, toDate: date })}
                 mode="single"
-                width="100%"
+                
               />
+            </Grid>
             </Grid>
           </Grid>
         </DialogContent>

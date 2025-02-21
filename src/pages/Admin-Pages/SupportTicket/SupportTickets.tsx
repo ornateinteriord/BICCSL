@@ -20,6 +20,7 @@ import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider'
 import { useGetAllTickets, useUpdateTickets } from '../../../api/Admin';
 import { toast } from 'react-toastify';
 import moment from 'moment'
+import useSearch from '../../../components/common/SearchQuery';
 
 interface Ticket{
   _id:string;
@@ -150,6 +151,14 @@ const SupportTickets = () => {
     subject:ticket.SUBJECT || "-",
     status:ticket.ticket_status || "-",
   })) : []
+
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data,[
+    "ticketNo",
+    "Memberid",
+    "type",
+    "subject",
+    "status"
+  ])
   
     
 
@@ -177,11 +186,13 @@ const SupportTickets = () => {
                   size="small"
                   placeholder="Search..."
                   sx={{ minWidth: 200 }}
+                  value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <DataTable
                 columns={columns}
-                data={data}
+                data={filteredData}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}

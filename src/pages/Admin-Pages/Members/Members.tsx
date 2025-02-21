@@ -8,6 +8,7 @@ import {  useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useGetAllMembersDetails } from '../../../api/Admin';
 import { useNavigate } from 'react-router-dom';
+import useSearch from '../../../components/common/SearchQuery';
 
 
 
@@ -23,6 +24,15 @@ interface MemberTableProps {
 const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = false }: MemberTableProps) => {
   const [isEdit , setIsEdit] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data,[
+    "member",
+    "approvedOn",
+    "password",
+    "sponsor",
+    "package",
+    "mobileNo",
+    "status",
+  ])
 
   const navigate = useNavigate()
  
@@ -87,11 +97,14 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = 
                     size="small"
                     placeholder="Search..."
                     sx={{ minWidth: 200 }}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+
                   />
               </div>
               <DataTable
                 columns={getMembersColumns(showEdit , handleEditClick)}
-                data={data}
+                data={filteredData}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
