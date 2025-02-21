@@ -98,8 +98,8 @@ export const TransactionDataTable = ({
   data: any;
   columns: any;
   isLoading?: boolean;
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  searchQuery?: string;
+  setSearchQuery?: React.Dispatch<React.SetStateAction<string>> ;
 }) => {
   const handleFromDateSelect = (date: any) => {
     console.log(date);
@@ -165,7 +165,7 @@ export const TransactionDataTable = ({
                   placeholder="Search..."
                   sx={{ minWidth: 200 }}
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => setSearchQuery?.(e.target.value)}
                 />
               </div>
               <DataTable
