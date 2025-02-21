@@ -21,6 +21,7 @@ import DateFilterComponent from "../../../components/common/DateFilterComponent"
 import { useGetAllTransactionDetails } from "../../../api/Admin";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import useSearch from "../../../hooks/SearchQuery";
 
 
 
@@ -57,13 +58,18 @@ const Transactions = () => {
     ewCredit: transaction.ew_credit || "-",
     ewDebit: transaction.ew_debit || "-",
   })) || []
+
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+  
   return (
     <TransactionDataTable
       title="Transactions"
       summaryTitle="List of Transactions"
-      data={data}
+      data={filteredData}
       columns={getAdminPageTransactionColumns()}
       isLoading={isLoading}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
     />
   );
 };
@@ -77,12 +83,16 @@ export const TransactionDataTable = ({
   data,
   columns,
   isLoading,
+  searchQuery,
+  setSearchQuery,
 }: {
   title: string;
   summaryTitle: string;
   data: any;
   columns: any;
   isLoading?: boolean;
+  searchQuery?: string;
+  setSearchQuery?: React.Dispatch<React.SetStateAction<string>> ;
 }) => {
   const handleFromDateSelect = (date: any) => {
     console.log(date);
@@ -147,6 +157,8 @@ export const TransactionDataTable = ({
                   size="small"
                   placeholder="Search..."
                   sx={{ minWidth: 200 }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery?.(e.target.value)}
                 />
               </div>
               <DataTable

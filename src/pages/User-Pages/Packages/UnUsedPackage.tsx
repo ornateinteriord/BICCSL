@@ -8,6 +8,7 @@ import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import UserContext from '../../../context/user/userContext';
+import useSearch from '../../../hooks/SearchQuery';
 
 const UnUsedPackage = () => {
    
@@ -35,6 +36,7 @@ const UnUsedPackage = () => {
     amount: `₹ ${pkg.amount.toLocaleString()}` || "-",
     status: pkg.status || "-",
   })) || [];
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
 
 
   return (
@@ -54,7 +56,7 @@ const UnUsedPackage = () => {
           <AccordionDetails>
             <DataTable
               columns={getUnUsedPackageColumns()}
-              data={data}
+              data={filteredData}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}
               paginationPerPage={25}
@@ -69,6 +71,8 @@ const UnUsedPackage = () => {
                     placeholder="Search"
                     variant="outlined"
                     size="small"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
               }

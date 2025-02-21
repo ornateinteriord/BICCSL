@@ -17,6 +17,7 @@ import { useGetTransactionDetails } from "../../../api/Memeber";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import TokenService from "../../../api/token/tokenService";
+import useSearch from "../../../hooks/SearchQuery";
 
 interface Transaction {
   transaction_date: string;
@@ -51,6 +52,7 @@ const Transaction = () => {
       debit: transaction.ew_debit || "-",
       status: transaction.status || "-",
     })) || [];
+    const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
 
   const noDataComponent = (
     <div style={{ padding: "24px" }}>No data available in table</div>
@@ -73,7 +75,7 @@ const Transaction = () => {
           <AccordionDetails>
             <DataTable
               columns={getTransactionColumns()}
-              data={data}
+              data={filteredData}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}
               paginationPerPage={25}
@@ -98,6 +100,8 @@ const Transaction = () => {
                     placeholder="Search"
                     variant="outlined"
                     size="small"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
               }

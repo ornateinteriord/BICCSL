@@ -5,6 +5,7 @@ import { DASHBOARD_CUTSOM_STYLE, getDirectColumns } from '../../../utils/DataTab
 import { useGetSponsers } from '../../../api/Memeber';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import useSearch from '../../../hooks/SearchQuery';
 
 interface Sponser{
   sNo:string;
@@ -29,6 +30,7 @@ const Direct = () => {
     Date_of_joining:sponser. Date_of_joining || "-",
     Sponsor_name:`${sponser.Sponsor_name || "-"} - ${sponser.Sponsor_code || "-"}`,
   })) :[]
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
     
 
   return (
@@ -48,7 +50,7 @@ const Direct = () => {
           <AccordionDetails>
             <DataTable
               columns={getDirectColumns()}
-              data={data}
+              data={filteredData}
               pagination
               progressPending={isLoading}
               progressComponent={
@@ -65,6 +67,8 @@ const Direct = () => {
                     placeholder="Search"
                     variant="outlined"
                     size="small"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
               }
