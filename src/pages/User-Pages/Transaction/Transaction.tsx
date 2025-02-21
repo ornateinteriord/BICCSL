@@ -52,13 +52,7 @@ const Transaction = () => {
       debit: transaction.ew_debit || "-",
       status: transaction.status || "-",
     })) || [];
-    const { searchQuery, setSearchQuery, filteredData } = useSearch(data,[
-      "date",
-      "description",
-      "credits",
-      "debit",
-      " status",
-    ])
+    const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
 
   const noDataComponent = (
     <div style={{ padding: "24px" }}>No data available in table</div>

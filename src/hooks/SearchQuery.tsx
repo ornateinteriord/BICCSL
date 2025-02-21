@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
-const useSearch = <T,>(data: T[], searchKeys: (keyof T)[]) => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+const useSearch = <T extends Record<string, any>>(data: T[]) => {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const normalizedQuery = searchQuery.toLowerCase().trim(); // Normalize search query
-
-  const filteredData = data.filter((item) =>
-    searchKeys.some((key) => {
-      const value = item[key];
-
-      return (
-        value !== undefined &&
-        value !== null &&
-        String(value).toLowerCase().includes(normalizedQuery) // Convert everything to string before searching
-      );
-    })
+  const searchKeys = useMemo(() => 
+    data.length > 0 ? (Object.keys(data[0]) as (keyof T)[]) : [], 
+    [data]
   );
+
+  const filteredData = useMemo(() => {
+    const normalizedQuery = searchQuery.toLowerCase().trim();
+    return data.filter((item) =>
+      searchKeys.some((key) => {
+        const value = item[key];
+        return value && String(value).toLowerCase().includes(normalizedQuery);
+      })
+    );
+  }, [data, searchKeys, searchQuery]);
 
   return { searchQuery, setSearchQuery, filteredData };
 };

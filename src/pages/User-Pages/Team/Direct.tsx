@@ -30,13 +30,7 @@ const Direct = () => {
     Date_of_joining:sponser. Date_of_joining || "-",
     Sponsor_name:`${sponser.Sponsor_name || "-"} - ${sponser.Sponsor_code || "-"}`,
   })) :[]
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data,[
-    "sNo",
-    "Name",
-    "mobileno",
-    "Date_of_joining",
-    "Sponsor_name"
-  ])
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
     
 
   return (

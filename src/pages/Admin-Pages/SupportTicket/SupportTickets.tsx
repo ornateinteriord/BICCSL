@@ -152,13 +152,7 @@ const SupportTickets = () => {
     status:ticket.ticket_status || "-",
   })) : []
 
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data,[
-    "ticketNo",
-    "Memberid",
-    "type",
-    "subject",
-    "status"
-  ])
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
   
     
 

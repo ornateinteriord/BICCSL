@@ -59,14 +59,7 @@ const Transactions = () => {
     ewDebit: transaction.ew_debit || "-",
   })) || []
 
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data, [
-    "date",
-    "member",
-    "description",
-    "type",
-    "ewCredit",
-    "ewDebit",
-  ]);
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
   
   return (
     <TransactionDataTable

@@ -39,15 +39,8 @@ const UsedPackage = () => {
     status: pkg.status || "-",
   })) || [];
 
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data,[
-    "date",
-    "memberCode",
-    "packageCode",
-    "amount",
-    "usedFor",
-    "usedDate",
-    "status",
-  ])
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+   
 
 
   return (

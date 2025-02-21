@@ -69,14 +69,8 @@ const MailBox = () => {
       }))
     : [];
 
-    const { searchQuery, setSearchQuery, filteredData } = useSearch(Ticketdata,[
-      "ticketDate",
-      "ticketNo",
-      "typeOfTicket",
-      "subject",
-      "status",
-      "reply"
-    ])
+    const { searchQuery, setSearchQuery, filteredData } = useSearch(Ticketdata)
+     
 
   const [formData, setFormData] = useState({
     ticketType: "",

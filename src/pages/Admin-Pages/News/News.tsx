@@ -59,12 +59,8 @@ const News = () => {
   content:News.news_details|| "-",
   status:News.status|| "-",
   })):[]
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(initialData,[
-    "fromDate",
-    "toDate",
-    "content",
-    "status"
-  ])
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(initialData)
+
 
   const updateNews = useAddNews()
 

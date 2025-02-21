@@ -36,13 +36,7 @@ const UnUsedPackage = () => {
     amount: `₹ ${pkg.amount.toLocaleString()}` || "-",
     status: pkg.status || "-",
   })) || [];
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data,[
-    "date",
-    "code",
-    "packageCode",
-    "amount",
-    "status",
-  ])
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
 
 
   return (
