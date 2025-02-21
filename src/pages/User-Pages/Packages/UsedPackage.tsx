@@ -8,7 +8,7 @@ import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import UserContext from '../../../context/user/userContext';
-import useSearch from '../../../components/common/SearchQuery';
+import useSearch from '../../../hooks/SearchQuery';
 
 const UsedPackage = () => {
   

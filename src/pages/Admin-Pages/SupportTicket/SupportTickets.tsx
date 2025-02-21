@@ -20,7 +20,7 @@ import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider'
 import { useGetAllTickets, useUpdateTickets } from '../../../api/Admin';
 import { toast } from 'react-toastify';
 import moment from 'moment'
-import useSearch from '../../../components/common/SearchQuery';
+import useSearch from '../../../hooks/SearchQuery';
 
 interface Ticket{
   _id:string;

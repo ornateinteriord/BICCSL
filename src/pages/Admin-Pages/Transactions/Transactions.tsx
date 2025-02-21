@@ -21,7 +21,7 @@ import DateFilterComponent from "../../../components/common/DateFilterComponent"
 import { useGetAllTransactionDetails } from "../../../api/Admin";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import useSearch from "../../../components/common/SearchQuery";
+import useSearch from "../../../hooks/SearchQuery";
 
 
 

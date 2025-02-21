@@ -22,7 +22,7 @@ import DateFilterComponent from '../../../components/common/DateFilterComponent'
 import { useAddNews, useGetNews } from '../../../api/Admin';
 import { toast } from 'react-toastify';
 import moment from 'moment';
-import useSearch from '../../../components/common/SearchQuery';
+import useSearch from '../../../hooks/SearchQuery';
 import './News.scss'
 
 

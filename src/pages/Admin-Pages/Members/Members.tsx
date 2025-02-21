@@ -8,7 +8,7 @@ import {  useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useGetAllMembersDetails } from '../../../api/Admin';
 import { useNavigate } from 'react-router-dom';
-import useSearch from '../../../components/common/SearchQuery';
+import useSearch from '../../../hooks/SearchQuery';
 
 
 

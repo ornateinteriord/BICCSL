@@ -17,7 +17,7 @@ import { useGetTransactionDetails } from "../../../api/Memeber";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import TokenService from "../../../api/token/tokenService";
-import useSearch from "../../../components/common/SearchQuery";
+import useSearch from "../../../hooks/SearchQuery";
 
 interface Transaction {
   transaction_date: string;

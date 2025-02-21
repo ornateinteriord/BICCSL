@@ -31,7 +31,7 @@ import TokenService from "../../../api/token/tokenService";
 import { useCreateTicket, useGetTicketDetails } from "../../../api/Memeber";
 import { toast } from "react-toastify";
 import moment from "moment";
-import useSearch from "../../../components/common/SearchQuery";
+import useSearch from "../../../hooks/SearchQuery";
 
 interface Ticket {
   ticket_date: string;

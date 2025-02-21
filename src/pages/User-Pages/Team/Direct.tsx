@@ -5,7 +5,7 @@ import { DASHBOARD_CUTSOM_STYLE, getDirectColumns } from '../../../utils/DataTab
 import { useGetSponsers } from '../../../api/Memeber';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import useSearch from '../../../components/common/SearchQuery';
+import useSearch from '../../../hooks/SearchQuery';
 
 interface Sponser{
   sNo:string;
