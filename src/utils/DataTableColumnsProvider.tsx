@@ -135,7 +135,7 @@ export const getDirectColumns = () => [
   },
   {
     name: "Member",
-    selector: (row: any) =>`${row.Name || "-"} - ${row.Member_id || "-"}`,
+    selector: (row: any) =>`${row.Name} - ${row.Member_id}`,
     sortable: true,
   },
   {
@@ -150,7 +150,7 @@ export const getDirectColumns = () => [
   },
   {
     name: "Sponsor",
-    selector: (row: any) => `${row.Sponsor_name || "-"} - ${row.Sponsor_code || "-"}`,
+    selector: (row: any) => `${row.Sponsor_name} - ${row.Sponsor_code}`,
     sortable: true,
   },
 ];
