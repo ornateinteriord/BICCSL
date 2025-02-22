@@ -18,7 +18,6 @@ import {
   Typography,
   Box,
   Divider,
-  CircularProgress,
 } from "@mui/material";
 import DataTable from "react-data-table-component";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -32,6 +31,7 @@ import { useCreateTicket, useGetTicketDetails } from "../../../api/Memeber";
 import { toast } from "react-toastify";
 import useSearch from "../../../hooks/SearchQuery";
 import { getFormattedDate } from "../../../utils/common";
+import { CircularProgressLoader } from "../../../components/common/CustomLoader";
 
 interface Ticket {
   ticket_date: string;
@@ -269,7 +269,7 @@ const MailBox = () => {
                 paginationPerPage={25}
                 progressPending={isLoading || createTicketMutation.isPending}
                 progressComponent={
-                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+                  <CircularProgressLoader />
                 }
                 paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover

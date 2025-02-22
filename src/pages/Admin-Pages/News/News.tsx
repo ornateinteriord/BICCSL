@@ -14,7 +14,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  CircularProgress
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getNewsColumns } from '../../../utils/DataTableColumnsProvider';
@@ -24,6 +23,7 @@ import { toast } from 'react-toastify';
 import useSearch from '../../../hooks/SearchQuery';
 import './News.scss'
 import { getFormattedDate } from '../../../utils/common';
+import { CircularProgressLoader } from '../../../components/common/CustomLoader';
 
 
 
@@ -119,7 +119,7 @@ const News = () => {
                 pagination
                 progressPending={isLoading || updateNews.isPending}
                 progressComponent={
-                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+                  <CircularProgressLoader />
                 }
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}

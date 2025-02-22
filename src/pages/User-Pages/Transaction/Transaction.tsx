@@ -6,7 +6,6 @@ import {
   AccordionSummary,
   AccordionDetails,
   TextField,
-  CircularProgress,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -18,6 +17,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import TokenService from "../../../api/token/tokenService";
 import useSearch from "../../../hooks/SearchQuery";
+import { CircularProgressLoader } from "../../../components/common/CustomLoader";
 
 
 const Transaction = () => {
@@ -70,7 +70,7 @@ const Transaction = () => {
               highlightOnHover
               progressPending={isLoading}
               progressComponent={
-                <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+                <CircularProgressLoader />
               }
               noDataComponent={noDataComponent}
               subHeader
