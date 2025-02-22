@@ -27,12 +27,6 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import useSearch from "../../../hooks/SearchQuery";
 
-interface Holiday {
-  holiday_date: string;
-  holiday_desc: string;
-  status: string;
-}
-
 const Holidays = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newHoliday, setNewHoliday] = useState<{
@@ -49,15 +43,7 @@ const Holidays = () => {
     }
   }, [isError, error]);
 
-  const initialData = Array.isArray(holidays)
-    ? holidays.map((holiday: Holiday) => ({
-        date: holiday.holiday_date || "-",
-        description: holiday.holiday_desc || "-",
-        status: holiday.status || "-",
-      }))
-    : [];
-
-    const { searchQuery, setSearchQuery, filteredData } = useSearch(initialData)
+    const { searchQuery, setSearchQuery, filteredData } = useSearch(holidays)
 
     const updateHoliday = useAddHoliday()
 
