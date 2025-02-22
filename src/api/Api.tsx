@@ -22,18 +22,6 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle unauthorized requests
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      // Token is invalid or expired
-      TokenService.removeToken();
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  }
-);
 //post
 export const post = async (path: string, data: any) => {
   try {
