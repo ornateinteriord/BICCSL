@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField,} from '@mui/material';
+import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getUnUsedPackageColumns } from '../../../utils/DataTableColumnsProvider';
 import TokenService from '../../../api/token/tokenService';
@@ -8,7 +8,6 @@ import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import UserContext from '../../../context/user/userContext';
 import useSearch from '../../../hooks/SearchQuery';
-import { CircularProgressLoader } from '../../../components/common/CustomLoader';
 
 const UnUsedPackage = () => {
    
@@ -56,7 +55,7 @@ const UnUsedPackage = () => {
               paginationRowsPerPageOptions={[25, 50, 100]}
               highlightOnHover
               progressPending={isLoading}
-              progressComponent={<CircularProgressLoader />}
+              progressComponent={<CircularProgress />}
               subHeader
               subHeaderComponent={
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', padding: '0.5rem' }}>

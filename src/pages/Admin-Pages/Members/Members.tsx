@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, Typography, Button, Grid,} from '@mui/material';
+import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, Typography, Button, Grid, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getMembersColumns } from '../../../utils/DataTableColumnsProvider';
 import './Members.scss'
@@ -9,7 +9,6 @@ import { toast } from 'react-toastify';
 import { useGetAllMembersDetails } from '../../../api/Admin';
 import { useNavigate } from 'react-router-dom';
 import useSearch from '../../../hooks/SearchQuery';
-import { CircularProgressLoader } from '../../../components/common/CustomLoader';
 
 
 
@@ -103,7 +102,7 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = 
                 paginationPerPage={25}
                progressPending={isLoading}
                progressComponent ={
-                <CircularProgressLoader />
+                <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
                }
                 paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover
