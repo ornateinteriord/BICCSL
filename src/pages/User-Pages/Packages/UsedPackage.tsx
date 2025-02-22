@@ -6,7 +6,6 @@ import { getUsedandUnusedPackages } from '../../../api/Memeber';
 import TokenService from '../../../api/token/tokenService';
 import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 import UserContext from '../../../context/user/userContext';
 import useSearch from '../../../hooks/SearchQuery';
 
@@ -29,17 +28,8 @@ const UsedPackage = () => {
     }
   }, [isError, error]);
 
-  const data = usedPackage?.map((pkg: any) => ({
-    date: moment(pkg.date , "MM/DD/YYYY").format("DD/MM/YYYY") || "-",
-    memberCode: `${user.Name} (${pkg.purchasedby})` || "-",
-    packageCode: pkg.epin_no || "-",
-    amount: `₹ ${pkg.amount.toLocaleString()}` || "-",
-    usedFor: pkg.used_for || "-",
-    usedDate:moment( pkg.used_on  , "MM/DD/YYYY").format("DD/MM/YYYY") || "-"|| "-",
-    status: pkg.status || "-",
-  })) || [];
 
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(usedPackage)
    
 
 
@@ -59,7 +49,7 @@ const UsedPackage = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
-              columns={getUsedPackageColumns()}
+              columns={getUsedPackageColumns(user)}
               data={filteredData}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}
