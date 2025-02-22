@@ -22,16 +22,14 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle unauthorized requests
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      // Token is invalid or expired
-      TokenService.removeToken();
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
+      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          localStorage.removeItem("token"); // Remove token
+          window.location.href = "/login"; // Redirect to login
+      }
+      return Promise.reject(error);
   }
 );
 //post
