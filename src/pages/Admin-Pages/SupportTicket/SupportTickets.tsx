@@ -74,43 +74,43 @@ const SupportTickets = () => {
   const columns = [
     {
       name: 'Member',
-      selector: (row: any) => row.Memberid,
+      selector: (row: any) => row.reference_id,
       sortable: true,
     },
     {
       name: 'Ticket Date',
-      selector: (row: any) => row.ticketDate,
+      selector: (row: any) => row.ticket_date,
       sortable: true,
     },
     {
       name: 'Ticket No',
-      selector: (row: any) => row.ticketNo,
+      selector: (row: any) => row.ticket_no,
       sortable: true,
     },
     
     {
       name: 'Type of ticket',
-      selector: (row: any) => row.type,
+      selector: (row: any) => row.type_of_ticket,
       sortable: true,
     },
     {
       name: 'Subject',
-      selector: (row: any) => row.subject,
+      selector: (row: any) => row.SUBJECT,
       sortable: true,
     },
     {
       name: 'Status',
-      selector: (row: any) => row.status,
+      selector: (row: any) => row.ticket_status,
       cell: (row: any) => (
         <span
           style={{
-            color: row.status === 'pending' ? '#CC5500' : '#008000',
+            color: row.ticket_status === 'pending' ? '#CC5500' : '#008000',
             padding: '0.5rem',
             borderRadius: '4px',
             
           }}
         >
-          {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
+          {row.ticket_status?.charAt(0).toUpperCase() + row.ticket_status?.slice(1)}
         </span>
       ),
       sortable: true,

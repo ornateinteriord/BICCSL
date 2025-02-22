@@ -1,6 +1,7 @@
 import { IconButton } from "@mui/material";
 import  VisibilityIcon  from '@mui/icons-material/Visibility';
 import { Edit } from "lucide-react";
+import { getFormattedDate } from './common';
 
 
 export const getUserDashboardTableColumns = () => [
@@ -370,12 +371,12 @@ export const getusedandUnUsedColumns = () => [
 export const getMailBoxColumns = (handleOpenDialog : any) => [
   {
     name: 'Ticket Date',
-    selector: (row: any) => row.ticketDate,
+    selector: (row: any) => getFormattedDate(row.ticket_date),
     sortable: true,
   },
   {
     name: 'Ticket No',
-    selector: (row: any) => row.ticketNo,
+    selector: (row: any) => row.ticket_no,
     sortable: true,
     cell: (row: any) => (
       <div
@@ -387,34 +388,34 @@ export const getMailBoxColumns = (handleOpenDialog : any) => [
           fontSize: '14px',
         }}
       >
-        {row.ticketNo}
+        {row.ticket_no}
       </div>
     ),
   },
   {
     name: 'Type of ticket',
-    selector: (row: any) => row.typeOfTicket,
+    selector: (row: any) => row.type_of_ticket,
     sortable: true,
   },
   {
     name: 'Subject',
-    selector: (row: any) => row.subject,
+    selector: (row: any) => row.SUBJECT,
     sortable: true,
   },
   {
     name: 'Status',
-    selector: (row: any) => row.status,
+    selector: (row: any) => row.ticket_status,
     sortable: true,
     cell: (row: any) => (
       <div
         style={{
-         color: row.status.toLowerCase() === 'pending' ? '#fb741a' : '#569f35',
+         color: row.ticket_status?.toLowerCase() === 'pending' ? '#fb741a' : '#569f35',
           padding: '5px 10px',
           borderRadius: '4px',
           fontSize: '14px',
         }}
       >
-        {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
+        {row.ticket_status?.charAt(0).toUpperCase() + row.ticket_status?.slice(1)}
       </div>
     ),
   },
@@ -507,12 +508,12 @@ export const getSMSTransactionColumns = () => [
 export const getNewsColumns = () => [
   {
     name: "From Date",
-    selector: (row: any) => row.fromDate,
+    selector: (row: any) => getFormattedDate(row.fromDate),
     sortable: true,
   },
   {
     name: "To Date",
-    selector: (row: any) => row.toDate,
+    selector: (row: any) => getFormattedDate(row.toDate),
     sortable: true,
   },
   {
