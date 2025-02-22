@@ -2,21 +2,21 @@ import { useState, useEffect } from "react";
 import TokenService from "../api/token/tokenService";
 
 const useAuth = () => {
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState<string | null>(TokenService.getRole());
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!TokenService.getToken());
 
   useEffect(() => {
-    const updateAuthState = () => {
+    const handleStorageChange = () => {
       const token = TokenService.getToken();
-      const role = TokenService.getRole();
+      setUserRole(TokenService.getRole());
       setIsLoggedIn(!!token);
-      setUserRole(role);
     };
 
-    updateAuthState(); // Initial check on mount
+    // Update state on render
+    handleStorageChange();
 
-    window.addEventListener("storage", updateAuthState);
-    return () => window.removeEventListener("storage", updateAuthState);
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   return { isLoggedIn, userRole };
