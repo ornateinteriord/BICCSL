@@ -1,7 +1,8 @@
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import  VisibilityIcon  from '@mui/icons-material/Visibility';
 import { Edit } from "lucide-react";
 import { getFormattedDate } from './common';
+import { MemberDetails } from "../store/store";
 
 
 export const getUserDashboardTableColumns = () => [
@@ -26,74 +27,74 @@ export const getUserDashboardTableColumns = () => [
   },
 ];
 
-export const getUsedPackageColumns = () => {
+export const getUsedPackageColumns = (user : MemberDetails) => {
   return [
     {
       name: "Date",
-      selector: (row: any) => row.date,
+      selector: (row: any) => getFormattedDate(row.date),
       sortable: true,
       width : "10%"
     },
     {
       name: "Member Code",
-      selector: (row: any) => row.memberCode,
+      selector: (row: any) => `${user.Name} (${row.purchasedby})`,
       sortable: true,
       width : "20%"
     },
     {
       name: "Package Code",
-      selector: (row: any) => row.packageCode,
+      selector: (row: any) => row.epin_no,
       sortable: true,
     },
     {
       name: "Amount",
-      selector: (row: any) => row.amount,
+      selector: (row: any) => `₹ ${row.amount.toLocaleString()}` ,
       sortable: true,
     },
     {
       name: "Used For",
-      selector: (row: any) => row.usedFor,
+      selector: (row: any) => row.used_for,
       sortable: true,
       width : "20%"
     },
     {
       name: "Used Date",
-      selector: (row: any) => row.usedDate,
+      selector: (row: any) => getFormattedDate(row.used_on),
       sortable: true,
     },
     {
       name: "Status",
-      selector: (row: any) => row.status,
+      selector: (row: any) =>  row.status.charAt(0).toUpperCase() + row.status.slice(1),
       sortable: true,
     },
   ];
 };
 
-export const getUnUsedPackageColumns = () => [
+export const getUnUsedPackageColumns = (user : MemberDetails) => [
   {
     name: "Date",
-    selector: (row: any) => row.date,
+    selector: (row: any) => getFormattedDate(row.date),
     sortable: true,
     width : "12%"
   },
   {
     name: "Code",
-    selector: (row: any) => row.code,
+    selector: (row: any) => `${user.Name} (${row.purchasedby})`,
     sortable: true,
   },
   {
     name: "Package Code",
-    selector: (row: any) => row.packageCode,
+    selector: (row: any) => row.epin_no,
     sortable: true,
   },
   {
     name: "Amount",
-    selector: (row: any) => row.amount,
+    selector: (row: any) => `₹ ${row.amount.toLocaleString()}`,
     sortable: true,
   },
   {
     name: "Status",
-    selector: (row: any) => row.status,
+    selector: (row: any) => row.status.charAt(0).toUpperCase() + row.status.slice(1),
     sortable: true,
   },
 ];
@@ -348,6 +349,67 @@ export const getMembersColumns = (showEdit : boolean , handleEditClick: (memberI
     ),
     
   }
+];
+
+export const getSupportTicketColumns = (handleOpenDialog : any) =>  [
+  {
+    name: 'Member',
+    selector: (row: any) => row.reference_id,
+    sortable: true,
+  },
+  {
+    name: 'Ticket Date',
+    selector: (row: any) => getFormattedDate(row.ticket_date),
+    sortable: true,
+  },
+  {
+    name: 'Ticket No',
+    selector: (row: any) => row.ticket_no,
+    sortable: true,
+  },
+  
+  {
+    name: 'Type of ticket',
+    selector: (row: any) => row.type_of_ticket,
+    sortable: true,
+  },
+  {
+    name: 'Subject',
+    selector: (row: any) => row.SUBJECT,
+    sortable: true,
+  },
+  {
+    name: 'Status',
+    selector: (row: any) => row.ticket_status,
+    cell: (row: any) => (
+      <span
+        style={{
+          color: row.ticket_status === 'pending' ? '#CC5500' : '#008000',
+          padding: '0.5rem',
+          borderRadius: '4px',
+          
+        }}
+      >
+        {row.ticket_status?.charAt(0).toUpperCase() + row.ticket_status?.slice(1)}
+      </span>
+    ),
+    sortable: true,
+  },
+  {
+    name: 'Action',
+    cell: (row: any) => (
+      <Button
+        variant="contained"
+        onClick={() => handleOpenDialog(row)}
+        sx={{
+          backgroundColor: '#04112f',
+          '&:hover': { backgroundColor: '#0a1f4d' }
+        }}
+      >
+        Reply
+      </Button>
+    ),
+  },
 ];
 
 export const getusedandUnUsedColumns = () => [

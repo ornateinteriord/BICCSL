@@ -16,10 +16,9 @@ import {
 import { Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
-import { DASHBOARD_CUTSOM_STYLE } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getSupportTicketColumns } from '../../../utils/DataTableColumnsProvider';
 import { useGetAllTickets, useUpdateTickets } from '../../../api/Admin';
 import { toast } from 'react-toastify';
-import moment from 'moment'
 import useSearch from '../../../hooks/SearchQuery';
 
 interface Ticket{
@@ -37,7 +36,7 @@ interface Ticket{
 const SupportTickets = () => {
   const [isReplyDialogOpen, setIsReplyDialogOpen] = useState(false);
   const [replyText, setReplyText] = useState('');
-  const [selectedTicket, setSelectedTicket] = useState<any>(null);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const {data:tickets,isLoading,isError,error} = useGetAllTickets()
 
   const handleReplyClick = (ticket: any) => {
@@ -60,77 +59,14 @@ const SupportTickets = () => {
         reply_details:replyText,
         
       }
-     replyTicketMutation.mutate(replyTicket,{
-      onSuccess: () => {
-        handleCloseDialog();
-      },
-     })
+     replyTicketMutation.mutate(replyTicket)
     } catch (error) {
       console.error("Failed to update ticket", error);
+    } finally {
+      handleCloseDialog();
     }
     
   };
-
-  const columns = [
-    {
-      name: 'Member',
-      selector: (row: any) => row.reference_id,
-      sortable: true,
-    },
-    {
-      name: 'Ticket Date',
-      selector: (row: any) => row.ticket_date,
-      sortable: true,
-    },
-    {
-      name: 'Ticket No',
-      selector: (row: any) => row.ticket_no,
-      sortable: true,
-    },
-    
-    {
-      name: 'Type of ticket',
-      selector: (row: any) => row.type_of_ticket,
-      sortable: true,
-    },
-    {
-      name: 'Subject',
-      selector: (row: any) => row.SUBJECT,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: (row: any) => row.ticket_status,
-      cell: (row: any) => (
-        <span
-          style={{
-            color: row.ticket_status === 'pending' ? '#CC5500' : '#008000',
-            padding: '0.5rem',
-            borderRadius: '4px',
-            
-          }}
-        >
-          {row.ticket_status?.charAt(0).toUpperCase() + row.ticket_status?.slice(1)}
-        </span>
-      ),
-      sortable: true,
-    },
-    {
-      name: 'Action',
-      cell: (row: any) => (
-        <Button
-          variant="contained"
-          onClick={() => handleReplyClick(row)}
-          sx={{
-            backgroundColor: '#04112f',
-            '&:hover': { backgroundColor: '#0a1f4d' }
-          }}
-        >
-          Reply
-        </Button>
-      ),
-    },
-  ];
 
    useEffect(() => {
     if (isError) {
@@ -140,19 +76,7 @@ const SupportTickets = () => {
       }
     }, [isError, error]);
     
-  const data = Array.isArray(tickets)?tickets.map((ticket:Ticket)=>({
-    _id: ticket._id, 
-    ticketDate: ticket.ticket_date && typeof ticket.ticket_date === "string" 
-    ? moment(ticket.ticket_date, "YYYY/MM/DD").format("DD/MM/YYYY") 
-    : "-",
-    ticketNo:ticket.ticket_no || "-",
-    Memberid:ticket.reference_id|| "-",
-    type:ticket.type_of_ticket || "-",
-    subject:ticket.SUBJECT || "-",
-    status:ticket.ticket_status || "-",
-  })) : []
-
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(tickets)
   
     
 
@@ -185,7 +109,7 @@ const SupportTickets = () => {
                 />
               </div>
               <DataTable
-                columns={columns}
+                columns={getSupportTicketColumns(handleReplyClick)}
                 data={filteredData}
                 pagination
                 customStyles={DASHBOARD_CUTSOM_STYLE}
@@ -204,20 +128,20 @@ const SupportTickets = () => {
 
       <Dialog open={isReplyDialogOpen} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ backgroundColor: '#04112f', color: '#fff' }}>
-          Reply to Ticket #{selectedTicket?.ticketNo}
+          Reply to Ticket #{selectedTicket?.ticket_no}
         </DialogTitle>
         <DialogContent sx={{ mt: 2 }}>
           <Typography variant="body1" sx={{ mb: 2 }}>
-            <strong>Ticket Date:</strong> {selectedTicket?.ticketDate}
+            <strong>Ticket Date:</strong> {selectedTicket?.ticket_date}
           </Typography>
           <Typography variant="body1" sx={{ mb: 2 }}>
-            <strong>Type of Ticket:</strong> {selectedTicket?.type}
+            <strong>Type of Ticket:</strong> {selectedTicket?.type_of_ticket}
           </Typography>
           <Typography variant="body1" sx={{ mb: 2 }}>
-            <strong>Subject:</strong> {selectedTicket?.subject}
+            <strong>Subject:</strong> {selectedTicket?.SUBJECT}
           </Typography>
           <Typography variant="body1" sx={{ mb: 2 }}>
-            <strong>Status:</strong> {selectedTicket?.status}
+            <strong>Status:</strong> {selectedTicket?.ticket_status}
           </Typography>
           <TextField
             autoFocus
