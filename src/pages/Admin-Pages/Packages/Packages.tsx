@@ -13,7 +13,6 @@ import {
   AccordionSummary,
   AccordionDetails,
   IconButton,
-  CircularProgress,
 } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import PersonIcon from '@mui/icons-material/Person';
@@ -26,6 +25,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DASHBOARD_CUTSOM_STYLE, getusedandUnUsedColumns } from '../../../utils/DataTableColumnsProvider';
 import { getEpinsSummary } from '../../../api/Admin';
 import { toast } from 'react-toastify';
+import { CircularProgressLoader } from '../../../components/common/CustomLoader';
 
 interface PackageTableProps {
   title: string;
@@ -233,7 +233,7 @@ const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data ,
               data={data}
               pagination
               progressPending={loading}
-              progressComponent={<CircularProgress />}
+              progressComponent={<CircularProgressLoader />}
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
               customStyles={DASHBOARD_CUTSOM_STYLE}

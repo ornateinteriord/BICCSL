@@ -9,7 +9,6 @@ import {
   Typography,
   Button,
   Grid,
-  CircularProgress,
 } from "@mui/material";
 import './Transactions.scss'
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -22,6 +21,7 @@ import { useGetAllTransactionDetails } from "../../../api/Admin";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import useSearch from "../../../hooks/SearchQuery";
+import { CircularProgressLoader } from "../../../components/common/CustomLoader";
 
 const Transactions = () => {
   const {
@@ -149,7 +149,7 @@ export const TransactionDataTable = ({
                 paginationPerPage={25}
                 progressPending={isLoading}
                 progressComponent={
-                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }}/>
+                  <CircularProgressLoader />
                 }
                 paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover

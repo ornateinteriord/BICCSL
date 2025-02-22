@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, CircularProgress } from '@mui/material';
+import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextField, } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getUsedPackageColumns } from '../../../utils/DataTableColumnsProvider';
 import { getUsedandUnusedPackages } from '../../../api/Memeber';
@@ -8,6 +8,7 @@ import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import UserContext from '../../../context/user/userContext';
 import useSearch from '../../../hooks/SearchQuery';
+import { CircularProgressLoader } from '../../../components/common/CustomLoader';
 
 const UsedPackage = () => {
   
@@ -58,7 +59,7 @@ const UsedPackage = () => {
               highlightOnHover
               subHeader
               progressPending={isLoading}
-              progressComponent={<CircularProgress />}
+              progressComponent={<CircularProgressLoader />}
               subHeaderComponent={
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', padding: '0.5rem' }}>
                   <TextField
