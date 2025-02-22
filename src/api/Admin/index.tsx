@@ -157,3 +157,38 @@ export const useAddNews = ()=>{
     }
   })
 }
+
+export const useGetHoliday = ()=>{
+  return useQuery({
+    queryKey:["holiday"],
+    queryFn:async ()=>{
+      const response = await get("/admin/getholiday")
+      if(response.success){
+        return response.holiday
+      }else{
+        throw new Error(response.message)
+      }
+    }
+  })
+}
+
+export const useAddHoliday = ()=>{
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn:async(holidayData:any) =>{
+    return await post("/admin/addholiday",holidayData);
+    },
+    onSuccess:(response)=>{
+      if(response.success){
+        toast.success(response.message)
+        queryClient.invalidateQueries({queryKey:["holiday"]})
+        return response.news
+      }else{
+        console.error( response.message)
+      }
+    },
+    onError:(error:any)=>{
+      toast.error(error.response.data.message)
+    }
+  })
+}

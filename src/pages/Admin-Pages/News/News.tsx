@@ -76,7 +76,7 @@ const News = () => {
       updateNews.mutate(NewsData)
       setIsModalOpen(false);
     }catch(error){
-      console.error("Failed to create ticket", error);
+      console.error("Failed to create News", error);
     }finally{
       setNewNews({ fromDate: null, toDate: null, content: '' });
     }

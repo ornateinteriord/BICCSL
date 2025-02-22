@@ -542,12 +542,12 @@ export const getNewsColumns = () => [
 export const getHolidaysColumns = () => [
   {
     name: "Date",
-    selector: (row: any) => row.date,
+    selector: (row: any) => getFormattedDate(row.holiday_date),
     sortable: true,
   },
   {
     name: "Description",
-    selector: (row: any) => row.description,
+    selector: (row: any) => row.holiday_desc,
     sortable: true,
   },
   {
