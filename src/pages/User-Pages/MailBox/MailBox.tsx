@@ -30,8 +30,8 @@ import {
 import TokenService from "../../../api/token/tokenService";
 import { useCreateTicket, useGetTicketDetails } from "../../../api/Memeber";
 import { toast } from "react-toastify";
-import moment from "moment";
 import useSearch from "../../../hooks/SearchQuery";
+import { getFormattedDate } from "../../../utils/common";
 
 interface Ticket {
   ticket_date: string;
@@ -55,21 +55,8 @@ const MailBox = () => {
       toast.error(error.message || "Failed to fetch Transaction details");
     }
   }, [isError, error]);
-  const Ticketdata = Array.isArray(tickets)
-    ? tickets.map((ticket: Ticket) => ({
-        ticketDate:
-          ticket.ticket_date && typeof ticket.ticket_date === "string"
-            ? moment(ticket.ticket_date, "YYYY/MM/DD").format("DD/MM/YYYY")
-            : "-",
-        ticketNo: ticket.ticket_no || "-",
-        typeOfTicket: ticket.type_of_ticket || "-",
-        subject: ticket.SUBJECT || "-",
-        status: ticket.ticket_status || "-",
-        reply: ticket.reply_details || "No reply",
-      }))
-    : [];
 
-    const { searchQuery, setSearchQuery, filteredData } = useSearch(Ticketdata)
+  const { searchQuery, setSearchQuery, filteredData} = useSearch(tickets)
      
 
   const [formData, setFormData] = useState({
@@ -78,10 +65,10 @@ const MailBox = () => {
     details: "",
   });
 
-  const [selectedTicket, setSelectedTicket] = useState<any>(null);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const handleOpenDialog = (ticket: any) => {
+  const handleOpenDialog = (ticket: Ticket) => {
     setSelectedTicket(ticket);
     setOpenDialog(true);
   };
@@ -355,22 +342,22 @@ const MailBox = () => {
                   }}
                 >
                   <Typography variant="subtitle2">Ticket No:</Typography>
-                  <Typography>{selectedTicket.ticketNo}</Typography>
+                  <Typography>{selectedTicket.ticket_no}</Typography>
 
                   <Typography variant="subtitle2">Date:</Typography>
-                  <Typography>{selectedTicket.ticketDate}</Typography>
+                  <Typography>{(getFormattedDate(selectedTicket.ticket_date))}</Typography>
 
                   <Typography variant="subtitle2">Type:</Typography>
-                  <Typography>{selectedTicket.typeOfTicket}</Typography>
+                  <Typography>{selectedTicket.type_of_ticket}</Typography>
 
                   <Typography variant="subtitle2">Subject:</Typography>
-                  <Typography>{selectedTicket.subject}</Typography>
+                  <Typography>{selectedTicket.SUBJECT}</Typography>
 
                   <Typography variant="subtitle2">Status:</Typography>
                   <Typography
                     sx={{
                       color:
-                        selectedTicket?.status?.trim().toLowerCase() ===
+                        selectedTicket?.ticket_status?.trim().toLowerCase() ===
                         "pending"
                           ? "#fb741a"
                           : "#569f35",
@@ -381,7 +368,7 @@ const MailBox = () => {
                       fontSize: "14px",
                     }}
                   >
-                    {selectedTicket.status.charAt(0).toUpperCase() + selectedTicket.status.slice(1)}
+                    {selectedTicket.ticket_status?.charAt(0).toUpperCase() + selectedTicket.ticket_status?.slice(1)}
                   </Typography>
                 </Box>
 
@@ -399,7 +386,7 @@ const MailBox = () => {
                   }}
                 >
                   <Typography color="text.secondary" variant="body1">
-                    {selectedTicket.reply}
+                    {selectedTicket.reply_details}
                   </Typography>
                 </Box>
               </Box>

@@ -21,9 +21,9 @@ import { DASHBOARD_CUTSOM_STYLE, getNewsColumns } from '../../../utils/DataTable
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
 import { useAddNews, useGetNews } from '../../../api/Admin';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 import useSearch from '../../../hooks/SearchQuery';
 import './News.scss'
+import { getFormattedDate } from '../../../utils/common';
 
 
 interface newsData{
@@ -69,8 +69,8 @@ const News = () => {
       try{
       e.preventDefault();
       const NewsData ={
-        from_date: newNews.fromDate  ? moment(newNews.fromDate).format("DD/MM/YYYY") :"-", 
-        to_date: newNews.toDate? moment(newNews.toDate).format("DD/MM/YYYY") :"-",
+        from_date: newNews.fromDate  ? getFormattedDate(newNews.fromDate) :"-", 
+        to_date: newNews.toDate? getFormattedDate(newNews.fromDate) :"-",
         news_details: newNews.content,
       }
       updateNews.mutate(NewsData)
