@@ -145,13 +145,6 @@ const useMembers = (status: status) => {
     ? members .filter((member:Member) => (status === "All" ? true: member.status === status )).map((member: Member, index) => ({
       ...member,
       sNo: index + 1,
-      member: member.Member_id ?? "-",
-      approvedOn: member.Date_of_joining ?? "-",
-      password: member.password ?? "-",
-      sponsor: member.Sponsor_name ?? "-",
-      package: member.spackage ?? "-",
-      mobileNo: member.mobileno ?? "-",
-      status: member.status ?? "-"
       }))
     : [];
   return  { memberdata, isLoading } 

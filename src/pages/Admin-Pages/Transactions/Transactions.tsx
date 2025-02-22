@@ -23,16 +23,6 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import useSearch from "../../../hooks/SearchQuery";
 
-
-
-interface Transaction{
-  transaction_date: string;
-  member_id:string,
-  transaction_type:string,
-  description: string;
-  ew_credit: number;
-  ew_debit: number;
-}
 const Transactions = () => {
   const {
     data: transactions,
@@ -40,7 +30,6 @@ const Transactions = () => {
     isError,
     error,
   } = useGetAllTransactionDetails();
-
   useEffect(() => {
     if (isError) {
       const err = error as any;
@@ -50,16 +39,7 @@ const Transactions = () => {
     }
   }, [isError, error]);
 
-  const data = transactions ?.map((transaction:Transaction) =>({
-    date: transaction.transaction_date || "-",
-    member: transaction.member_id || "-",
-    description: transaction.description || "-",
-    type: transaction.transaction_type || "-",
-    ewCredit: transaction.ew_credit || "-",
-    ewDebit: transaction.ew_debit || "-",
-  })) || []
-
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(transactions)
   
   return (
     <TransactionDataTable

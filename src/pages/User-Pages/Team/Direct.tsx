@@ -7,15 +7,6 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useSearch from '../../../hooks/SearchQuery';
 
-interface Sponser{
-  sNo:string;
-  Name:string;
-  Member_id:string;
-  mobileno:string;
-  Date_of_joining:string;
-  Sponsor_name:string;
-  Sponsor_code:string;
-}
 const Direct = () => {
    const { data: sponsers, isLoading, isError, error } = useGetSponsers();
 
@@ -23,14 +14,7 @@ const Direct = () => {
        if (isError) toast.error(error.message);
      }, [isError, error]);
 
-  const data = Array.isArray(sponsers)?sponsers.map((sponser: Sponser,index)=>({
-    sNo:index+1,
-    Name:`${sponser.Name || "-"} - ${sponser.Member_id || "-"}`,
-    mobileno:sponser. mobileno || "-",
-    Date_of_joining:sponser. Date_of_joining || "-",
-    Sponsor_name:`${sponser.Sponsor_name || "-"} - ${sponser.Sponsor_code || "-"}`,
-  })) :[]
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(sponsers)
     
 
   return (
@@ -45,7 +29,7 @@ const Direct = () => {
                 '& .MuiSvgIcon-root': { color: '#fff' }
               }}
           >
-            {`List of Direct (${data.length})`}
+            {!isLoading && `List of Direct (${sponsers?.length})`}
           </AccordionSummary>
           <AccordionDetails>
             <DataTable

@@ -130,12 +130,12 @@ export const getPackageHistoryColumns = () => [
 export const getDirectColumns = () => [
   {
     name: "S No",
-    selector: (row: any) => row.sNo,
+    cell: (_: any,index: number) => index + 1,
     sortable: true,
   },
   {
     name: "Member",
-    selector: (row: any) => row.Name,
+    selector: (row: any) =>`${row.Name || "-"} - ${row.Member_id || "-"}`,
     sortable: true,
   },
   {
@@ -145,12 +145,12 @@ export const getDirectColumns = () => [
   },
   {
     name: "DOJ",
-    selector: (row: any) => row.Date_of_joining,
+    selector: (row: any) => getFormattedDate(row.Date_of_joining),
     sortable: true,
   },
   {
     name: "Sponsor",
-    selector: (row: any) => row.Sponsor_name,
+    selector: (row: any) => `${row.Sponsor_name || "-"} - ${row.Sponsor_code || "-"}`,
     sortable: true,
   },
 ];
@@ -204,7 +204,7 @@ export const getDailyPayoutColumns = () => [
 export const getTransactionColumns = () => [
   {
     name: "Date",
-    selector: (row: any) => row.date,
+    selector: (row: any) =>getFormattedDate( row.transaction_date),
     sortable: true,
   },
   {
@@ -214,12 +214,12 @@ export const getTransactionColumns = () => [
   },
   {
     name: "Credits",
-    selector: (row: any) => `₹ ${row.credits}`,
+    selector: (row: any) => `₹ ${row.ew_credit}`,
     sortable: true,
   },
   {
     name: "Debit",
-    selector: (row: any) => `₹ ${row.debit}`,
+    selector: (row: any) => `₹ ${row.ew_debit}`,
     sortable: true,
   },
   {
@@ -293,12 +293,12 @@ export const getMembersColumns = (showEdit : boolean , handleEditClick: (memberI
   },
   {
     name: "Member",
-    selector: (row: any) => row.member,
+    selector: (row: any) => row.Member_id,
     sortable: true,
   },
   {
     name: "Approved On",
-    selector: (row: any) => row.approvedOn,
+    selector: (row: any) => getFormattedDate(row.Date_of_joining),
     sortable: true,
   },
   {
@@ -308,17 +308,17 @@ export const getMembersColumns = (showEdit : boolean , handleEditClick: (memberI
   },
   {
     name: "Sponsor",
-    selector: (row: any) => row.sponsor,
+    selector: (row: any) => row.Sponsor_name ?? '-',
     sortable: true,
   },
   {
     name: "Package",
-    selector: (row: any) => row.package,
+    selector: (row: any) => row.spackage,
     sortable: true,
   },
   {
     name: "MobileNo",
-    selector: (row: any) => row.mobileNo,
+    selector: (row: any) => row.mobileno,
     sortable: true,
   },
   {
@@ -504,12 +504,12 @@ export const getMailBoxColumns = (handleOpenDialog : any) => [
 export const getAdminPageTransactionColumns = () => [
   {
     name: "Date",
-    selector: (row: any) => row.date,
+    selector: (row: any) =>getFormattedDate(row.transaction_date),
     sortable: true,
   },
   {
     name: "Member",
-    selector: (row: any) => row.member,
+    selector: (row: any) => row.member_id,
     sortable: true,
   },
   {
@@ -519,17 +519,17 @@ export const getAdminPageTransactionColumns = () => [
   },
   {
     name: "Type",
-    selector: (row: any) => row.type,
+    selector: (row: any) => row.transaction_type,
     sortable: true,
   },
   {
     name: "EW Credit",
-    selector: (row: any) => row.ewCredit,
+    selector: (row: any) => row.ew_credit,
     sortable: true,
   },
   {
     name: "EW Debit",
-    selector: (row: any) => row.ewDebit,
+    selector: (row: any) => row.ew_debit,
     sortable: true,
   },
 ];
@@ -570,17 +570,17 @@ export const getSMSTransactionColumns = () => [
 export const getNewsColumns = () => [
   {
     name: "From Date",
-    selector: (row: any) => getFormattedDate(row.fromDate),
+    selector: (row: any) => getFormattedDate(row.from_date),
     sortable: true,
   },
   {
     name: "To Date",
-    selector: (row: any) => getFormattedDate(row.toDate),
+    selector: (row: any) => getFormattedDate(row.to_date),
     sortable: true,
   },
   {
     name: "Content",
-    selector: (row: any) => row.content,
+    selector: (row: any) => row.news_details,
     sortable: true,
   },
   {
