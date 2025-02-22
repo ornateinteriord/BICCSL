@@ -26,12 +26,6 @@ import './News.scss'
 import { getFormattedDate } from '../../../utils/common';
 
 
-interface newsData{
-  from_date:string;
-  to_date:string;
-  news_details:string;
-  status:string;
-}
 
 const News = () => {
   const {data:news,isLoading,isError,error} = useGetNews()
@@ -53,13 +47,7 @@ const News = () => {
       }
     }, [isError, error]);
 
-  const initialData = Array.isArray(news)?news.map((News:newsData)=>({
-  fromDate:News.from_date || "-",
-  toDate:News.to_date || "-",
-  content:News.news_details|| "-",
-  status:News.status|| "-",
-  })):[]
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(initialData)
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(news)
 
 
   const updateNews = useAddNews()

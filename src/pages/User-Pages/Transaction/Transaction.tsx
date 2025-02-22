@@ -19,13 +19,7 @@ import { toast } from "react-toastify";
 import TokenService from "../../../api/token/tokenService";
 import useSearch from "../../../hooks/SearchQuery";
 
-interface Transaction {
-  transaction_date: string;
-  description: string;
-  ew_credit: number;
-  ew_debit: number;
-  status: string;
-}
+
 const Transaction = () => {
   const userId = TokenService.getUserId();
   const {
@@ -44,15 +38,8 @@ const Transaction = () => {
       );
     }
   }, [isError, error]);
-  const data =
-    transactions?.map((transaction: Transaction) => ({
-      date: transaction.transaction_date || "-",
-      description: transaction.description || "-",
-      credits: transaction.ew_credit || "-",
-      debit: transaction.ew_debit || "-",
-      status: transaction.status || "-",
-    })) || [];
-    const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+ 
+    const { searchQuery, setSearchQuery, filteredData } = useSearch(transactions)
 
   const noDataComponent = (
     <div style={{ padding: "24px" }}>No data available in table</div>
