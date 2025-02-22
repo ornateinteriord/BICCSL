@@ -542,7 +542,7 @@ export const getNewsColumns = () => [
 export const getHolidaysColumns = () => [
   {
     name: "Date",
-    selector: (row: any) => row.holiday_date,
+    selector: (row: any) => getFormattedDate(row.holiday_date),
     sortable: true,
   },
   {

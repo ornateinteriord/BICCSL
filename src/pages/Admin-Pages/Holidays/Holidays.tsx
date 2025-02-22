@@ -24,8 +24,8 @@ import {
 import DateFilterComponent from "../../../components/common/DateFilterComponent";
 import { useAddHoliday, useGetHoliday } from "../../../api/Admin";
 import { toast } from "react-toastify";
-import moment from "moment";
 import useSearch from "../../../hooks/SearchQuery";
+import { getFormattedDate } from "../../../utils/common";
 
 const Holidays = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,22 +48,10 @@ const Holidays = () => {
     const updateHoliday = useAddHoliday()
 
   const handleSubmit = (e: React.FormEvent) => {
-    if (newHoliday.date && newHoliday.description) {
-      try{
-        e.preventDefault();
-      const holidayData = {
-        holiday_date: newHoliday.date? moment(newHoliday.date).format("DD/MM/YYYY") : "-",
-        holiday_desc: newHoliday.description,
-      };
-      updateHoliday.mutate(holidayData)
-      setIsModalOpen(false);
-      
-    }catch(error){
-      console.error("Failed to create Holiday", error);
-    }finally{
-      setNewHoliday({ date: null, description: "" });
-    }
-    }
+    e.preventDefault();
+    updateHoliday.mutate({holiday_desc : newHoliday.description,holiday_date:getFormattedDate(newHoliday.date!)})
+    setIsModalOpen(false);
+    console.log(newHoliday)
   };
 
   return (
@@ -149,7 +137,6 @@ const Holidays = () => {
                 multiline
                 rows={4}
                 label="Description"
-                value={newHoliday.description}
                 onChange={(e) =>
                   setNewHoliday({ ...newHoliday, description: e.target.value })
                 }
