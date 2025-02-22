@@ -1,100 +1,144 @@
-import { useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { 
-  Card, 
-  CardContent, 
-  Accordion, 
-  AccordionSummary, 
-  AccordionDetails, 
-  TextField, 
-  Typography, 
-  Button, 
+import { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import {
+  Card,
+  CardContent,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  TextField,
+  Typography,
+  Button,
   Grid,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DASHBOARD_CUTSOM_STYLE, getHolidaysColumns } from '../../../utils/DataTableColumnsProvider';
-import DateFilterComponent from '../../../components/common/DateFilterComponent';
+  DialogActions,
+  CircularProgress,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  DASHBOARD_CUTSOM_STYLE,
+  getHolidaysColumns,
+} from "../../../utils/DataTableColumnsProvider";
+import DateFilterComponent from "../../../components/common/DateFilterComponent";
+import { useAddHoliday, useGetHoliday } from "../../../api/Admin";
+import { toast } from "react-toastify";
+import moment from "moment";
+import useSearch from "../../../hooks/SearchQuery";
 
-
-
-const initialData = [
-  {
-    date: '25/12/2024',
-    description: 'Christmas Day',
-    status: 'active',
-  },
-];
+interface Holiday {
+  holiday_date: string;
+  holiday_desc: string;
+  status: string;
+}
 
 const Holidays = () => {
-  const [data, setData] = useState(initialData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newHoliday, setNewHoliday] = useState<{
     date: Date | null;
     description: string;
   }>({
     date: null,
-    description: '',
+    description: "",
   });
+  const { data: holidays, isLoading, isError, error } = useGetHoliday();
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.message);
+    }
+  }, [isError, error]);
 
-  const handleSubmit = () => {
+  const initialData = Array.isArray(holidays)
+    ? holidays.map((holiday: Holiday) => ({
+        date: holiday.holiday_date || "-",
+        description: holiday.holiday_desc || "-",
+        status: holiday.status || "-",
+      }))
+    : [];
+
+    const { searchQuery, setSearchQuery, filteredData } = useSearch(initialData)
+
+    const updateHoliday = useAddHoliday()
+
+  const handleSubmit = (e: React.FormEvent) => {
     if (newHoliday.date && newHoliday.description) {
-      setData([...data, {
-        date: newHoliday.date?.toLocaleDateString() || '',
-        description: newHoliday.description,
-        status: 'active'
-      }]);
+      try{
+        e.preventDefault();
+      const holidayData = {
+        holiday_date: newHoliday.date? moment(newHoliday.date).format("DD/MM/YYYY") : "-",
+        holiday_desc: newHoliday.description,
+      };
+      updateHoliday.mutate(holidayData)
       setIsModalOpen(false);
-      setNewHoliday({ date: null, description: '' });
+      
+    }catch(error){
+      console.error("Failed to create Holiday", error);
+    }finally{
+      setNewHoliday({ date: null, description: "" });
+    }
     }
   };
 
   return (
     <>
-      <Grid display="flex" justifyContent="space-between" alignItems="center" sx={{ margin: '2rem', mt: 12 }}>
-        <Typography variant="h4">
-          Holiday Details
-        </Typography>
+      <Grid
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ margin: "2rem", mt: 12 }}
+      >
+        <Typography variant="h4">Holiday Details</Typography>
         <Button
           variant="contained"
           onClick={() => setIsModalOpen(true)}
           sx={{
-            backgroundColor: '#04112f',
-            '&:hover': { backgroundColor: '#04112f' }
+            backgroundColor: "#04112f",
+            "&:hover": { backgroundColor: "#04112f" },
           }}
         >
           Add Holiday
         </Button>
       </Grid>
 
-      <Card sx={{ margin: '2rem', mt: 2 }}>
+      <Card sx={{ margin: "2rem", mt: 2 }}>
         <CardContent>
           <Accordion defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               sx={{
-                backgroundColor: '#04112f',
-                color: '#fff',
-                '& .MuiSvgIcon-root': { color: '#fff' }
+                backgroundColor: "#04112f",
+                color: "#fff",
+                "& .MuiSvgIcon-root": { color: "#fff" },
               }}
             >
               List of Holidays
             </AccordionSummary>
             <AccordionDetails>
-              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  justifyContent: "flex-end",
+                  marginBottom: "1rem",
+                }}
+              >
                 <TextField
                   size="small"
                   placeholder="Search..."
                   sx={{ minWidth: 200 }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <DataTable
                 columns={getHolidaysColumns()}
-                data={data}
+                data={filteredData}
                 pagination
+                progressPending={isLoading || updateHoliday.isPending}
+                progressComponent={
+                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }} />
+                }
                 customStyles={DASHBOARD_CUTSOM_STYLE}
                 paginationPerPage={25}
                 paginationRowsPerPageOptions={[25, 50, 100]}
@@ -105,8 +149,8 @@ const Holidays = () => {
         </CardContent>
       </Card>
 
-      <Dialog 
-        open={isModalOpen} 
+      <Dialog
+        open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         sx={{ zIndex: 1200 }}
       >
@@ -120,7 +164,9 @@ const Holidays = () => {
                 rows={4}
                 label="Description"
                 value={newHoliday.description}
-                onChange={(e) => setNewHoliday({ ...newHoliday, description: e.target.value })}
+                onChange={(e) =>
+                  setNewHoliday({ ...newHoliday, description: e.target.value })
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -134,7 +180,9 @@ const Holidays = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
-          <Button onClick={handleSubmit} variant="contained">Submit</Button>
+          <Button onClick={handleSubmit} variant="contained">
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
     </>
