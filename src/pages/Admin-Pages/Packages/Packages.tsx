@@ -23,10 +23,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
 import { Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { DASHBOARD_CUTSOM_STYLE, getAdminPackageHistoryColumns, getusedandUnUsedColumns } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getusedandUnUsedColumns } from '../../../utils/DataTableColumnsProvider';
 import { getEpinsSummary } from '../../../api/Admin';
 import { toast } from 'react-toastify';
-import useSearch from '../../../hooks/SearchQuery';
 
 interface PackageTableProps {
   title: string;
@@ -36,7 +35,7 @@ interface PackageTableProps {
   columns: any[];
 }
 
-const useGetEpins = (status : "used" | "unUsed" | "total") => {
+const useGetEpins = (status : "used" | "unUsed") => {
   const { data: epinsData, isLoading, isError, error } = getEpinsSummary();
   useEffect(() => {
       if (isError) {
@@ -50,10 +49,8 @@ const useGetEpins = (status : "used" | "unUsed" | "total") => {
 
     if(status === "used"){
       return {...result , epinsData : epinsData?.usedEpins || []}
-    } else if(status === "unUsed") {
-      return {...result , epinsData : epinsData?.activeEpins || []}
     } else {
-      return {...result, epinsData : epinsData?.totalEpins || []}
+      return {...result , epinsData : epinsData?.activeEpins || []}
     }
 }
 
@@ -189,21 +186,20 @@ export const UsedPackages = () => {
 };
 
 export const PackageHistory = () => {
-  const {isLoading , epinsData} = useGetEpins("total")
   return (
-    <PackageTable 
-        title="Package History" 
-        summaryTitle="List of Package History" 
-        data={epinsData}
-        loading={isLoading}
-        columns={getAdminPackageHistoryColumns()}
-      />
+    <div>PackageHistory</div>
   )
 }
 
 const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data , columns  , loading}) => {
+  // const [filterText, setFilterText] = useState('');
+  
 
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
+
+  // const filteredItems = data.filter(
+  //   item => item?.memberCode?.toLowerCase().includes(filterText.toLowerCase())
+  // );
+
   return (
     <>
       <Typography variant="h4" sx={{ margin: '2rem', mt: 10 }}>
@@ -227,14 +223,14 @@ const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data ,
               <TextField
                 size="small"
                 placeholder="Search..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                value={''}
+                // onChange={e => setFilterText(e.target.value)}
                 sx={{ minWidth: 200 }}
               />
             </div>
             <DataTable
               columns={columns}
-              data={filteredData}
+              data={data}
               pagination
               progressPending={loading}
               progressComponent={<CircularProgress />}
