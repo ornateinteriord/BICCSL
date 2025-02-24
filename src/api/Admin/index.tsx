@@ -2,23 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, post, put } from "../Api";
 import { toast } from "react-toastify";
 
-export const useUpdatePassword = () =>{
-  return useMutation({
-    mutationFn:async(passwordData:any) =>{
-    return await put("/admin/update-password",passwordData);
-    },
-    onSuccess:(response)=>{
-      if(response.success){
-        toast.success(response.message)
-      }else{
-        console.error( response.message)
-      }
-    },
-    onError:(error:any)=>{
-      toast.error(error.response.data.message)
-    }
-  })
-}
+
 
 export const useGetAllMembersDetails = () =>{
     return useQuery({
