@@ -24,6 +24,7 @@ import TokenService from "../../api/token/tokenService";
 import { deepOrange } from "@mui/material/colors";
 import { useContext, useState } from "react";
 import UserContext from "../../context/user/userContext";
+import { getFormattedName } from "../../utils/common";
 
 const Navbar = ({
   toggelSideBar,
@@ -52,6 +53,8 @@ const Navbar = ({
     window.dispatchEvent(new Event("storage"));
     setAnchorEl(null);
   };
+  const isHomePage = location.pathname === "/";
+  const isAdmin = userRole === "ADMIN";
 
   return (
     <>
@@ -79,20 +82,16 @@ const Navbar = ({
           <div style={{ marginLeft: "auto" }}>
             {isLoggedIn ? (
               <div className="admin-panel-container">
-                {userRole === "ADMIN" && (
+                {!isHomePage && isAdmin && (
                   <div className="admin-panel-content" onClick={handleMenuOpen}>
                     <Avatar
-                      className="use-avatar"
+                      className="user-avatar"
                       alt="User Avatar"
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        background: deepOrange[500],
-                      }}
+                      sx={{ width: 40, height: 40, background: deepOrange[500] }}
                     >
-                      {user?.username.charAt(0).toUpperCase()}
+                      {user?.username?.charAt(0).toUpperCase()}
                     </Avatar>
-                    <Typography variant="body1" style={{ color: "white" }}>
+                    <Typography variant="body1" sx={{ color: "white" }}>
                       Admin Portal
                     </Typography>
                     <ChevronDown
@@ -106,39 +105,27 @@ const Navbar = ({
                   </div>
                 )}
 
-                {location.pathname === "/" && (
-                  <Button
-                    variant="ghost"
-                    style={{ marginRight: "8px" }}
-                    onClick={() =>
-                      navigate(`/${userRole?.toLowerCase()}/dashboard`)
-                    }
-                  >
+                {isHomePage ? (
+                  <Button variant="ghost" style={{ marginRight: "8px" }} onClick={() => navigate(`/${userRole?.toLowerCase()}/dashboard`)}>
                     Go to Dashboard
                   </Button>
-                )}
-
-                {userRole !== "ADMIN" && (
-                  <Button
-                    className="logout-btn"
-                    variant="ghost"
-                    style={{ marginRight: "8px", fontSize: "50px" }}
-                    onClick={handleLogout}
-                  >
-                    <LogOutIcon />
-                  </Button>
+                ) : (
+                  !isAdmin && (
+                    <Button
+                      className="logout-btn"
+                      variant="ghost"
+                      style={{ marginRight: "8px", fontSize: "50px" }}
+                      onClick={handleLogout}
+                    >
+                      <LogOutIcon />
+                    </Button>
+                  )
                 )}
               </div>
             ) : (
-              <>
-                <Button
-                  variant="secondary"
-                  style={{ marginRight: "8px" }}
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </Button>
-              </>
+              <Button variant="secondary" style={{ marginRight: "8px" }} onClick={() => navigate("/login")}>
+                Login
+              </Button>
             )}
           </div>
         </Toolbar>
@@ -167,10 +154,11 @@ const Navbar = ({
                 background: deepOrange[500],
               }}
             >
-              {user?.username.charAt(0).toUpperCase()}
+              {user?.username ? user.username.charAt(0).toUpperCase() : ""}
+
             </Avatar>
             <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-              {user?.username || "Admin Name"}
+              {getFormattedName(user?.username)}
             </Typography>
           </div>
           <Divider />
