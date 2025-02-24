@@ -13,6 +13,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import PersonIcon from '@mui/icons-material/Person';
@@ -237,7 +238,7 @@ const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data ,
               data={filteredData}
               pagination
               progressPending={loading}
-              progressComponent={<CircularProgressLoader />}
+              progressComponent={<CircularProgress />}
               paginationPerPage={25}
               paginationRowsPerPageOptions={[25, 50, 100]}
               customStyles={DASHBOARD_CUTSOM_STYLE}

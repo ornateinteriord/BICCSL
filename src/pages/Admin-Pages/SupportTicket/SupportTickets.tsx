@@ -11,6 +11,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  CircularProgress,
 } from '@mui/material';
 import { Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -19,7 +20,6 @@ import { DASHBOARD_CUTSOM_STYLE, getSupportTicketColumns } from '../../../utils/
 import { useGetAllTickets, useUpdateTickets } from '../../../api/Admin';
 import { toast } from 'react-toastify';
 import useSearch from '../../../hooks/SearchQuery';
-import { CircularProgressLoader } from '../../../components/common/CustomLoader';
 
 interface Ticket{
   _id:string;
@@ -116,7 +116,7 @@ const SupportTickets = () => {
                 paginationPerPage={25}
                 progressPending={isLoading}
                 progressComponent={
-                  <CircularProgressLoader />
+                  <CircularProgress size={"4rem"} sx={{ color: "#04112F" }}  />
                 }
                 paginationRowsPerPageOptions={[25, 50, 100]}
                 highlightOnHover
