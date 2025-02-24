@@ -39,7 +39,6 @@ import UserProvider from "./context/user/userContextProvider";
 import MembersUpdateForm from "./pages/Admin-Pages/UpdateForms";
 
 
-
 // public pages
 const Home = lazy(() => import("./pages/Home/Home"));
 const Login = lazy(() => import("./pages/Auth/Login"));
@@ -49,7 +48,6 @@ const Sidebar = lazy(() => import("./pages/Sidebar/Sidebar"));
 const NotFound = lazy(() => import("./pages/not-found/NotFound"));
 
 // admin pages
-const UpdatePassword = lazy(()=>import("./pages/Admin-Pages/admin-panel/UpdatePassword"));
 const AdminDashboard = lazy(
   () => import("./pages/Admin-Pages/AdminDashboard/Dashboard")
 );
@@ -210,7 +208,6 @@ const RoutesProvider = ({
             {/* admin routes */}
 
             <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
-            <Route path="/admin/update-password" element={<UpdatePassword/>}/>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />{" "}
               {/* admin member routes */}
               <Route path="/admin/members" element={<Members />} />
