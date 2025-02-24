@@ -99,7 +99,7 @@ export const getUnUsedPackageColumns = (user : MemberDetails) => [
   },
 ];
 
-export const getUserPackageHistoryColumns = () => [
+export const getPackageHistoryColumns = () => [
   {
     name: "Package ID",
     selector: (row: any) => row.id,
@@ -429,23 +429,6 @@ export const getusedandUnUsedColumns = () => [
     sortable: true,
   },
 ];
-
-export const getAdminPackageHistoryColumns = () => [
-  {
-    name : "Date",
-    selector: (row: any) => getFormattedDate(row.date),
-    sortable: true,
-  },
-  {
-    name : "Member",
-    selector: (row: any) => row.memberCode,
-  },
-  {
-    name : "Quantity",
-    selector: (row: any) => row.totalQuantity,
-  }
-
-]
 
 export const getMailBoxColumns = (handleOpenDialog : any) => [
   {
