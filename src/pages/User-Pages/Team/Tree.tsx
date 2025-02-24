@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { LoadingComponent } from "../../../App";
 import DataTable from "react-data-table-component";
 import "./Tree.scss";
+import { getFormattedDate } from "../../../utils/common";
 
 interface Sponser {
   profile_image: string;
@@ -33,11 +34,6 @@ const Tree = () => {
     Date_of_joining:string;
   } | null>(null);
 
-  const [userDetails, setUserDetails] = useState({
-    profile_image: "",
-    Name: "",
-    Member_id: "",
-  });
 
   const { data: sponsers, isLoading, isError, error } = useGetSponsers();
  
@@ -46,15 +42,6 @@ const Tree = () => {
     if (isError) toast.error(error.message);
   }, [isError, error]);
 
-  useEffect(() => {
-    if (user) {
-      setUserDetails({
-        profile_image: user.profile_image || "",
-        Name: user.Name || "",
-        Member_id: user.Member_id || "",
-      });
-    }
-  }, [user]);
 
   const sponsored = Array.isArray(sponsers)
     ? sponsers.map((sponser: Sponser) => ({
@@ -75,14 +62,14 @@ const Tree = () => {
     { field: "Status", value: hoveredSponsor.status },
     { field: "Direct", value: "0/0" },
     { field: "Team", value: "0/0" },
-    { field: "Activation Date", value: hoveredSponsor.Date_of_joining },
+    { field: "Activation Date", value: getFormattedDate(hoveredSponsor.Date_of_joining) },
     { field: "Club", value: "2K" },
     { field: "Earnings", value: "Rs. 0" },
   ]:[]
 
   // Main user profile component
   const UserProfile = ({ userDetails }: { userDetails: any }) => (
-    <Box className="tree-user-profile">
+    <Box className="tree-user-profile"  onMouseEnter={() => setHoveredSponsor(userDetails)}>
       <Avatar
         className="tree-user-avatar"
         src={userDetails?.profile_image || ""}
@@ -140,7 +127,7 @@ const Tree = () => {
                   gap:4
                 }}
               >
-                <UserProfile userDetails={userDetails} />
+                <UserProfile userDetails={user} />
               
 
                 {sponsored.length > 0 && (

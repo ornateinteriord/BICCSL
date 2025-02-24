@@ -20,3 +20,8 @@ export const getFormattedDate = (date: Date | string) => {
     
     return parsedDate.isValid() ? parsedDate.format("DD MMM , YYYY") : "Invalid Date";
 };
+
+
+export const getFormattedName = (name: string) => {
+    return name?.split(" ")?.map((word) => word?.charAt(0)?.toUpperCase() + word?.slice(1))?.join(" ");
+}
