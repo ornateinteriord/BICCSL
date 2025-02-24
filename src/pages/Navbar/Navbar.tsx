@@ -171,7 +171,7 @@ const Navbar = ({
 
             </Avatar>
             <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-              {user?.username || "Admin Name"}
+              {user?.username || ""}
             </Typography>
           </div>
           <Divider />
