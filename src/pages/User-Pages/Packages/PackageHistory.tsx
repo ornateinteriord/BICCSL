@@ -2,7 +2,7 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
 import { useMediaQuery } from '@mui/material';
-import { DASHBOARD_CUTSOM_STYLE, getPackageHistoryColumns } from '../../../utils/DataTableColumnsProvider';
+import { DASHBOARD_CUTSOM_STYLE, getUserPackageHistoryColumns } from '../../../utils/DataTableColumnsProvider';
 
 const PackageHistory = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -49,7 +49,7 @@ const PackageHistory = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
-              columns={getPackageHistoryColumns()}
+              columns={getUserPackageHistoryColumns()}
               data={packages}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}
