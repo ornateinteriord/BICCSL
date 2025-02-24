@@ -26,7 +26,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DASHBOARD_CUTSOM_STYLE, getAdminPackageHistoryColumns, getusedandUnUsedColumns } from '../../../utils/DataTableColumnsProvider';
 import { getEpinsSummary } from '../../../api/Admin';
 import { toast } from 'react-toastify';
-import { CircularProgressLoader } from '../../../components/common/CustomLoader';
 import useSearch from '../../../hooks/SearchQuery';
 
 interface PackageTableProps {
