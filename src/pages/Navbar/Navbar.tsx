@@ -167,7 +167,8 @@ const Navbar = ({
                 background: deepOrange[500],
               }}
             >
-              {user?.username.charAt(0).toUpperCase()}
+              {user?.username ? user.username.charAt(0).toUpperCase() : ""}
+
             </Avatar>
             <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
               {user?.username || "Admin Name"}

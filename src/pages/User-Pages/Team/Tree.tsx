@@ -37,6 +37,8 @@ const Tree = () => {
     profile_image: "",
     Name: "",
     Member_id: "",
+    status: "",
+    Date_of_joining: "",
   });
 
   const { data: sponsers, isLoading, isError, error } = useGetSponsers();
@@ -52,6 +54,8 @@ const Tree = () => {
         profile_image: user.profile_image || "",
         Name: user.Name || "",
         Member_id: user.Member_id || "",
+        status:user.status || "",
+        Date_of_joining:user.Date_of_joining|| "",
       });
     }
   }, [user]);
@@ -82,7 +86,7 @@ const Tree = () => {
 
   // Main user profile component
   const UserProfile = ({ userDetails }: { userDetails: any }) => (
-    <Box className="tree-user-profile">
+    <Box className="tree-user-profile"  onMouseEnter={() => setHoveredSponsor(userDetails)}>
       <Avatar
         className="tree-user-avatar"
         src={userDetails?.profile_image || ""}

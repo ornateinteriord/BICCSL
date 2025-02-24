@@ -1,5 +1,5 @@
 .tree-container {
-   
+
     padding: 2rem;
     display: flex;
     justify-content: space-around;
@@ -11,10 +11,11 @@
     flex-direction: column;
     gap: 0;
     line-height: 1;
+    cursor: pointer;
   }
   .tree-user-avatar {
-    width: 64px !important;
-    height: 64px !important;
+    width: 68px !important;
+    height: 68px !important;
     margin-bottom: 0.5rem;
   }
 
@@ -28,8 +29,8 @@
 
 
   .sponsor-avatar {
-    width: 48px;
-    height: 48px;
+    width: 54px !important;
+    height: 54px !important;
     margin-bottom: 0.5rem;
     background-color: var(--secondary-color);
   }
@@ -40,6 +41,7 @@
     width: 100%;
     max-width: 800;
     gap: 40px;
+    cursor: pointer;
   }
 
   .sponsor-popup {
