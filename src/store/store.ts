@@ -45,4 +45,5 @@ export interface MemberDetails {
   TBPDays: string;
   level_income: string;
   direct_income: string;
+  profile_image : string;
 }
