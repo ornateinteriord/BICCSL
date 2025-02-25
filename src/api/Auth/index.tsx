@@ -4,6 +4,24 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import TokenService from "../token/tokenService";
 
+export const useSignupMutation = () => {
+  return useMutation({
+    mutationFn: async (data: any) => {
+      return post("/auth/signup", data);
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        console.error(response.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response.data.message);
+    },
+  });
+};
+
 export const useLoginMutation = () => {
   const navigate = useNavigate();
 
