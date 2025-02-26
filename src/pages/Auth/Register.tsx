@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -15,6 +15,7 @@ import {
   Radio,
   RadioGroup,
   Checkbox,
+  FormHelperText,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
@@ -23,23 +24,42 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import WcIcon from "@mui/icons-material/Wc";
 import "./Register.scss";
-import { useSignupMutation } from "../../api/Auth";
+import { useGetSponserRef, useSignupMutation } from "../../api/Auth";
 import { LoadingComponent } from "../../App";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams(); 
+  const refCode = searchParams.get("ref") || ""
   const [formData, setFormData] = useState<Record<string, string>>({
+    Sponsor_code:refCode,
+    Sponsor_name: "",
     gender: "",
   });
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [genderError, setGenderError] = useState(false);
+  const [sponsorCode, setSponsorCode] = useState(refCode);
+  const { data: sponsorData,isLoading,isError,error,refetch} = useGetSponserRef(sponsorCode);
 
+  useEffect(() => {
+    if (sponsorData) {
+      setFormData((prev) => ({
+        ...prev,
+        Sponsor_name: sponsorData.name || "", 
+      }));
+    }
+  }, [sponsorData]);
+  const sponsorError = isError && error instanceof Error ? error.message : "";
+
+ 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
-    setErrorMessage(""); // Clear error when checkbox is checked
+    setErrorMessage(""); 
   };
 
+
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -47,6 +67,15 @@ const Register = () => {
       [name]: value
     }));
   };
+
+  const handleSponsorKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && formData.Sponsor_code.trim()) {
+      setSponsorCode(formData.Sponsor_code);
+      refetch(); 
+    }
+  };
+
+
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -132,6 +161,9 @@ const Register = () => {
                   placeholder="Sponsor code"
                   value={formData.Sponsor_code}
                   onChange={handleChange}
+                  onKeyDown={handleSponsorKeyDown}
+                  error={!!sponsorError} // Show error if exists
+                  helperText={sponsorError} 
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -150,6 +182,7 @@ const Register = () => {
                     },
                   }}
                 />
+
                 <TextField
                   required
                   name="Sponsor_name"
@@ -157,6 +190,7 @@ const Register = () => {
                   placeholder="Sponsor Name"
                   value={formData.Sponsor_name}
                   onChange={handleChange}
+                
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -268,6 +302,8 @@ const Register = () => {
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
+                  error={!!errorMessage} 
+                  helperText={errorMessage} 
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -286,11 +322,6 @@ const Register = () => {
                     },
                   }}
                 />
-                {errorMessage && (
-                  <Typography variant="body2" sx={{ color: "red" }}>
-                    {errorMessage}
-                  </Typography>
-                )}
                 <TextField
                   required
                   label="Mobile Number"
@@ -346,7 +377,7 @@ const Register = () => {
                   }}
                 />
                 <FormControl
-                  error={genderError}
+                  error={!!genderError}
                   className="form-control"
                   sx={{
                     display: "flex",
@@ -383,11 +414,10 @@ const Register = () => {
                       label="Female"
                     />
                   </RadioGroup>
-                </FormControl>
+                 
+                </FormControl> 
                 {genderError && (
-                    <Typography variant="body2" sx={{ color: "red",marginTop:"-20px" }}>
-                      Please select your gender.
-                    </Typography>
+                   <FormHelperText sx={{color:"#d32f2f",marginTop:"-20px"}}>  Please select your gender*</FormHelperText>
                   )}
                 <Box className="btn-container">
                   <FormControlLabel
@@ -439,7 +469,8 @@ const Register = () => {
           </CardContent>
         </Card>
       </Box>
-      {isPending && <LoadingComponent />}
+      {(isLoading || isPending) && <LoadingComponent />}
+
     </Container>
   );
 };

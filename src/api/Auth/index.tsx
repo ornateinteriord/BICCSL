@@ -1,5 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
-import { post } from "../Api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { get, post } from "../Api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import TokenService from "../token/tokenService";
@@ -21,6 +21,25 @@ export const useSignupMutation = () => {
     },
   });
 };
+
+export const useGetSponserRef = (ref?:string) =>{
+  return useQuery({
+    queryKey:["sponsor",ref],
+    queryFn:async () =>{
+      if(!ref) return null;
+      try {
+        const response = await get(`/auth/get-sponsor/${ref}`);
+        return response.success ? response : null; 
+      } catch (err: any) {
+        
+        const errorMessage =
+          err.response?.data.message ;
+        throw new Error(errorMessage);
+      }
+    },
+    enabled: !!ref,
+  })
+}
 
 export const useLoginMutation = () => {
   const navigate = useNavigate();
