@@ -19,11 +19,6 @@ import {
   PersonAddIcon,
   TrendingUpIcon,
   PaymentsIcon,
-  ComputerIcon,
-  LaptopIcon,
-  PhoneAndroidIcon,
-  DevicesOtherIcon,
-  BuildIcon,
   SupportIcon,
   AnnouncementIcon,
   EventIcon,
@@ -227,40 +222,6 @@ export const AdminSideBarMenuItems: SideBarMenuItemType[] = [
     icon: <CreditCardIcon />,
     path: "/admin/payout",
     isExpandable: false,
-  },
-  {
-    name: "Orders",
-    icon: <ReceiptLongIcon />,
-    path: "/admin/orders",
-    isExpandable: false,
-  },
-  {
-    name: "Items",
-    icon: <InventoryIcon />,
-    isExpandable: true,
-    subItems: [
-      {
-        name: "Computers",
-        path: "/admin/items/computers",
-        icon: <ComputerIcon />,
-      },
-      { name: "Laptops", path: "/admin/items/laptops", icon: <LaptopIcon /> },
-      {
-        name: "Mobiles",
-        path: "/admin/items/mobiles",
-        icon: <PhoneAndroidIcon />,
-      },
-      {
-        name: "Electronics",
-        path: "/admin/items/electronics",
-        icon: <DevicesOtherIcon />,
-      },
-      {
-        name: "Accessories",
-        path: "/admin/items/accessories",
-        icon: <BuildIcon />,
-      },
-    ],
   },
   {
     name: "Transactions",
