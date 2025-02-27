@@ -17,13 +17,6 @@ import Members, {
   PendingMembers,
 } from "./pages/Admin-Pages/Members/Members";
 import {
-  Accessories,
-  Computers,
-  Electronics,
-  Laptops,
-  Mobiles,
-} from "./pages/Admin-Pages/Items/Items";
-import {
   GeneratePackages,
   PackageHistory,
   PackageRequests,
@@ -63,7 +56,7 @@ const AdminLevelBenifits = lazy(
   () => import("./pages/Admin-Pages/Incomes/LevelBenifits")
 );
 const AdminPayout = lazy(() => import("./pages/Admin-Pages/Payout/Payout"));
-const AdminOrders = lazy(() => import("./pages/Admin-Pages/Orders/Orders"));
+
 const AdminTransactions = lazy(
   () => import("./pages/Admin-Pages/Transactions/Transactions")
 );
@@ -256,19 +249,7 @@ const RoutesProvider = ({
                 element={<AdminDailyBenifitsPayouts />}
               />
               <Route path="/admin/payout" element={<AdminPayout />} />
-              <Route path="/admin/orders" element={<AdminOrders />} />
-              {/* admin items routes */}
-              <Route path="/admin/items/computers" element={<Computers />} />
-              <Route path="/admin/items/laptops" element={<Laptops />} />
-              <Route path="/admin/items/mobiles" element={<Mobiles />} />
-              <Route
-                path="/admin/items/electronics"
-                element={<Electronics />}
-              />
-              <Route
-                path="/admin/items/accessories"
-                element={<Accessories />}
-              />
+
               {/* admin transaction routes */}
               <Route
                 path="/admin/transactions"
