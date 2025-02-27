@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import {
   Box,
@@ -26,6 +26,7 @@ import WcIcon from "@mui/icons-material/Wc";
 import "./Register.scss";
 import { useGetSponserRef, useSignupMutation } from "../../api/Auth";
 import { LoadingComponent } from "../../App";
+import {  debounce } from "lodash";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -39,8 +40,17 @@ const Register = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [genderError, setGenderError] = useState(false);
-  const [sponsorCode, setSponsorCode] = useState(refCode);
-  const { data: sponsorData,isLoading,isError,error,refetch} = useGetSponserRef(sponsorCode);
+  const { data: sponsorData,isLoading,isError,error, refetch: refetchSponsorData} = useGetSponserRef(formData.Sponsor_code);
+
+  
+  const debouncedFetchSponsor = useCallback(
+    debounce((code: any) => {
+      if (code) {
+        refetchSponsorData(code);
+      }
+    }, 2000), 
+    []
+  );
 
   useEffect(() => {
     if (sponsorData) {
@@ -50,6 +60,15 @@ const Register = () => {
       }));
     }
   }, [sponsorData]);
+
+
+  useEffect(() => {
+    if (formData.Sponsor_code.length >= 5) { 
+      debouncedFetchSponsor(formData.Sponsor_code);
+    }
+  }, [formData.Sponsor_code, debouncedFetchSponsor]);
+
+
   const sponsorError = isError && error instanceof Error ? error.message : "";
 
  
@@ -67,14 +86,6 @@ const Register = () => {
       [name]: value
     }));
   };
-
-  const handleSponsorKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && formData.Sponsor_code.trim()) {
-      setSponsorCode(formData.Sponsor_code);
-      refetch(); 
-    }
-  };
-
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevData) => ({
@@ -161,9 +172,10 @@ const Register = () => {
                   placeholder="Sponsor code"
                   value={formData.Sponsor_code}
                   onChange={handleChange}
-                  onKeyDown={handleSponsorKeyDown}
-                  error={!!sponsorError} // Show error if exists
-                  helperText={sponsorError} 
+                  error={(formData.Sponsor_code.length > 0 && formData.Sponsor_code.length < 5) || !!sponsorError} 
+                  helperText={  formData.Sponsor_code.length > 0 && formData.Sponsor_code.length < 5
+                    ? "Sponsor code must be at least 5 characters."
+                    : sponsorError} 
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -419,8 +431,7 @@ const Register = () => {
                 {genderError && (
                    <FormHelperText sx={{color:"#d32f2f",marginTop:"-20px"}}>  Please select your gender*</FormHelperText>
                   )}
-                <Box className="btn-container">
-                  <FormControlLabel
+                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={isChecked}
@@ -435,6 +446,7 @@ const Register = () => {
                     }
                     className="FormControlLabel"
                   />
+                <Box className="btn-container">
                   <Button
                     type="submit"
                     variant="contained"

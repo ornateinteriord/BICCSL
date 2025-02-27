@@ -37,7 +37,7 @@ export const useGetSponserRef = (ref?:string) =>{
         throw new Error(errorMessage);
       }
     },
-    enabled: !!ref,
+    enabled: false,
   })
 }
 
