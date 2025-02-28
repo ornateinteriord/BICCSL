@@ -46,7 +46,7 @@ const ResetPassword = () => {
             },
             onError: () => {
               setOtp("");
-              setStep((prev)=>prev+1);
+              setStep((prev)=>prev-1);
             },
           }
         );
