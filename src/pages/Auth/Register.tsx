@@ -478,6 +478,16 @@ const Register = () => {
                 Login
               </Link>
             </Typography>
+            <Typography variant="body2" sx={{ textAlign: "center", mt: 1 }}>
+              <Link to="/recover-password" 
+              style={{
+                  color: "#04112f",
+                  textDecoration: "none",
+                  fontWeight: "bold",
+                }}>
+                Recover Password
+              </Link>
+            </Typography>
           </CardContent>
         </Card>
       </Box>

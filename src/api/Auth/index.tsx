@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import TokenService from "../token/tokenService";
 
+
 export const useSignupMutation = () => {
   return useMutation({
     mutationFn: async (data: any) => {
@@ -38,6 +39,41 @@ export const useGetSponserRef = (ref?:string) =>{
       }
     },
     enabled: false,
+  })
+}
+
+export const useRecoverpassword = () =>{
+  return useMutation({
+    mutationFn:async(data:any)=>{
+      return post("/auth/recover-password",data);
+    },
+    onSuccess:(response)=>{
+      if(response.success){
+        toast.success(response.message);
+      }else{
+        console.error(response.message)
+      }
+    },
+    onError:(error:any)=>{
+      toast.error(error.response.data.message)
+    }
+  })
+}
+export const useResetpassword = () =>{
+  return useMutation({
+    mutationFn:async(data:any)=>{
+      return post("/auth/reset-password",data);
+    },
+    onSuccess:(response)=>{
+      if(response.success){
+        toast.success(response.message);
+      }else{
+        console.error(response.message)
+      }
+    },
+    onError:(error:any)=>{
+      toast.error(error.response.data.message)
+    }
   })
 }
 
