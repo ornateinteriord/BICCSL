@@ -36,17 +36,17 @@ const ResetPassword = () => {
     try {
       if (step === 1 && formData.email) {
         mutate({ email: formData.email });
-        setStep(2);
+        setStep((prev)=>prev+1);
       } else if (step === 2 && otp.length === 6) {
         mutate(
           { email: formData.email, otp },
           {
             onSuccess: () => {
-              setStep(3);
+              setStep((prev)=>prev+1);
             },
             onError: () => {
               setOtp("");
-              setStep(1);
+              setStep((prev)=>prev+1);
             },
           }
         );
