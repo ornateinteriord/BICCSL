@@ -37,6 +37,8 @@ import MembersUpdateForm from "./pages/Admin-Pages/UpdateForms";
 const Home = lazy(() => import("./pages/Home/Home"));
 const Login = lazy(() => import("./pages/Auth/Login"));
 const Register = lazy(() => import("./pages/Auth/Register"));
+const RecoverPassword = lazy(()=>import("./pages/Auth/RecoverPassword"))
+const ResetPassword = lazy(()=>import("./pages/Auth/ResetPassword"))
 const Navbar = lazy(() => import("./pages/Navbar/Navbar"));
 const Sidebar = lazy(() => import("./pages/Sidebar/Sidebar"));
 const NotFound = lazy(() => import("./pages/not-found/NotFound"));
@@ -121,7 +123,7 @@ export const LoadingComponent = () => {
 
 const ShouldHideSidebarComponent = () => {
   const location = useLocation();
-  const publicPaths = ["/", "/login", "/register"];
+  const publicPaths = ["/", "/login", "/register","/recover-password","/reset-password"];
   return publicPaths.includes(location.pathname);
 };
 
@@ -199,6 +201,8 @@ const RoutesProvider = ({
             <Route element={<PublicRoute />}>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/recover-password" element={<RecoverPassword />} />
+              <Route path="/reset-password" element={<ResetPassword/>} />
             </Route>
             {/* admin routes */}
 
