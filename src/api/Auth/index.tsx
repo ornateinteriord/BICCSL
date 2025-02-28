@@ -8,7 +8,7 @@ import TokenService from "../token/tokenService";
 export const useSignupMutation = () => {
   return useMutation({
     mutationFn: async (data: any) => {
-      return post("/auth/signup", data);
+      return await post("/auth/signup", data);
     },
     onSuccess: (response) => {
       if (response.success) {
@@ -45,7 +45,7 @@ export const useGetSponserRef = (ref?:string) =>{
 export const useRecoverpassword = () =>{
   return useMutation({
     mutationFn:async(data:any)=>{
-      return post("/auth/recover-password",data);
+      return await post("/auth/recover-password",data);
     },
     onSuccess:(response)=>{
       if(response.success){
@@ -62,7 +62,7 @@ export const useRecoverpassword = () =>{
 export const useResetpassword = () =>{
   return useMutation({
     mutationFn:async(data:any)=>{
-      return post("/auth/reset-password",data);
+      return await post("/auth/reset-password",data);
     },
     onSuccess:(response)=>{
       if(response.success){
@@ -82,7 +82,7 @@ export const useLoginMutation = () => {
 
   return useMutation({
     mutationFn: async (data: { username: string; password: string }) => {
-      return post("/auth/login", data);
+      return await post("/auth/login", data);
     },
     onSuccess: (response) => {
       if (response.success && response.token) {
@@ -91,20 +91,16 @@ export const useLoginMutation = () => {
         window.dispatchEvent(new Event("storage"));
 
         toast.success(response.message);
-
-        setTimeout(() => {
-          const role = TokenService.getRole();
-          
-
+          const role = TokenService.getRole()
           if (role === "USER") {
             navigate("/user/dashboard");
           } else if (role === "ADMIN") {
             navigate("/admin/dashboard");
           } else {
             console.error("Invalid role:", role);
+            localStorage.clear()
             toast.error("Invalid user role");
-          }
-        }, 100);
+          } 
       } else {
         console.error("Login failed:", response.message);
         toast.error(response.message);
