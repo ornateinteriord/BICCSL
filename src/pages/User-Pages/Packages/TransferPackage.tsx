@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -10,13 +10,19 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DateFilterComponent from '../../../components/common/DateFilterComponent';
+import { useGetSponserRef } from '../../../api/Auth';
+import { useTransferPackage } from '../../../api/Memeber';
 
 const TransferPackage: React.FC = () => {
   const [formData, setFormData] = useState({
-    date: '',
-    packageQty: '1',
-    transferedTo: '',
+    transfered_on: new Date().toISOString(),
+    quantity: 1,
+    transfered_to: '',
   });
+  const [userName , setUserName] = useState<string | null>('')
+
+   const { data: memberdata ,isError,error,refetch } = useGetSponserRef(formData.transfered_to);
+   const transferPackage = useTransferPackage();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -24,18 +30,25 @@ const TransferPackage: React.FC = () => {
       ...prevData,
       [name]: value,
     }));
+    setUserName(null);
   };
 
-  const handleDateChange = (date: Date | undefined) => {
-    setFormData(prev => ({
-      ...prev,
-      date: date ? date.toISOString() : ''
-    }));
+  useEffect(() => {
+    if (memberdata && !isError) {
+      setUserName(memberdata.name);
+    } else if (isError && error instanceof Error) {
+      setUserName(null);
+    }
+  }, [memberdata, isError, error]);
+
+  const handleTransferedToBlur = () => {
+    if (formData.transfered_to) {
+      refetch();
+    }
   };
 
   const handleSubmit = () => {
-    console.log('Form Data Submitted:', formData);
-    alert('Package Transferred Successfully!');
+    transferPackage.mutate(formData);
   };
 
   return (
@@ -62,11 +75,12 @@ const TransferPackage: React.FC = () => {
           </AccordionSummary>
           <AccordionDetails sx={{ padding: '2rem' }}>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <DateFilterComponent onSelect={handleDateChange} width="100%" />
+                <DateFilterComponent onSelect={()=>{}} width="100%" needCurrent disabled />
               <TextField
                 label="Package Qty"
-                name="packageQty"
-                value={formData.packageQty}
+                name="quantity"
+                type="number"
+                value={formData.quantity}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -83,9 +97,10 @@ const TransferPackage: React.FC = () => {
               />
               <TextField
                 label="Transfered To"
-                name="transferedTo"
-                value={formData.transferedTo}
+                name="transfered_to"
+                value={formData.transfered_to}
                 onChange={handleInputChange}
+                onBlur={handleTransferedToBlur}
                 fullWidth
                 variant="outlined"
                 placeholder="Enter transfer recipient"
@@ -100,6 +115,8 @@ const TransferPackage: React.FC = () => {
                   }
                 }}
               />
+              {userName && <p style={{ color: 'green' }}>{userName}</p>}
+              <p style={{ color: 'red' }}>{isError && error instanceof Error && error.message}</p>
               <Button
                 variant="contained"
                 onClick={handleSubmit}
