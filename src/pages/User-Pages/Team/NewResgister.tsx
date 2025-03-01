@@ -97,7 +97,7 @@ const NewResgister: React.FC = () => {
               <TextField
                 label="Sponsor Code"
                 name="sponsorCode"
-                value={user?.Member_id|| "-"}
+                value={user?.Member_id}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -123,7 +123,7 @@ const NewResgister: React.FC = () => {
               <TextField
                 label="Sponsor Name"
                 name="sponsorName"
-                value={user?.Name|| "-"}
+                value={user?.Name}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
