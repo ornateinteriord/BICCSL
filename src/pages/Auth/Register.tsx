@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import {
   Box,
@@ -26,12 +26,13 @@ import WcIcon from "@mui/icons-material/Wc";
 import "./Register.scss";
 import { useGetSponserRef, useSignupMutation } from "../../api/Auth";
 import { LoadingComponent } from "../../App";
-import {  debounce } from "lodash";
+
 
 const Register = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams(); 
   const refCode = searchParams.get("ref") || ""
+  const [tempSponsorCode, setTempSponsorCode] = useState(refCode); 
   const [formData, setFormData] = useState<Record<string, string>>({
     Sponsor_code:refCode,
     Sponsor_name: "",
@@ -40,17 +41,8 @@ const Register = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [genderError, setGenderError] = useState(false);
-  const { data: sponsorData,isLoading,isError,error, refetch: refetchSponsorData} = useGetSponserRef(formData.Sponsor_code);
+  const { data: sponsorData,isLoading,isError,error,refetch } = useGetSponserRef(formData.Sponsor_code);
 
-  
-  const debouncedFetchSponsor = useCallback(
-    debounce((code: any) => {
-      if (code) {
-        refetchSponsorData(code);
-      }
-    }, 2000), 
-    []
-  );
 
   useEffect(() => {
     if (sponsorData) {
@@ -58,19 +50,35 @@ const Register = () => {
         ...prev,
         Sponsor_name: sponsorData.name || "", 
       }));
+     
     }
   }, [sponsorData]);
-
-
-  useEffect(() => {
-    if (formData.Sponsor_code.length >= 5) { 
-      debouncedFetchSponsor(formData.Sponsor_code);
-    }
-  }, [formData.Sponsor_code, debouncedFetchSponsor]);
-
+  
 
   const sponsorError = isError && error instanceof Error ? error.message : "";
 
+
+  const handleSponsorCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTempSponsorCode(e.target.value); 
+  };
+
+  const handleSponsorCodeBlur = () => {
+    if (tempSponsorCode !== formData.Sponsor_code) { 
+      setFormData((prev) => ({
+        ...prev,
+        Sponsor_code: tempSponsorCode, 
+      }));
+      
+    }
+  };
+  useEffect(() => {
+    if (formData.Sponsor_code) {
+      refetch(); 
+    }
+  }, [formData.Sponsor_code]);
+  
+
+  
  
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
@@ -85,6 +93,7 @@ const Register = () => {
       ...prev,
       [name]: value
     }));
+   
   };
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,10 +179,11 @@ const Register = () => {
                   name="Sponsor_code"
                   label="Sponsor Code"
                   placeholder="Sponsor code"
-                  value={formData.Sponsor_code}
-                  onChange={handleChange}
-                  error={(formData.Sponsor_code.length > 0 && formData.Sponsor_code.length < 5) || !!sponsorError} 
-                  helperText={  formData.Sponsor_code.length > 0 && formData.Sponsor_code.length < 5
+                  value={tempSponsorCode}
+                  onChange={handleSponsorCodeChange}
+                  onBlur={handleSponsorCodeBlur}
+                  error={(tempSponsorCode.length > 0 && tempSponsorCode.length < 5) || !!sponsorError} 
+                  helperText={  tempSponsorCode.length > 0 && tempSponsorCode.length < 5
                     ? "Sponsor code must be at least 5 characters."
                     : sponsorError} 
                   InputProps={{
