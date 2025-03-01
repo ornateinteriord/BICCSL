@@ -124,7 +124,7 @@ export const LoadingComponent = () => {
 const ShouldHideSidebarComponent = () => {
   const location = useLocation();
   const publicPaths = ["/", "/login", "/register","/recover-password","/reset-password"];
-  return publicPaths.some(path => location.pathname.startsWith(path));
+  return publicPaths.includes(location.pathname);
 };
 
 function App() {

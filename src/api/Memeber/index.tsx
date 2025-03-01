@@ -40,7 +40,7 @@ export const useUpdateMember = () => {
     },
     onError: (err: any) => {
       const errorMessage =
-        err.response?.data?.message || "An unknown error occurred during login";
+        err.response?.data?.message;
       console.error("Login error:", errorMessage);
       toast.error(errorMessage);
     },
@@ -128,3 +128,24 @@ export const useGetSponsers = () => {
     }
   })
 }
+
+export const useTransferPackage = () => {
+  return useMutation({
+    mutationFn: async (data: any) => {
+      return await put('/user/transferPackage', data);
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        console.error("Login failed:", response.message);
+      }
+    },
+    onError: (err: any) => {
+      const errorMessage =
+        err.response?.data?.message;
+      console.error("Login error:", errorMessage);
+      toast.error(errorMessage);
+    },
+  });
+};
