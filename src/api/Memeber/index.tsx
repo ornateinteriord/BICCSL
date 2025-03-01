@@ -149,3 +149,18 @@ export const useTransferPackage = () => {
     },
   });
 };
+
+export const useGetPackagehistory = () => {
+  const memberId = TokenService.getMemberId();
+  return useQuery({
+    queryKey : ["package-history", memberId],
+    queryFn : async () => {
+      const response = await get('/user/package-history');
+      if(response.success){
+        return response.epins
+      } else {
+        throw new Error(response.message || "Failed to fetch package history");
+      }
+    }
+  })
+}

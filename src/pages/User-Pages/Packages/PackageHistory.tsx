@@ -3,22 +3,23 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataTable from 'react-data-table-component';
 import { useMediaQuery } from '@mui/material';
 import { DASHBOARD_CUTSOM_STYLE, getUserPackageHistoryColumns } from '../../../utils/DataTableColumnsProvider';
+import { useGetPackagehistory } from '../../../api/Memeber';
+import { CircularProgress } from '@mui/material';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import useSearch from '../../../hooks/SearchQuery';
 
 const PackageHistory = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
+  const {data : historyData , isLoading , isError , error} = useGetPackagehistory();
+  const {filteredData , searchQuery , setSearchQuery} = useSearch(historyData);
 
-
-  // Sample data - replace with actual data
-  const packages = [
-    {
-      id: '1',
-      name: 'Basic Package',
-      status: 'Active',
-      date: '2024-01-15',
-      amount: '$99'
-    },
-    // Add more package data as needed
-  ];
+  useEffect(()=>{
+    const err = error as any;
+    if(isError){
+      toast.error(err?.response?.data?.message || 'Something went wrong');
+    }
+  },[isError,error]);
 
   return (
     <Card sx={{ 
@@ -50,12 +51,15 @@ const PackageHistory = () => {
           <AccordionDetails>
             <DataTable
               columns={getUserPackageHistoryColumns()}
-              data={packages}
+              data={filteredData}
               pagination
               customStyles={DASHBOARD_CUTSOM_STYLE}
               paginationPerPage={isMobile ? 10 : 25}
               paginationRowsPerPageOptions={isMobile ? [10, 20, 50] : [25, 50, 100]}
               highlightOnHover
+              progressPending={isLoading}
+              progressComponent={<CircularProgress />}
+              noDataComponent={<div>No data found</div>}
               responsive
               subHeader
               subHeaderComponent={
@@ -64,6 +68,8 @@ const PackageHistory = () => {
                     placeholder="Search"
                     variant="outlined"
                     size="small"
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    value={searchQuery}
                   />
                 </div>
               }

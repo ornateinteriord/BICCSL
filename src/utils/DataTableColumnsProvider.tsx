@@ -101,28 +101,24 @@ export const getUnUsedPackageColumns = (user : MemberDetails) => [
 
 export const getUserPackageHistoryColumns = () => [
   {
-    name: "Package ID",
-    selector: (row: any) => row.id,
-    sortable: true,
-  },
-  {
-    name: "Package Name",
-    selector: (row: any) => row.name,
-    sortable: true,
-  },
-  {
-    name: "Status",
-    selector: (row: any) => row.status,
-    sortable: true,
-  },
-  {
     name: "Date",
-    selector: (row: any) => row.date,
+    selector: (row: any) => getFormattedDate(row.date),
     sortable: true,
   },
   {
-    name: "Amount",
-    selector: (row: any) => row.amount,
+    name: "Transfered To",
+    selector: (row: any) => row.transfered_to,
+    // #TODO: Add username and member id
+    sortable: true,
+  },
+  {
+    name: "Qty",
+    selector: (row: any) => row.quantity,
+    sortable: true,
+  },
+  {
+    name: "Package",
+    selector: (row: any) => row.package,
     sortable: true,
   },
 ];
