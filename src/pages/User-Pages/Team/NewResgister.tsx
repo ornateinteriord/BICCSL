@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -13,6 +13,7 @@ import {
   Card,
   CardContent,
   InputAdornment,
+  FormHelperText,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PersonIcon from '@mui/icons-material/Person';
@@ -21,18 +22,15 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import WcIcon from '@mui/icons-material/Wc';
 import LockIcon from '@mui/icons-material/Lock';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import UserContext from '../../../context/user/userContext';
+import { useSignupMutation } from '../../../api/Auth';
+import { LoadingComponent } from '../../../App';
 
 const NewResgister: React.FC = () => {
-  const [formData, setFormData] = useState({
-    sponsorCode: 'SF000001',
-    sponsorName: 'MANJUNATH N',
-    name: '',
-    gender: 'Male',
-    email: '',
-    mobile: '',
-    pinCode: '',
-    password: '',
-  });
+  const {user} = useContext(UserContext)
+  const [formData, setFormData] = useState<Record<string, string>>({});
+  const [genderError, setGenderError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -49,9 +47,26 @@ const NewResgister: React.FC = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log('Form Data Submitted:', formData);
-    alert('Details Updated Successfully!');
+  const { mutate, isPending } = useSignupMutation();
+
+  const handleSubmit =async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!formData.gender) {
+      setGenderError(true);
+      return;
+    }
+    if (formData.password.length <= 5) {
+      setErrorMessage("Password must be atleast 6 character*");
+      return;
+    }
+    try {
+      mutate({Sponsor_code: user.Member_id, Sponsor_name : user.Name ,...formData });
+
+    } catch (error) {
+      console.error("Registration failed:", error);
+    } finally{
+      setFormData({})
+    }
   };
 
   return (
@@ -82,7 +97,7 @@ const NewResgister: React.FC = () => {
               <TextField
                 label="Sponsor Code"
                 name="sponsorCode"
-                value={formData.sponsorCode}
+                value={user?.Member_id|| "-"}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -108,7 +123,7 @@ const NewResgister: React.FC = () => {
               <TextField
                 label="Sponsor Name"
                 name="sponsorName"
-                value={formData.sponsorName}
+                value={user?.Name|| "-"}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -139,6 +154,7 @@ const NewResgister: React.FC = () => {
         <Accordion 
           defaultExpanded
           sx={{
+            mt: 2,
             boxShadow: 'none',
             '&.MuiAccordion-root': {
               backgroundColor: '#fff'
@@ -159,8 +175,8 @@ const NewResgister: React.FC = () => {
             <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <TextField
                 label="Name"
-                name="name"
-                value={formData.name}
+                name="Name"
+                value={formData.Name}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -183,7 +199,7 @@ const NewResgister: React.FC = () => {
                   }
                 }}
               />
-              <FormControl>
+              <FormControl  error={!!genderError}>
                 <FormLabel sx={{ color: '#04112f', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <WcIcon sx={{ color: '#04112f' }} />
                   Gender
@@ -214,6 +230,9 @@ const NewResgister: React.FC = () => {
                   />
                 </RadioGroup>
               </FormControl>
+              {genderError && (
+                   <FormHelperText sx={{color:"#d32f2f",marginTop:"-20px"}}>  Please select your gender*</FormHelperText>
+              )}
               <TextField
                 label="Email"
                 name="email"
@@ -243,9 +262,9 @@ const NewResgister: React.FC = () => {
               />
               <TextField
                 label="Mobile"
-                name="mobile"
+                name="mobileno"
                 type="tel"
-                value={formData.mobile}
+                value={formData.mobileno}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -270,8 +289,8 @@ const NewResgister: React.FC = () => {
               />
               <TextField
                 label="Pin Code"
-                name="pinCode"
-                value={formData.pinCode}
+                name="pincode"
+                value={formData.pincode}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -303,6 +322,8 @@ const NewResgister: React.FC = () => {
                 fullWidth
                 variant="outlined"
                 placeholder="Enter your password"
+                error={!!errorMessage} 
+                helperText={errorMessage} 
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -327,8 +348,8 @@ const NewResgister: React.FC = () => {
 
         {/* Register Button */}
         <Button
+         onClick={handleSubmit}
           variant="contained"
-          onClick={handleSubmit}
           sx={{
             backgroundColor: '#04112f',
             margin: '1rem',
@@ -341,6 +362,7 @@ const NewResgister: React.FC = () => {
           Register
         </Button>
       </CardContent>
+      {isPending && <LoadingComponent/>}
     </Card>
   );
 };
