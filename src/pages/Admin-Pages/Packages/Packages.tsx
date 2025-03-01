@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   TextField,
   Button,
@@ -24,9 +24,11 @@ import DataTable from 'react-data-table-component';
 import { Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DASHBOARD_CUTSOM_STYLE, getAdminPackageHistoryColumns, getusedandUnUsedColumns } from '../../../utils/DataTableColumnsProvider';
-import { getEpinsSummary } from '../../../api/Admin';
+import { getEpinsSummary, useGeneratePackage } from '../../../api/Admin';
 import { toast } from 'react-toastify';
 import useSearch from '../../../hooks/SearchQuery';
+import UserContext from '../../../context/user/userContext';
+import { LoadingComponent } from '../../../App';
 
 interface PackageTableProps {
   title: string;
@@ -251,9 +253,10 @@ const PackageTable: React.FC<PackageTableProps> = ({ title, summaryTitle, data ,
 };
 
 export const GeneratePackages = () => {
+  const {user}= useContext(UserContext)
   const [formData, setFormData] = useState({
-    package: '',
-    sendTo: '',
+    spackage: '',
+    purchasedby: '',
     quantity: 1,
     amount: 0,
   });
@@ -269,7 +272,7 @@ export const GeneratePackages = () => {
     const selectedPackage = packages.find(p => p.name === selectedValue);
     setFormData(prev => ({
       ...prev,
-      package: selectedValue,
+      spackage: selectedValue,
       amount: selectedPackage ? selectedPackage.value : 0
     }));
   };
@@ -283,6 +286,23 @@ export const GeneratePackages = () => {
   };
 
   const totalAmount = formData.amount * formData.quantity;
+
+  const {mutate,isPending} = useGeneratePackage()
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) =>{
+    e.preventDefault();
+    try {
+      mutate({...formData,generated_by:user.username})
+    } catch (error) {
+      console.error("Generate package failed:", error);
+    } finally{
+      setFormData({
+        spackage: '',
+        purchasedby: '',
+        quantity: 1,
+        amount: 0,
+      });
+    }
+  }
 
   return (
     <Card sx={{ margin: '2rem', mt: 10, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
@@ -316,7 +336,7 @@ export const GeneratePackages = () => {
                 <InputLabel id="package-label">Package</InputLabel>
                 <Select
                   labelId="package-label"
-                  value={formData.package}
+                  value={formData.spackage}
                   onChange={handlePackageChange}
                   displayEmpty
                   label="Package"
@@ -346,8 +366,8 @@ export const GeneratePackages = () => {
 
               <TextField
                 label="Send To"
-                name="sendTo"
-                value={formData.sendTo}
+                name="purchasedby"
+                value={formData.purchasedby}
                 onChange={handleInputChange}
                 fullWidth
                 variant="outlined"
@@ -428,6 +448,7 @@ export const GeneratePackages = () => {
               />
 
               <Button
+              onClick={handleSubmit}
                 variant="contained"
                 sx={{
                   backgroundColor: '#04112f',
@@ -443,6 +464,7 @@ export const GeneratePackages = () => {
           </AccordionDetails>
         </Accordion>
       </CardContent>
+      {isPending && <LoadingComponent/>}
     </Card>
   );
 };
