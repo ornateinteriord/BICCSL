@@ -47,18 +47,18 @@ export const useUpdateMember = () => {
   });
 };
 
-export const useGetTransactionDetails = (userId: string) => {
+export const useGetTransactionDetails = (memberId: string) => {
   return useQuery({
-    queryKey: ["transactionDetails", userId],
+    queryKey: ["transactionDetails", memberId],
     queryFn: async () => {
-      const response = await get(`/user/transactions/${userId}`);
+      const response = await get(`/user/transactions/${memberId}`);
       if (response.success) {
         return response.data;
       } else {
         throw new Error(response.message || "Failed to fetch transactions");
       }
     },
-    enabled:!!userId,
+    enabled:!!memberId,
   });
 };
 
