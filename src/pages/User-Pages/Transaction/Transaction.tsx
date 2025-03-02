@@ -16,18 +16,16 @@ import {
 import { useGetTransactionDetails } from "../../../api/Memeber";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import TokenService from "../../../api/token/tokenService";
 import useSearch from "../../../hooks/SearchQuery";
 
 
 const Transaction = () => {
-  const memberId = TokenService.getMemberId();
   const {
     data: transactions,
     isLoading,
     isError,
     error,
-  } = useGetTransactionDetails(memberId!);
+  } = useGetTransactionDetails();
 
   useEffect(() => {
     if (isError) {
