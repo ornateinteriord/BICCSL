@@ -21,13 +21,13 @@ import useSearch from "../../../hooks/SearchQuery";
 
 
 const Transaction = () => {
-  const userId = TokenService.getUserId();
+  const memberId = TokenService.getMemberId();
   const {
     data: transactions,
     isLoading,
     isError,
     error,
-  } = useGetTransactionDetails(userId!);
+  } = useGetTransactionDetails(memberId!);
 
   useEffect(() => {
     if (isError) {
