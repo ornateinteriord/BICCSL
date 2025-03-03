@@ -18,40 +18,35 @@ import { LoadingComponent } from "../../../App";
 import DataTable from "react-data-table-component";
 import "./Tree.scss";
 import { getFormattedDate } from "../../../utils/common";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-interface Sponser {
-  profile_image: string;
-  Name: string;
-  Member_id: string;
-  status: string;
-  Date_of_joining: string;
-}
+
+
 const Tree = () => {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
+  const [searchParams] = useSearchParams();
   const [hoveredSponsor, setHoveredSponsor] = useState<{
     Name: string;
     status:string;
     Date_of_joining:string;
   } | null>(null);
 
+  const memberId = searchParams.get("memberId") || user?.Member_id
 
-  const { data: sponsers, isLoading, isError, error } = useGetSponsers();
+  const { data: sponsers, isLoading, isError, error } = useGetSponsers(memberId);
  
+  const parentUser = sponsers?.parentUser || user;
 
+  const handleSponsorClick = (sponsorId: string) => {
+    navigate(`?memberId=${sponsorId}`,{ replace: true });
+  };
   useEffect(() => {
     if (isError) toast.error(error.message);
   }, [isError, error]);
 
 
-  const sponsored = Array.isArray(sponsers)
-    ? sponsers.map((sponser: Sponser) => ({
-        profile_image: sponser.profile_image,
-        Name: sponser.Name,
-        Member_id: sponser.Member_id,
-        status:sponser.status,
-        Date_of_joining:sponser.Date_of_joining,
-      }))
-    : [];
+  const sponsored = Array.isArray(sponsers?.sponsoredUsers) ? sponsers.sponsoredUsers : [];
 
   const columns = [
     { selector: (row: any) => row.field, sortable: true },
@@ -69,19 +64,20 @@ const Tree = () => {
 
   // Main user profile component
   const UserProfile = ({ userDetails }: { userDetails: any }) => (
+    
     <Box className="tree-user-profile"  onMouseEnter={() => setHoveredSponsor(userDetails)}>
       <Avatar
         className="tree-user-avatar"
         src={userDetails?.profile_image || ""}
       >
         {!userDetails?.profile_image &&
-          userDetails.Name.charAt(0).toUpperCase()}
+          userDetails?.Name.charAt(0).toUpperCase()}
       </Avatar>
       <Typography variant="h6" fontWeight="bold">
-        {userDetails.Name}
+        {userDetails?.Name}
       </Typography>
       <Typography variant="caption" color="textSecondary">
-        {userDetails.Member_id}
+        {userDetails?.Member_id}
       </Typography>
     </Box>
   );
@@ -90,6 +86,7 @@ const Tree = () => {
   const SponsoredProfile = ({ user }: { user: any }) => (
     <Box
       className="sponsor-container"
+       onClick={() => handleSponsorClick(user.Member_id)}
       onMouseEnter={() => setHoveredSponsor(user)}
     >
       <>
@@ -127,7 +124,7 @@ const Tree = () => {
                   gap:4
                 }}
               >
-                <UserProfile userDetails={user} />
+                <UserProfile userDetails={parentUser} />
               
 
                 {sponsored.length > 0 && (

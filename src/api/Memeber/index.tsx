@@ -114,13 +114,16 @@ export const getUsedandUnusedPackages = ({memberId , status} : {memberId : strin
   });
 }
 
-export const useGetSponsers = () => {
+export const useGetSponsers = (memberId?: string) => {
   return useQuery({
-    queryKey : ["sponsers"],
+    queryKey : ["sponsers",memberId],
     queryFn : async () => {
-      const response = await get('/user/sponsers');
+      const response = await get(`/user/sponsers/${memberId}`);
       if(response.success){
-        return response.sponsoredUsers
+        return {
+          parentUser: response.parentUser,
+          sponsoredUsers: response.sponsoredUsers,
+        };
       } else {
         throw new Error(response.message || "Failed to fetch sponsers");
       }
