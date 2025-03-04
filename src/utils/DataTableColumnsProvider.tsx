@@ -643,6 +643,139 @@ export const getHolidaysColumns = () => [
   },
 ];
 
+export const getRequestColumns = () =>[
+  {
+    name: "Date",
+    selector: (row: any) => getFormattedDate(row.date),
+    sortable: true,
+  },
+  {
+    name: "Member",
+    selector: (row: any) => row.Member,
+    sortable: true,
+  },
+  {
+    name: "Mobile No.",
+    selector: (row: any) =>row.mobileno,
+    sortable: true,
+  },
+  {
+    name: "Account No.",
+    selector: (row: any) => row.account,
+    sortable: true,
+  },
+  {
+    name: "IFSC Code",
+    selector: (row: any) => row.ifsc,
+    sortable: true,
+  },
+  {
+    name: "Amount",
+    selector: (row: any) => row.amount,
+    sortable: true,
+  },
+  {
+    name: "Deduction",
+    selector: (row: any) => row.deduction,
+    sortable: true,
+  },
+  {
+    name: "Status",
+    selector: (row: any) => row.status,
+    sortable: true,
+  },
+  {
+    name: "Action",
+    selector: (row: any) => row.action,
+    sortable: true,
+  },
+]
+
+export const getProccessedColumns = () =>[
+  {
+    name: "Date",
+    selector: (row: any) => getFormattedDate(row.date),
+    sortable: true,
+  },
+  {
+    name: "Member",
+    selector: (row: any) => row.Member,
+    sortable: true,
+  },
+  {
+    name: "Mobile No.",
+    selector: (row: any) =>row.mobileno,
+    sortable: true,
+  },
+  {
+    name: "Account No.",
+    selector: (row: any) => row.account,
+    sortable: true,
+  },
+  {
+    name: "IFSC Code",
+    selector: (row: any) => row.ifsc,
+    sortable: true,
+  },
+  {
+    name: "Paid Amount",
+    selector: (row: any) => row.amount,
+    sortable: true,
+  },
+  {
+    name: "Deducted",
+    selector: (row: any) => row.deducted,
+    sortable: true,
+  },
+  {
+    name: "Paidon",
+    selector: (row: any) => row.Paidon,
+    sortable: true,
+  },
+  
+]
+
+export const getPayblesColumns = () =>[
+  {
+    name: "Date",
+    selector: (row: any) => getFormattedDate(row.date),
+    sortable: true,
+  },
+  {
+    name: "Member",
+    selector: (row: any) => row.Member,
+    sortable: true,
+  },
+  {
+    name: "Mobile No.",
+    selector: (row: any) =>row.mobileno,
+    sortable: true,
+  },
+  {
+    name: "Account No.",
+    selector: (row: any) => row.account,
+    sortable: true,
+  },
+  {
+    name: "IFSC Code",
+    selector: (row: any) => row.ifsc,
+    sortable: true,
+  },
+  {
+    name: "Payble Amount",
+    selector: (row: any) => row.amount,
+    sortable: true,
+  },
+  {
+    name: "Action",
+    selector: (row: any) => row.action,
+    sortable: true,
+  },
+  
+]
+
+
+
 const TABLE_ROW_CUSTOM_STYLE = {
   style: {
     fontFamily: "Bogle-Regular",
