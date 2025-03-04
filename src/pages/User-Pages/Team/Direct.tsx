@@ -3,18 +3,21 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getDirectColumns } from '../../../utils/DataTableColumnsProvider';
 import { useGetSponsers } from '../../../api/Memeber';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useSearch from '../../../hooks/SearchQuery';
+import UserContext from '../../../context/user/userContext';
 
 const Direct = () => {
-   const { data: sponsers, isLoading, isError, error } = useGetSponsers();
+  const { user } = useContext(UserContext); // Ensure user context is available
+const memberId = user?.Member_id; 
+   const { data: sponsers, isLoading, isError, error } = useGetSponsers(memberId);
 
    useEffect(() => {
        if (isError) toast.error(error.message);
      }, [isError, error]);
 
-  const { searchQuery, setSearchQuery, filteredData } = useSearch(sponsers)
+  const { searchQuery, setSearchQuery, filteredData } = useSearch(sponsers?.sponsoredUsers|| [])
     
 
   return (
@@ -29,7 +32,7 @@ const Direct = () => {
                 '& .MuiSvgIcon-root': { color: '#fff' }
               }}
           >
-            {!isLoading && `List of Direct (${sponsers?.length})`}
+            {!isLoading && `List of Direct (${sponsers?.sponsoredUsers?.length})`}
           </AccordionSummary>
           <AccordionDetails>
             <DataTable
