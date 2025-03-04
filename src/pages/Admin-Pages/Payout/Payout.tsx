@@ -1,17 +1,26 @@
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Card,
   CardContent,
   Tab,
   Tabs,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
 import "./Payout.scss";
-import Requests from "./insidePayout/Request";
-import Proccessed from "./insidePayout/Proccessed";
-import Payables from "./insidePayout/Payble";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DataTable from "react-data-table-component";
+import { DASHBOARD_CUTSOM_STYLE, getPayblesColumns, getProccessedColumns, getRequestColumns } from "../../../utils/DataTableColumnsProvider";
 
+
+interface PayoutTableProps{
+  data:any[];
+  columns:any;
+}
 
 const Payout = () => {
   const [value, setValue] = useState(0);
@@ -26,7 +35,7 @@ const Payout = () => {
       case 1:
         return <Proccessed/>;
       case 2:
-        return <Payables/>;
+        return <Paybles/>;
     }
   };
   return (
@@ -50,6 +59,7 @@ const Payout = () => {
             </Tabs>
             <Box className="tab-content">{renderContent()}</Box>
           </Box>
+        
         </CardContent>
       </Card>
     </>
@@ -58,3 +68,109 @@ const Payout = () => {
 
 export default Payout;
 
+const PayoutTable= ({data,columns}:PayoutTableProps)=>{
+  return(
+    <Accordion defaultExpanded>
+    <AccordionSummary
+      expandIcon={<ExpandMoreIcon />}
+      sx={{
+        mt: 2,
+        backgroundColor: "#04112f",
+        color: "#fff",
+        "& .MuiSvgIcon-root": { color: "#fff" },
+      }}
+    >
+      Requests
+    </AccordionSummary>
+    <AccordionDetails>
+      <Box
+        style={{
+          display: "flex",
+          gap: "1rem",
+          justifyContent: "flex-end",
+          marginBottom: "1rem",
+        }}
+      >
+        <TextField
+          size="small"
+          placeholder="Search..."
+          sx={{ minWidth: 200 }}
+        />
+      </Box>
+      <DataTable
+        columns={columns}
+        data={data}
+        pagination
+        customStyles={DASHBOARD_CUTSOM_STYLE}
+        paginationPerPage={25}
+        paginationRowsPerPageOptions={[25, 50, 100]}
+        highlightOnHover
+      />
+    </AccordionDetails>
+  </Accordion>
+  )
+}
+
+export const Requests = ()=>{
+
+  const Data = [
+    {
+     date: "2024-03-01",
+     Member: "John Doe",
+     mobileno: "9876543210",
+     account: "1234567890",
+     ifsc: "HDFC0001234",
+     amount: "$100",
+     deduction: "$5",
+     status: "Pending",
+     action: "Approve",
+ }
+ ]
+  return (
+    <PayoutTable
+    data={Data}
+    columns={getRequestColumns()}
+    />
+  )
+}
+
+export const  Proccessed =()=>{
+  const Data = [
+    {
+     date: "2024-03-01",
+     Member: "John Doe",
+     mobileno: "9876543210",
+     account: "1234567890",
+     ifsc: "HDFC0001234",
+     amount: "$100",
+     deducted: "$5",
+     Paidon: "Pending",
+    
+ }
+ ]
+  return (
+    <PayoutTable
+    data={Data}
+    columns={getProccessedColumns()}
+    />
+  )
+}
+export const  Paybles =()=>{
+  const Data = [
+    {
+     date: "2024-03-01",
+     Member: "John Doe",
+     mobileno: "9876543210",
+     account: "1234567890",
+     ifsc: "HDFC0001234",
+     amount: "$100",
+     action: "Approve",
+ }
+ ]
+  return (
+    <PayoutTable
+    data={Data}
+    columns={getPayblesColumns()}
+    />
+  )
+}
