@@ -114,7 +114,7 @@ export const getUsedandUnusedPackages = ({memberId , status} : {memberId : strin
   });
 }
 
-export const useGetSponsers = (memberId?: string) => {
+export const useGetSponsers = (memberId: any) => {
   return useQuery({
     queryKey : ["sponsers",memberId],
     queryFn : async () => {

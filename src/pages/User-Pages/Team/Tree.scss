@@ -1,8 +1,8 @@
 .tree-container {
-
     padding: 2rem;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    gap: 50px;
   }
 .tree-user-profile {
     text-align: center;
@@ -43,7 +43,11 @@
     gap: 40px;
     cursor: pointer;
   }
-
+  .sponsor-popup-container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
   .sponsor-popup {
     position: relative;
     background-color: white;
@@ -88,14 +92,14 @@
    
     .SponsoredProfile {
       display: flex;
-      flex-wrap: nowrap; /* Prevents items from wrapping */
+      flex-wrap: nowrap; 
       overflow-x: auto;  
      justify-content: flex-start;
       gap: 16px;
       padding: 10px;
       max-width: 100%;
-      -ms-overflow-style: none; /* Hides scrollbar in Internet Explorer and Edge */
-      scrollbar-width: none; /* Hides scrollbar in Firefox */
+      -ms-overflow-style: none; 
+      scrollbar-width: none; 
     }
   
     /* Hides scrollbar for WebKit browsers (Chrome, Safari) */

@@ -774,6 +774,48 @@ export const getPayblesColumns = () =>[
   
 ]
 
+export const getCashBackColumns = () =>[
+  {
+    name: "Date",
+    selector: (row: any) => getFormattedDate(row.date),
+    sortable: true,
+  },
+  {
+    name: "Member",
+    selector: (row: any) => row.Member,
+    sortable: true,
+  },
+  {
+    name: "Amount",
+    selector: (row: any) => row.amount,
+    sortable: true,
+  },
+  {
+    name: "Action",
+    selector: (row: any) => row.action,
+    sortable: true,
+  },
+]
+
+export const getadminLevelBenifitsColumns =()=>[
+  {
+    name: "Date",
+    selector: (row: any) => getFormattedDate(row.date),
+    sortable: true,
+  },
+  {
+    name: "Member",
+    selector: (row: any) => row.Member,
+    sortable: true,
+  },
+  {
+    name: "Daily Benifits Payouts",
+    selector: (row: any) => row.amount,
+    sortable: true,
+  },
+  
+]
+
 
 
 const TABLE_ROW_CUSTOM_STYLE = {

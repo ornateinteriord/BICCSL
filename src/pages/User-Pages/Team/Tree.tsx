@@ -9,9 +9,8 @@ import {
   Accordion,
   ClickAwayListener,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import UserContext from "../../../context/user/userContext";
 import { useGetSponsers } from "../../../api/Memeber";
 import { toast } from "react-toastify";
 import { LoadingComponent } from "../../../App";
@@ -19,12 +18,14 @@ import DataTable from "react-data-table-component";
 import "./Tree.scss";
 import { getFormattedDate } from "../../../utils/common";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import CustomBreadcrumbs, { breadcrumbsProp } from "../../../components/common/CustomBreadcrumps";
+import TokenService from "../../../api/token/tokenService";
 
 
 
 const Tree = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  
   const [searchParams] = useSearchParams();
   const [hoveredSponsor, setHoveredSponsor] = useState<{
     Name: string;
@@ -32,11 +33,11 @@ const Tree = () => {
     Date_of_joining:string;
   } | null>(null);
 
-  const memberId = searchParams.get("memberId") || user?.Member_id
+  const memberId = searchParams.get("memberId") || TokenService.getMemberId()
 
   const { data: sponsers, isLoading, isError, error } = useGetSponsers(memberId);
  
-  const parentUser = sponsers?.parentUser || user;
+  const parentUser = sponsers?.parentUser ;
 
   const handleSponsorClick = (sponsorId: string) => {
     navigate(`?memberId=${sponsorId}`,{ replace: true });
@@ -103,11 +104,16 @@ const Tree = () => {
     </Box>
   );
 
-
+ const routes : breadcrumbsProp[] = [
+  { path: "/user/team/tree", breadcrumb: "Tree" },
+  { path: `/user/team/tree?memberId=${memberId}`, breadcrumb: "Sponsores" },
+  ];
+ 
 
   return (
     <Card sx={{ margin: "2rem", mt: 10 }}>
       <CardContent>
+        <CustomBreadcrumbs routes={routes}/>
         <Accordion defaultExpanded>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -138,7 +144,7 @@ const Tree = () => {
                   </Box>
                 )}
               </Box>
-              {hoveredSponsor && (
+              {!isLoading && hoveredSponsor && (
                 <ClickAwayListener onClickAway={() => setHoveredSponsor(null)}>
                   <Box  className="sponsor-popup-container">
                   <Box
