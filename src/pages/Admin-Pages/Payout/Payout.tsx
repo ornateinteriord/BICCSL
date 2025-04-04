@@ -20,6 +20,7 @@ import { DASHBOARD_CUTSOM_STYLE, getPayblesColumns, getProccessedColumns, getReq
 interface PayoutTableProps{
   data:any[];
   columns:any;
+  tabTitle:any[];
 }
 
 const Payout = () => {
@@ -31,17 +32,17 @@ const Payout = () => {
   const renderContent = () => {
     switch (value) {
       case 0:
-        return <Requests/>;
+        return <Requests tabTitle={"Requests"}/>;
       case 1:
-        return <Proccessed/>;
+        return <Proccessed tabTitle={"Proccessed"}/>;
       case 2:
-        return <Paybles/>;
+        return <Paybles  tabTitle={"Paybles"}/>;
     }
   };
   return (
     <>
       <Typography variant="h4" sx={{ margin: "2rem", mt: 10 }}>
-        Support Tickets
+       Payouts
       </Typography>
       <Card sx={{ margin: "2rem", mt: 2 }}>
         <CardContent>
@@ -68,7 +69,7 @@ const Payout = () => {
 
 export default Payout;
 
-const PayoutTable= ({data,columns}:PayoutTableProps)=>{
+const PayoutTable= ({data,columns,tabTitle}:PayoutTableProps)=>{
   return(
     <Accordion defaultExpanded>
     <AccordionSummary
@@ -80,7 +81,7 @@ const PayoutTable= ({data,columns}:PayoutTableProps)=>{
         "& .MuiSvgIcon-root": { color: "#fff" },
       }}
     >
-      Requests
+      {tabTitle}
     </AccordionSummary>
     <AccordionDetails>
       <Box
@@ -105,13 +106,14 @@ const PayoutTable= ({data,columns}:PayoutTableProps)=>{
         paginationPerPage={25}
         paginationRowsPerPageOptions={[25, 50, 100]}
         highlightOnHover
+        noDataComponent={<div>No data available</div>}
       />
     </AccordionDetails>
   </Accordion>
   )
 }
 
-export const Requests = ()=>{
+export const Requests = ({ tabTitle }: { tabTitle:any})=>{
 
   const Data = [
     {
@@ -130,11 +132,12 @@ export const Requests = ()=>{
     <PayoutTable
     data={Data}
     columns={getRequestColumns()}
+    tabTitle={tabTitle} 
     />
   )
 }
 
-export const  Proccessed =()=>{
+export const  Proccessed =({ tabTitle }: { tabTitle:any})=>{
   const Data = [
     {
      date: "2024-03-01",
@@ -152,10 +155,11 @@ export const  Proccessed =()=>{
     <PayoutTable
     data={Data}
     columns={getProccessedColumns()}
+    tabTitle={tabTitle} 
     />
   )
 }
-export const  Paybles =()=>{
+export const  Paybles =({ tabTitle }: { tabTitle:any})=>{
   const Data = [
     {
      date: "2024-03-01",
@@ -171,6 +175,7 @@ export const  Paybles =()=>{
     <PayoutTable
     data={Data}
     columns={getPayblesColumns()}
+    tabTitle={tabTitle} 
     />
   )
 }

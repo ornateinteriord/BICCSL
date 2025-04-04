@@ -3,14 +3,14 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getDirectColumns } from '../../../utils/DataTableColumnsProvider';
 import { useGetSponsers } from '../../../api/Memeber';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useSearch from '../../../hooks/SearchQuery';
-import UserContext from '../../../context/user/userContext';
+
+import TokenService from '../../../api/token/tokenService';
 
 const Direct = () => {
-  const { user } = useContext(UserContext); // Ensure user context is available
-const memberId = user?.Member_id; 
+const memberId = TokenService.getMemberId(); 
    const { data: sponsers, isLoading, isError, error } = useGetSponsers(memberId);
 
    useEffect(() => {
