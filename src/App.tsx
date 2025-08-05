@@ -128,7 +128,7 @@ const ShouldHideSidebarComponent = () => {
 };
 
 function App() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(() => window.innerWidth > 768);
 
   const toggelSideBar = () => {
     setIsOpen(!isOpen);
