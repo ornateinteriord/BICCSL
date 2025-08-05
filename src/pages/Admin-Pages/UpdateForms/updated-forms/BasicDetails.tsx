@@ -13,11 +13,11 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EmailIcon from "@mui/icons-material/Email";
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LockIcon from '@mui/icons-material/Lock';
 import PhoneIcon from "@mui/icons-material/Phone";
 import WcIcon from "@mui/icons-material/Wc";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { MuiDatePicker } from "../../../../components/common/DateFilterComponent";
 
 interface BasicDetailsProps {
   formData: any;
@@ -32,6 +32,15 @@ export  const  BasicDetails: React.FC<BasicDetailsProps> = ({
   handleInputChange,
   handleRadioChange,
 }) => {
+ const handleDateChange = (formattedDate: string) => {
+  handleInputChange({
+    target: {
+      name: "dob",
+      value: formattedDate,
+    },
+  } as React.ChangeEvent<HTMLInputElement>);
+};
+
   return (
     <Accordion defaultExpanded sx={{ boxShadow: "none", marginBottom: "20px" }}>
       <AccordionSummary
@@ -187,23 +196,13 @@ export  const  BasicDetails: React.FC<BasicDetailsProps> = ({
                 />
               </RadioGroup>
             </FormControl>
-            <TextField
-              label="Date Of Birth"
-              name="dob"
-              type="email"
-              value={formData.dob}
-              onChange={handleInputChange}
-              fullWidth
-              variant="outlined"
-              placeholder="Date Of Birth"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <CalendarTodayIcon sx={{ color: "#04112f" }} />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <div>
+              <MuiDatePicker
+                date={formData.dob}
+                setDate={handleDateChange}
+                label="Date of Birth"
+              />
+            </div>
             <TextField
               label="Email"
               name="email"
@@ -241,7 +240,7 @@ export  const  BasicDetails: React.FC<BasicDetailsProps> = ({
             <TextField
               label="Password"
               name="password"
-              type="tel"
+              type="password"
               value={formData.password}
               onChange={handleInputChange}
               fullWidth
@@ -258,7 +257,7 @@ export  const  BasicDetails: React.FC<BasicDetailsProps> = ({
             <TextField
               label="Transaction Password"
               name="transaction_pass"
-              type="tel"
+              type="password"
               value={formData.transaction_pass}
               onChange={handleInputChange}
               fullWidth

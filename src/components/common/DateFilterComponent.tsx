@@ -7,6 +7,10 @@ import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import moment from "moment";
 
 interface DateFilterComponentProps {
   onSelect: (date: Date) => void;
@@ -14,6 +18,7 @@ interface DateFilterComponentProps {
   width?: string;
   needCurrent?: boolean;
   disabled?: boolean;
+  selectedDate?: Date;
 }
 
 const DateFilterComponent = ({
@@ -22,10 +27,10 @@ const DateFilterComponent = ({
   width = "240px",
   needCurrent = false,
   disabled = false,
+  selectedDate
 }: DateFilterComponentProps) => {
-  const defaultDate = needCurrent ? new Date() : undefined;
   const [date, setDate] = React.useState<Date | DateRange | Date[] | undefined>(
-    defaultDate
+    selectedDate ?? (needCurrent ? new Date() : undefined)
   );
   const [open, setOpen] = React.useState(false);
 
@@ -61,3 +66,42 @@ const DateFilterComponent = ({
 };
 
 export default DateFilterComponent;
+
+interface Props {
+  date: string | null;
+  setDate: (value: string) => void;
+  label: string
+}
+
+export const MuiDatePicker: React.FC<Props> = ({ date, setDate, label }) => {
+  const handleChange = (date: Date | null) => {
+    if (date) {
+      const formatted = moment(date).format('YYYY-MM-DD') // yyyy-mm-dd
+      setDate(formatted);
+    }
+  };
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label={label}
+        value={date && !isNaN(new Date(date).getTime()) ? new Date(date) : null}
+        onChange={handleChange}
+        slotProps={{
+          textField: {
+            fullWidth: true,
+            size: "small",
+            sx: {
+              "& label": {
+                color: "#04112f",
+              },
+              "& label.Mui-focused": {
+                color: "#04112f",
+              },
+            },
+          },
+        }}
+      />
+    </LocalizationProvider>
+  );
+};
