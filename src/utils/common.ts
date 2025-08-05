@@ -14,7 +14,7 @@ export const getFormattedDate = (date: Date | string) => {
         "D MMM YYYY"       // Handles "14 Feb 2025" (without comma)
     ];
     
-    if (!date) return "Invalid Date"; // Handle empty/null values
+    if (!date) return "-"; // Handle empty/null values
 
     const parsedDate = moment(date, dateformats, true);
     
