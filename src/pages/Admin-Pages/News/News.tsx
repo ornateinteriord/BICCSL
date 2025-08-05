@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getNewsColumns } from '../../../utils/DataTableColumnsProvider';
-import DateFilterComponent from '../../../components/common/DateFilterComponent';
+import { MuiDatePicker } from '../../../components/common/DateFilterComponent';
 import { useAddNews, useGetNews } from '../../../api/Admin';
 import { toast } from 'react-toastify';
 import useSearch from '../../../hooks/SearchQuery';
@@ -32,8 +32,8 @@ const News = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newNews, setNewNews] = useState<{
-    fromDate: Date | null;
-    toDate: Date | null;
+    fromDate: string | null;
+    toDate: string | null;
     content: string;
   }>({
     fromDate: null,
@@ -152,17 +152,18 @@ const News = () => {
            <Grid className='addnews-container'>
             <Grid item  className='date-container'>
             <Typography  className="date-label">From:</Typography>
-              <DateFilterComponent
-                onSelect={(date) => setNewNews({ ...newNews, fromDate: date })}
-                mode="single"   
+              <MuiDatePicker
+                date={newNews.fromDate}
+                setDate={(date) => setNewNews({ ...newNews, fromDate: date })}
+                label="From Date"
               />
             </Grid>
             <Grid item xs={6}className='date-container'>
             <Typography  className="date-label">To:</Typography>
-              <DateFilterComponent
-                onSelect={(date) => setNewNews({ ...newNews, toDate: date })}
-                mode="single"
-                
+              <MuiDatePicker
+                date={newNews.toDate}
+                setDate={(date) => setNewNews({ ...newNews, toDate: date })}
+                label="To Date"
               />
             </Grid>
             </Grid>

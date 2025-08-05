@@ -3,16 +3,16 @@ import {  Card, CardContent, Grid, Typography } from '@mui/material';
 import { cn } from '../../../lib/utils';
 import '../../Dashboard/dashboard.scss';
 import DashboardTable from '../../Dashboard/DashboardTable';
-import DateFilterComponent from '../../../components/common/DateFilterComponent';
+import { MuiDatePicker } from '../../../components/common/DateFilterComponent';
 import DashboardCard from '../../../components/common/DashboardCard';
 import { getUserDashboardTableColumns } from '../../../utils/DataTableColumnsProvider';
 
 const UserDashboard = () => { 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   console.log(selectedDate);
 
-  const handleDateChange = (date: Date | undefined) => {
-    setSelectedDate(date!);
+  const handleDateChange = (date: string) => {
+    setSelectedDate(date);
   };
 
   const data = [
@@ -116,7 +116,11 @@ const UserDashboard = () => {
           <CardContent>
             <div className="flex justify-between items-center mb-4">
               <Typography variant="h6" style={{ fontWeight: 'bold', color: '#04112f' }}>Member Statistics</Typography>
-              <DateFilterComponent onSelect={handleDateChange} />
+              <MuiDatePicker
+                date={selectedDate}
+                setDate={handleDateChange}
+                label="Filter by Date"
+              />
             </div>
             <DashboardTable data={data} columns={getUserDashboardTableColumns()} />
           </CardContent>

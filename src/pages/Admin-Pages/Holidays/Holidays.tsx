@@ -21,7 +21,7 @@ import {
   DASHBOARD_CUTSOM_STYLE,
   getHolidaysColumns,
 } from "../../../utils/DataTableColumnsProvider";
-import DateFilterComponent from "../../../components/common/DateFilterComponent";
+import { MuiDatePicker } from "../../../components/common/DateFilterComponent";
 import { useAddHoliday, useGetHoliday } from "../../../api/Admin";
 import { toast } from "react-toastify";
 import useSearch from "../../../hooks/SearchQuery";
@@ -30,7 +30,7 @@ import { getFormattedDate } from "../../../utils/common";
 const Holidays = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newHoliday, setNewHoliday] = useState<{
-    date: Date | null;
+    date: string | null;
     description: string;
   }>({
     date: null,
@@ -143,10 +143,10 @@ const Holidays = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <DateFilterComponent
-                onSelect={(date) => setNewHoliday({ ...newHoliday, date })}
-                mode="single"
-                width="100%"
+              <MuiDatePicker
+                date={newHoliday.date}
+                setDate={(date) => setNewHoliday({ ...newHoliday, date })}
+                label="Holiday Date"
               />
             </Grid>
           </Grid>

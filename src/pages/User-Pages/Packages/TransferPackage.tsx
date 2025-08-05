@@ -9,13 +9,13 @@ import {
   CardContent,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import DateFilterComponent from '../../../components/common/DateFilterComponent';
+import { MuiDatePicker } from '../../../components/common/DateFilterComponent';
 import { useGetSponserRef } from '../../../api/Auth';
 import { useTransferPackage } from '../../../api/Memeber';
 
 const TransferPackage: React.FC = () => {
   const [formData, setFormData] = useState({
-    transfered_on: new Date().toISOString(),
+    transfered_on: new Date().toISOString().slice(0, 10), // 'YYYY-MM-DD'
     quantity: 1,
     transfered_to: '',
   });
@@ -75,7 +75,11 @@ const TransferPackage: React.FC = () => {
           </AccordionSummary>
           <AccordionDetails sx={{ padding: '2rem' }}>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <DateFilterComponent onSelect={()=>{}} width="100%" needCurrent disabled />
+              <MuiDatePicker
+                date={formData.transfered_on}
+                setDate={(date) => setFormData((prev) => ({ ...prev, transfered_on: date }))}
+                label="Transfer Date"
+              />
               <TextField
                 label="Package Qty"
                 name="quantity"

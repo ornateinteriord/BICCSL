@@ -3,7 +3,7 @@ import { Card, CardContent, Accordion, AccordionSummary, AccordionDetails, TextF
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DASHBOARD_CUTSOM_STYLE, getMembersColumns } from '../../../utils/DataTableColumnsProvider';
 import './Members.scss'
-import DateFilterComponent from '../../../components/common/DateFilterComponent';
+import { MuiDatePicker } from '../../../components/common/DateFilterComponent';
 import {  useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useGetAllMembersDetails } from '../../../api/Admin';
@@ -24,17 +24,11 @@ interface MemberTableProps {
 const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = false }: MemberTableProps) => {
   const [isEdit , setIsEdit] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  const [fromDate, setFromDate] = useState<string | null>(null);
+  const [toDate, setToDate] = useState<string | null>(null);
   const { searchQuery, setSearchQuery, filteredData } = useSearch(data)
 
   const navigate = useNavigate()
- 
-  const handleFromDateSelect = (date: any) => {
-    console.log(date);
-  }
-
-  const handleToDateSelect = (date: any) => {
-    console.log(date);
-  }
 
   const handleEditClick = (memberId: string) => {
     setIsEdit(true);
@@ -57,8 +51,8 @@ const MemberTable = ({ title, summaryTitle, data, showEdit = false, isLoading = 
           {title}
         </Typography>
         <Grid className="filter-actions" >
-        <DateFilterComponent onSelect={handleFromDateSelect} />
-        <DateFilterComponent onSelect={handleToDateSelect} />
+        <MuiDatePicker date={fromDate} setDate={setFromDate} label="From Date" />
+        <MuiDatePicker date={toDate} setDate={setToDate} label="To Date" />
         <Button
           variant="contained"
           sx={{

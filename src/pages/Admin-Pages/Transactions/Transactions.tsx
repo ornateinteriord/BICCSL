@@ -17,9 +17,9 @@ import {
   DASHBOARD_CUTSOM_STYLE,
   getAdminPageTransactionColumns,
 } from "../../../utils/DataTableColumnsProvider";
-import DateFilterComponent from "../../../components/common/DateFilterComponent";
+import { MuiDatePicker } from "../../../components/common/DateFilterComponent";
 import { useGetAllTransactionDetails } from "../../../api/Admin";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useSearch from "../../../hooks/SearchQuery";
 
@@ -74,13 +74,8 @@ export const TransactionDataTable = ({
   searchQuery?: string;
   setSearchQuery?: React.Dispatch<React.SetStateAction<string>> ;
 }) => {
-  const handleFromDateSelect = (date: any) => {
-    console.log(date);
-  };
-
-  const handleToDateSelect = (date: any) => {
-    console.log(date);
-  };
+  const [fromDate, setFromDate] = useState<string | null>(null);
+  const [toDate, setToDate] = useState<string | null>(null);
 
   return (
     <>
@@ -98,8 +93,8 @@ export const TransactionDataTable = ({
             placeholder="Member Id"
             className="member-id"
           />
-          <DateFilterComponent onSelect={handleFromDateSelect} />
-          <DateFilterComponent onSelect={handleToDateSelect} />
+          <MuiDatePicker date={fromDate} setDate={setFromDate} label="From Date" />
+          <MuiDatePicker date={toDate} setDate={setToDate} label="To Date" />
           <Button
             variant="contained"
             sx={{
